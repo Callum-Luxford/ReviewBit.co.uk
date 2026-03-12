@@ -120,7 +120,8 @@ function Header() {
             </span>
           </div>
 
-          <p className="terminal-header-logo-text">Review.sh</p>
+          {/* <p className="terminal-header-logo-text">Revbotic</p> */}
+          <p className="terminal-header-logo-text">ReviewBit.sh</p>
         </Link>
 
         {/* Desktop Nav */}

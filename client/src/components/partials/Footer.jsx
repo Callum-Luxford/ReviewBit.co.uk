@@ -12,7 +12,7 @@ function Footer() {
                 <span className="text-sm font-medium">{">_"}</span>
               </div>
 
-              <p className="terminal-header-logo-text">Review.sh</p>
+              <p className="terminal-header-logo-text">ReviewBit.sh</p>
             </a>
 
             <p className="terminal-footer-copy mt-6 max-w-[300px]">

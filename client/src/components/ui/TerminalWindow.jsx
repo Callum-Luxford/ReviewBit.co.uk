@@ -65,7 +65,7 @@ export default function TerminalWindow() {
           <span className="terminal-window-dot bg-green-400" />
         </div>
 
-        <p className="terminal-window-title">review_terminal_v2.sh</p>
+        <p className="terminal-window-title">reviewBit.sh_terminal_</p>
 
         <div className="w-[60px]" />
       </div>
