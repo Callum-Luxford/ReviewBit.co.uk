@@ -2,7 +2,7 @@ import { FaGithub, FaDiscord, FaXTwitter } from "react-icons/fa6";
 
 function Footer() {
   return (
-    <footer className="border-t border-[rgba(var(--terminal-green-rgb),0.18)] bg-[var(--theme-clr-1)]">
+    <footer className="border-t border-[rgba(var(--terminal-green-rgb),0.18)] bg-[var(--theme-clr-2)]">
       <div className="mx-auto max-w-[1400px] px-4 py-16 md:px-6">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
           {/* Brand */}
