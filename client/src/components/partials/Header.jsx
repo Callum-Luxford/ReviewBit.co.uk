@@ -1,21 +1,11 @@
 import { useState, useEffect } from "react";
-import logo from "../../assets/images/logo-2.png";
 import { Link } from "react-router-dom";
-import { HiMenu } from "react-icons/hi";
-import Hamburger from "hamburger-react";
-import {
-  Spin,
-  Squash,
-  Divide,
-  Fade,
-  Turn,
-  Sling,
-  Twirl,
-} from "hamburger-react";
+import { Squash } from "hamburger-react";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeAuthButton, setActiveAuthButton] = useState("signup");
 
   useEffect(() => {
     const onScroll = () => {
@@ -30,95 +20,157 @@ function Header() {
     setMenuOpen(false);
   }
 
+  function getAuthBtnClass(buttonName) {
+    const isActive = activeAuthButton === buttonName;
+
+    return isActive ? "terminal-auth-btn-active" : "terminal-auth-btn-inactive";
+  }
+
   return (
     <header className="fixed top-0 left-0 z-[9998] w-full h-24">
+      {/* background */}
       <div
         aria-hidden="true"
-        className={`absolute inset-0 pointer-events-none transition-all duration-300${
+        className={`absolute inset-0 transition-all duration-300 ${
           scrolled
-            ? "bg-glass/60 backdrop-blur-md shadow-lg shadow-black/5"
-            : "bg-transparent"
+            ? "bg-[#0a0e14]/90 backdrop-blur-md"
+            : "bg-[#0a0e14]/70 backdrop-blur-sm"
         }`}
       />
 
-      <div
-        aria-hidden="true"
-        className={`absolute inset-x-0 bottom-0 h-px pointer-events-none ${
-          scrolled ? "bg-white/10" : "bg-transparent"
-        }`}
-      />
+      {/* bottom terminal separator */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0">
+        <div className="absolute inset-x-0 bottom-0 flex justify-center">
+          <div className="h-[6px] w-[34%] bg-[rgba(var(--terminal-green-rgb),0.22)] blur-md" />
+        </div>
+
+        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[rgba(var(--terminal-green-rgb),0.55)] to-transparent" />
+      </div>
 
       {/* Mobile Nav */}
       <nav
-        className={`mobile-nav text-text_clr_1 fixed top-0 right-0 w-2/3 h-full z-40 transform transition-transform duration-300 ease-in-out bg-slate-800  ${menuOpen ? "pointer-events-auto translate-x-0" : "pointer-events-none translate-x-full"}`}
+        className={`fixed top-0 right-0 z-40 h-full w-2/3 max-w-[320px] transform border-l border-[rgba(var(--terminal-green-rgb),0.20)] bg-theme_clr_2 transition-transform duration-300 ease-in-out ${
+          menuOpen
+            ? "pointer-events-auto translate-x-0"
+            : "pointer-events-none translate-x-full"
+        }`}
       >
-        <div className="mobile-nav-links flex flex-col gap-2 p-4 mt-20">
-          <Link
-            to="/login"
-            variant="secondary"
-            size="md"
-            className="gradient-text-hover"
+        <div className="mt-24 flex flex-col gap-4 p-6 text-[#e5e7eb]">
+          <a href="#reviews" onClick={closeMenu} className="terminal-nav-link">
+            Reviews
+          </a>
+
+          <a
+            href="#how-it-works"
             onClick={closeMenu}
+            className="terminal-nav-link"
           >
-            Login
-          </Link>
-          <Link
-            to="/signup"
-            variant="primary"
-            size="md"
-            className="gradient-text-hover"
+            How_It_Works
+          </a>
+
+          <a
+            href="#testimonials"
             onClick={closeMenu}
+            className="terminal-nav-link"
           >
-            Create Account
-          </Link>
+            Testimonials
+          </a>
+
+          <div
+            className="mt-2 flex flex-col gap-3"
+            onMouseLeave={() => setActiveAuthButton("signup")}
+          >
+            <Link
+              to="/login"
+              onClick={closeMenu}
+              onMouseEnter={() => setActiveAuthButton("login")}
+              className={`terminal-auth-btn ${getAuthBtnClass("login")}`}
+            >
+              Login
+            </Link>
+
+            <Link
+              to="/signup"
+              onClick={closeMenu}
+              onMouseEnter={() => setActiveAuthButton("signup")}
+              className={`terminal-auth-btn ${getAuthBtnClass("signup")}`}
+            >
+              Signup
+            </Link>
+          </div>
         </div>
       </nav>
 
       {/* Overlay */}
       <div
-        className={`fixed inset-0 z-30 bg-black/50 bg-gradient-to-l from-black/60 via-black/40 to-transparent ${menuOpen ? "block" : "hidden"}`}
+        className={`fixed inset-0 z-30 bg-black/60 transition-opacity duration-300 ${
+          menuOpen
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
+        }`}
         onClick={closeMenu}
-      ></div>
+      />
 
-      <div className="header-items relative max-w-[1400px] mx-auto px-4 h-full flex items-center justify-between">
-        {/* logo */}
-        <a href="/" className="flex items-center gap-1 w-fit">
-          <img src={logo} alt="reviewbear-logo" className="h-10 w-auto" />
-          <p className="text-xl text-text_clr_1">
-            Review<span className="font-semibold text-text_clr_1">Bear</span>
-          </p>
-        </a>
+      <div className="relative mx-auto flex h-full max-w-[1400px] items-center justify-between px-4 md:px-6">
+        {/* Logo */}
+        <Link to="/" className="group flex items-center gap-3">
+          <div className="terminal-header-logo-box">
+            <span className="text-sm font-medium drop-shadow-[var(--terminal-glow-sm)]">
+              {">_"}
+            </span>
+          </div>
 
-        <div className="md:hidden absolute top-6 right-4 z-[9999]">
+          <p className="terminal-header-logo-text">Review.sh</p>
+        </Link>
+
+        {/* Desktop Nav */}
+        <nav className="hidden items-center gap-8 md:flex">
+          <a href="#reviews" className="terminal-nav-link">
+            Reviews
+          </a>
+
+          <a href="#how-it-works" className="terminal-nav-link">
+            How_It_Works
+          </a>
+
+          <a href="#testimonials" className="terminal-nav-link">
+            Testimonials
+          </a>
+
+          <div
+            className="flex items-center gap-3"
+            onMouseLeave={() => setActiveAuthButton("signup")}
+          >
+            <Link
+              to="/login"
+              onMouseEnter={() => setActiveAuthButton("login")}
+              className={`terminal-auth-btn ${getAuthBtnClass("login")}`}
+            >
+              Login
+            </Link>
+
+            <Link
+              to="/signup"
+              onMouseEnter={() => setActiveAuthButton("signup")}
+              className={`terminal-auth-btn ${getAuthBtnClass("signup")}`}
+            >
+              Signup
+            </Link>
+          </div>
+        </nav>
+
+        {/* Mobile Toggle */}
+        <div className="absolute right-4 top-1/2 z-[10000] -translate-y-1/2 md:hidden">
           <Squash
             toggled={menuOpen}
             toggle={setMenuOpen}
             size={24}
-            color="#fff"
+            color="rgb(var(--terminal-green-rgb))"
           />
         </div>
-
-        {/* Desktop Nav */}
-        <nav className="hidden nav-links md:flex items-center gap-4 text-text_clr_1">
-          <Link
-            to="/login"
-            variant="secondary"
-            size="md"
-            className="gradient-text-hover"
-          >
-            Login
-          </Link>
-          <Link
-            to="/signup"
-            variant="primary"
-            size="md"
-            className="gradient-text-hover"
-          >
-            Create Account
-          </Link>
-        </nav>
       </div>
     </header>
   );
 }
+
 export default Header;
