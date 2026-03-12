@@ -31,7 +31,7 @@ function Home() {
         <HowItWorks />
 
         {/* How it Works */}
-        <TimelineFeature />
+        {/* <TimelineFeature /> */}
 
         {/* Start Today */}
         <StartToday />
