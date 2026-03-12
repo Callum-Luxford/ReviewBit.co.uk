@@ -24,14 +24,14 @@ function Home() {
 
       {/* Proof Strip */}
       <ProofStrip />
-      
+
       {/* constrained sections after hero */}
       <div className="max-w-[1400px] mx-auto w-full px-4">
         {/* How it Works */}
-        <TimelineFeature />
+        <HowItWorks />
 
         {/* How it Works */}
-        <HowItWorks />
+        <TimelineFeature />
 
         {/* Start Today */}
         <StartToday />

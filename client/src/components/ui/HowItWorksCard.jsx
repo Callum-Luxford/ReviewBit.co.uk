@@ -2,35 +2,25 @@ export default function HowItWorksCard({
   image,
   title,
   children,
-  className = "",
+  accent = "terminal-card-green",
+  step = "STEP_01",
 }) {
   return (
-    <div
-      className={[
-        // gradient border layer
-        "rb-border-only rounded-lg",
-        className,
-      ].join(" ")}
-    >
-      <div
-        className={[
-          // actual card body
-          "rounded-xl h-full w-full text-center shadow-md",
-          "p-4",
-        ].join(" ")}
-      >
-        <div className="flex flex-col items-center gap-4">
-          {" "}
+    <article className={["terminal-card-shell", accent].join(" ")}>
+      <div className="terminal-how-card-inner">
+        <div className="terminal-how-icon-wrap">
           <div
-            className="h-16 w-16 icon-gradient"
+            className="terminal-how-icon"
             style={{ "--icon-mask": `url(${image})` }}
           />
-          <div className="flex flex-col gap-1">
-            <h3 className="text-text_clr_1 font-semibold text-lg">{title}</h3>
-            <div className="text-text_clr_1 text-md">{children}</div>
-          </div>
         </div>
+
+        <div className="terminal-card-kicker">{step}</div>
+
+        <h3 className="terminal-how-title">{title}</h3>
+
+        <p className="terminal-how-copy">{children}</p>
       </div>
-    </div>
+    </article>
   );
 }

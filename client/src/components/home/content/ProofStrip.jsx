@@ -35,7 +35,7 @@ export default function ProofStrip() {
           <div className="mt-14 grid w-full gap-6 md:grid-cols-3">
             <ProofStripCard
               accent="terminal-card-cyan"
-              eyebrow="STEP_01"
+              eyebrow="COLLECTION"
               title="Capture feedback faster"
               metaLeft="256 signals"
               metaRight="Collection"
@@ -46,7 +46,7 @@ export default function ProofStrip() {
 
             <ProofStripCard
               accent="terminal-card-purple"
-              eyebrow="STEP_02"
+              eyebrow="AUTOMATION"
               title="Automate follow-ups"
               metaLeft="189 signals"
               metaRight="Automation"
@@ -57,7 +57,7 @@ export default function ProofStrip() {
 
             <ProofStripCard
               accent="terminal-card-green"
-              eyebrow="STEP_03"
+              eyebrow="REPUTATION"
               title="Spot risk before it spreads"
               metaLeft="342 signals"
               metaRight="Reputation"

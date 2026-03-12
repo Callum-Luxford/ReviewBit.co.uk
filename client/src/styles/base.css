@@ -113,6 +113,7 @@
     /* ----------- Font colors ------------ */
     --font-clr-1: #ffffff;
     --font-clr-2: #b6b6b6;
+    --font-clr-3: #ffffff6b;
 
     /* ----------- theme colors ------------ */
     /* ----------- theme colors ------------ */
@@ -321,7 +322,7 @@
         border-color: rgba(var(--terminal-green-rgb), 0.75);
 
         /* subtle green fill */
-        background: rgba(var(--terminal-green-rgb),0.1);
+        background: rgba(var(--terminal-green-rgb), 0.1);
 
         /* glow */
         /* box-shadow:
@@ -596,7 +597,7 @@
     }
 
     .terminal-card-inner {
-        @apply h-full rounded-xl p-7 transition-all duration-300;
+        @apply h-full rounded-xl p-7 transition-all duration-300 flex flex-col;
         background:
             linear-gradient(180deg,
                 rgba(255, 255, 255, 0.025) 0%,
@@ -621,8 +622,7 @@
     }
 
     .terminal-card-meta {
-        @apply mt-8 flex items-center justify-between gap-4 text-sm;
-        color: rgba(255, 255, 255, 0.42);
+        @apply mt-auto flex items-center justify-between gap-4 pt-8 text-sm text-text_clr_3;
     }
 
     .terminal-card-green {
@@ -686,5 +686,157 @@
     }
 
     /* ========= PROOF STRIP ========= */
+
+
+
+
+    /* ========= HOW IT WORKS ========= */
+
+    .terminal-how-card-inner {
+        @apply flex h-full flex-col items-center rounded-xl p-8 text-center transition-all duration-300;
+        background:
+            linear-gradient(180deg,
+                rgba(255, 255, 255, 0.025) 0%,
+                rgba(255, 255, 255, 0.01) 100%),
+            var(--terminal-card-bg);
+    }
+
+    .terminal-how-icon-wrap {
+        @apply mb-6 flex h-16 w-16 items-center justify-center rounded-xl;
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    .terminal-how-icon {
+        @apply h-8 w-8;
+        background-color: currentColor;
+        -webkit-mask: var(--icon-mask) center / contain no-repeat;
+        mask: var(--icon-mask) center / contain no-repeat;
+    }
+
+    .terminal-card-cyan .terminal-how-icon-wrap {
+        color: var(--terminal-cyan);
+        box-shadow: var(--terminal-cyan-glow-sm);
+        background: rgba(var(--terminal-cyan-rgb), 0.12);
+    }
+
+    .terminal-card-purple .terminal-how-icon-wrap {
+        color: var(--terminal-purple);
+        box-shadow: var(--terminal-purple-glow-sm);
+        background: rgba(var(--terminal-purple-rgb), 0.12);
+    }
+
+    .terminal-card-green .terminal-how-icon-wrap {
+        color: var(--terminal-green);
+        box-shadow: var(--terminal-green-glow-sm);
+        background: rgba(var(--terminal-green-rgb), 0.12);
+    }
+
+    .terminal-how-step {
+        @apply mb-4 text-sm font-medium uppercase tracking-[0.16em];
+        color: var(--terminal-green);
+    }
+
+    .terminal-card-cyan .terminal-how-step {
+        color: var(--terminal-cyan);
+    }
+
+    .terminal-card-purple .terminal-how-step {
+        color: var(--terminal-purple);
+    }
+
+    .terminal-card-green .terminal-how-step {
+        color: var(--terminal-green);
+    }
+
+    .terminal-how-title {
+        @apply text-3xl font-semibold text-text_clr_1;
+        letter-spacing: -0.03em;
+    }
+
+    .terminal-how-copy {
+        @apply mt-4 max-w-[28ch] text-base text-text_clr_2 leading-7;
+
+    }
+
+    /* ========= HOW IT WORKS ========= */
+
+
+
+
+
+
+
+   /* ======== FOOTER ======== */
+
+   .terminal-footer-heading {
+       @apply text-sm font-semibold uppercase tracking-[0.14em];
+       color: var(--terminal-green);
+       text-shadow: var(--terminal-text-glow);
+   }
+
+   .terminal-footer-copy {
+       @apply text-base leading-8;
+       color: rgba(255, 255, 255, 0.68);
+   }
+
+   .terminal-footer-link {
+       @apply text-base transition;
+       color: rgba(255, 255, 255, 0.72);
+   }
+
+   .terminal-footer-link:hover {
+       color: var(--terminal-green);
+       text-shadow: var(--terminal-text-glow);
+   }
+
+   .terminal-footer-social {
+       @apply flex h-11 w-11 items-center justify-center border text-lg transition-all duration-200;
+       color: var(--terminal-green);
+       border-color: rgba(var(--terminal-green-rgb), 0.45);
+       background: rgba(var(--terminal-green-rgb), 0.04);
+       box-shadow: var(--terminal-green-glow-sm);
+   }
+
+   .terminal-footer-social:hover {
+       background: rgba(var(--terminal-green-rgb), 0.08);
+       box-shadow: var(--terminal-glow-md);
+       transform: translateY(-2px);
+   }
+
+   .terminal-footer-meta {
+       @apply text-sm;
+       color: rgba(255, 255, 255, 0.52);
+   }
+
+   .terminal-footer-meta-link {
+       @apply text-sm transition;
+       color: rgba(255, 255, 255, 0.52);
+   }
+
+   .terminal-footer-meta-link:hover {
+       color: var(--terminal-green);
+       text-shadow: var(--terminal-text-glow);
+   }
+
+   .terminal-footer-status {
+       @apply flex items-center gap-2 text-sm;
+       color: rgba(255, 255, 255, 0.7);
+   }
+
+   .terminal-footer-status-dot {
+       @apply inline-block h-2.5 w-2.5 rounded-full;
+       background: var(--terminal-green);
+       box-shadow: var(--terminal-glow-sm);
+   }
+
+   .terminal-footer-status-text {
+       color: var(--terminal-green);
+       text-shadow: var(--terminal-text-glow);
+       letter-spacing: 0.08em;
+       font-weight: 700;
+   }
+
+   /* ======== FOOTER ======== */
+
 
 }
