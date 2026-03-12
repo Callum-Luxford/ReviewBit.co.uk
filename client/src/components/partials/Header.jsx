@@ -115,7 +115,7 @@ function Header() {
         {/* Logo */}
         <Link to="/" className="group flex items-center gap-3">
           <div className="terminal-header-logo-box">
-            <span className="text-sm font-medium drop-shadow-[var(--terminal-glow-sm)]">
+            <span className="text-sm font-medium">
               {">_"}
             </span>
           </div>

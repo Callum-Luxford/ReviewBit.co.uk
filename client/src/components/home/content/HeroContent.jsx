@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
+import { ReactTyped } from "react-typed";
 import TerminalWindow from "../../ui/TerminalWindow";
+import CTAButton from "../../buttons/CtaButton";
 
 function HeroContent() {
   return (
@@ -11,9 +13,9 @@ function HeroContent() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-[1400px]">
-        <div className="mx-auto flex max-w-[1100px] flex-col items-center text-center">
+        <div className="mx-auto flex max-w-[1100px] gap-8 flex-col items-center text-center">
           {/* command pill */}
-          <div className="terminal-command-pill mb-8">
+          <div className="terminal-command-pill">
             $ init --premium-reviews
           </div>
 
@@ -21,28 +23,31 @@ function HeroContent() {
           <h1 className="terminal-hero-title max-w-[1400px]">
             Boost Your Reviews
             <span className="terminal-hero-accent mt-2">
-              With less effort
-              <span className="terminal-cursor-block" />
+              <ReactTyped
+                strings={["With Less Effort", "Less Hassle", "On Autopilot"]}
+                typeSpeed={50}
+                backSpeed={35}
+                backDelay={2000}
+                loop
+              />
             </span>
           </h1>
 
           {/* copy */}
-          <p className="terminal-hero-copy mt-6">
+          <p className="terminal-hero-copy">
             Let customers scan, leave a review, and grow your reputation in
             seconds.
           </p>
 
           {/* ctas */}
-          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
-            <Link to="/signup" className="terminal-hero-btn-primary">
-              <span>▶</span>
-              <span>./start_reviewing</span>
-            </Link>
+          <div className="flex flex-col items-center gap-4 sm:flex-row">
+            <CTAButton to="/signup" accent="green" mode="solid-hover-outline">
+              ▶ Start Exploring
+            </CTAButton>
 
-            <Link to="/login" className="terminal-hero-btn-secondary">
-              <span>▣</span>
-              <span>Read_Docs</span>
-            </Link>
+            <CTAButton to="/login" accent="purple" mode="hover-fill">
+              ▣ Watch Demo
+            </CTAButton>
           </div>
 
           {/* terminal window */}

@@ -113,9 +113,6 @@
     /* ----------- Font colors ------------ */
     --font-clr-1: #ffffff;
     --font-clr-2: #b6b6b6;
-    --font-clr-3: #9b9b9b;
-    --font-clr-4: #5F8D4E;
-    --font-clr-5: #9b9b9b;
 
     /* ----------- theme colors ------------ */
     /* ----------- theme colors ------------ */
@@ -135,23 +132,90 @@
 
     /* ----------- CORE THEME COLOURS ------------ */
     /* ----------- CORE THEME COLOURS ------------ */
-    /* core terminal green */
+
+    /* core terminal colours */
     --terminal-green: #00ff66;
-
-    /* same color as rgb for shadows / glow opacity control */
     --terminal-green-rgb: 0, 255, 102;
-
-    /* softer versions if needed later */
     --terminal-green-soft: #33ff85;
     --terminal-green-dark: #00cc52;
 
-    /* glow presets */
+    /* universal terminal text glow */
+    --terminal-text-glow:
+        0 0 3px rgba(var(--terminal-green-rgb), 1),
+        0 0 8px rgba(var(--terminal-green-rgb), 0.9),
+        0 0 14px rgba(var(--terminal-green-rgb), 0.55);
+
+    --terminal-cyan: #00d9ff;
+    --terminal-cyan-rgb: 0, 217, 255;
+
+    --terminal-purple: #8b5cf6;
+    --terminal-purple-rgb: 139, 92, 246;
+
+    /* shared surfaces */
+    --terminal-card-bg: #0f141c;
+    --terminal-card-border-opacity: 0.22;
+    --terminal-card-border-opacity-hover: 0.65;
+
+    /* glow presets - green */
+    --terminal-green-glow-sm: 0 0 6px rgba(var(--terminal-green-rgb), 0.15);
+    --terminal-green-glow-md: 0 0 14px rgba(var(--terminal-green-rgb), 0.18);
+    --terminal-green-glow-lg: 0 0 24px rgba(var(--terminal-green-rgb), 0.22);
+    --terminal-green-blur-glow: 0 0 40px rgba(var(--terminal-green-rgb), 0.14);
+
+    /* glow presets - cyan */
+    --terminal-cyan-glow-sm: 0 0 6px rgba(var(--terminal-cyan-rgb), 0.15);
+    --terminal-cyan-glow-md: 0 0 14px rgba(var(--terminal-cyan-rgb), 0.18);
+    --terminal-cyan-glow-lg: 0 0 24px rgba(var(--terminal-cyan-rgb), 0.22);
+    --terminal-cyan-blur-glow: 0 0 40px rgba(var(--terminal-cyan-rgb), 0.14);
+
+    /* glow presets - purple */
+    --terminal-purple-glow-sm: 0 0 6px rgba(var(--terminal-purple-rgb), 0.15);
+    --terminal-purple-glow-md: 0 0 14px rgba(var(--terminal-purple-rgb), 0.18);
+    --terminal-purple-glow-lg: 0 0 24px rgba(var(--terminal-purple-rgb), 0.22);
+    --terminal-purple-blur-glow: 0 0 40px rgba(var(--terminal-purple-rgb), 0.14);
+
+    /* accent system */
+    --accent-green: var(--terminal-green);
+    --accent-green-rgb: var(--terminal-green-rgb);
+    --accent-green-border: rgba(var(--accent-green-rgb), 0.8);
+    --accent-green-glow: rgba(var(--accent-green-rgb), 0.28);
+
+    --accent-cyan: var(--terminal-cyan);
+    --accent-cyan-rgb: var(--terminal-cyan-rgb);
+    --accent-cyan-border: rgba(var(--accent-cyan-rgb), 0.8);
+    --accent-cyan-glow: rgba(var(--accent-cyan-rgb), 0.28);
+
+    --accent-purple: var(--terminal-purple);
+    --accent-purple-rgb: var(--terminal-purple-rgb);
+    --accent-purple-border: rgba(var(--accent-purple-rgb), 0.8);
+    --accent-purple-glow: rgba(var(--accent-purple-rgb), 0.28);
+
+    /* ===== TEXT GLOW PRESETS ===== */
+
+    /* stronger glow for text elements */
+    --terminal-green-text-glow-sm:
+        0 0 8px rgba(var(--terminal-green-rgb), 0.7),
+        0 0 18px rgba(var(--terminal-green-rgb), 0.45);
+
+
+    /* same pattern for other colours if needed later */
+
+    --terminal-cyan-text-glow-sm:
+        0 0 8px rgba(var(--terminal-cyan-rgb), 0.7),
+        0 0 18px rgba(var(--terminal-cyan-rgb), 0.45);
+
+    --terminal-purple-text-glow-sm:
+        0 0 8px rgba(var(--terminal-purple-rgb), 0.7),
+        0 0 18px rgba(var(--terminal-purple-rgb), 0.45);
+
+    /* ===== TEXT GLOW PRESETS ===== */
+
+    /* ===== OLD TERMINAL GLOW ===== */
     --terminal-glow-sm: 0 0 8px rgba(var(--terminal-green-rgb), 0.75);
     --terminal-glow-md: 0 0 18px rgba(var(--terminal-green-rgb), 0.50);
     --terminal-glow-lg: 0 0 30px rgba(var(--terminal-green-rgb), 1);
-
-    /* blurred atmospheric glow */
     --terminal-blur-glow: 0 0 60px rgba(var(--terminal-green-rgb), 0.18);
+    /* ===== OLD TERMINAL GLOW ===== */
 
     /* ----------- CORE THEME COLOURS ------------ */
     /* ----------- CORE THEME COLOURS ------------ */
@@ -252,16 +316,31 @@
     /* ======== HEADER ======== */
 
     .terminal-header-logo-box {
-        @apply flex h-9 w-9 items-center justify-center border text-[var(--terminal-green)] shadow-[var(--terminal-glow-sm)];
-        border-color: rgba(var(--terminal-green-rgb), 0.6);
+        @apply flex h-9 w-9 items-center justify-center border text-[var(--terminal-green)];
+
+        border-color: rgba(var(--terminal-green-rgb), 0.75);
+
+        /* subtle green fill */
+        background: rgba(var(--terminal-green-rgb),0.1);
+
+        /* glow */
+        /* box-shadow:
+            0 0 0 1px rgba(var(--terminal-green-rgb), 0.35),
+            0 0 18px rgba(var(--terminal-green-rgb), 0.55),
+            0 0 38px rgba(var(--terminal-green-rgb), 0.28); */
     }
 
     .terminal-header-logo-text {
-        @apply text-lg font-semibold tracking-tight text-[var(--terminal-green)] drop-shadow-[var(--terminal-glow-sm)];
+        @apply text-lg font-semibold tracking-tight text-[var(--terminal-green)];
+        text-shadow: var(--terminal-text-glow);
     }
 
     .terminal-nav-link {
-        @apply text-xs uppercase tracking-[0.18em] text-white/65 transition hover:text-[var(--terminal-green)] hover:drop-shadow-[var(--terminal-glow-sm)];
+        @apply text-xs uppercase tracking-[0.18em] text-white/65 transition hover:text-[var(--terminal-green)];
+    }
+
+    .terminal-nav-link:hover {
+        text-shadow: var(--terminal-text-glow);
     }
 
     .terminal-auth-btn {
@@ -270,11 +349,11 @@
     }
 
     .terminal-auth-btn-active {
-        @apply bg-[var(--terminal-green)] text-black shadow-[var(--terminal-glow-md)];
+        @apply bg-[var(--terminal-green)] text-black shadow-[var(--terminal-green-glow-md)];
     }
 
     .terminal-auth-btn-inactive {
-        @apply bg-transparent text-[var(--terminal-green)] shadow-[var(--terminal-glow-sm)];
+        @apply bg-transparent text-[var(--terminal-green)] shadow-[var(--terminal-green-glow-sm)];
     }
 
     /* ======== HEADER ======== */
@@ -297,9 +376,15 @@
 
     .terminal-hero-bg {
         @apply absolute inset-0 overflow-hidden pointer-events-none;
+
         background:
-            radial-gradient(circle at 50% 18%, rgba(var(--terminal-green-rgb), 0.10) 0%, rgba(var(--terminal-green-rgb), 0.05) 22%, rgba(0, 0, 0, 0) 52%),
-            linear-gradient(to bottom, rgba(3, 10, 18, 0.92), rgba(2, 8, 15, 0.98));
+            radial-gradient(circle at 50% 18%,
+                rgba(var(--terminal-green-rgb), 0.10) 0%,
+                rgba(var(--terminal-green-rgb), 0.05) 22%,
+                rgba(0, 0, 0, 0) 52%),
+            linear-gradient(to bottom,
+                var(--theme-clr-1),
+                var(--theme-clr-1));
     }
 
     .terminal-hero-grid {
@@ -308,6 +393,7 @@
                 rgba(var(--terminal-green-rgb), 0.045) 1px,
                 transparent 1px,
                 transparent 28px);
+
         opacity: 0.18;
     }
 
@@ -336,11 +422,11 @@
         color: var(--terminal-green);
         border-color: rgba(var(--terminal-green-rgb), 0.35);
         background: rgba(var(--terminal-green-rgb), 0.04);
-        box-shadow: var(--terminal-glow-sm);
+        box-shadow: var(--terminal-green-glow-sm);
     }
 
     .terminal-hero-title {
-        @apply font-bold leading-none text-white text-12xl;
+        @apply font-bold leading-none text-white text-7xl md:text-8xl lg:text-10xl;
         letter-spacing: -0.04em;
     }
 
@@ -374,13 +460,13 @@
         background: var(--terminal-green);
         color: #000;
         border-color: rgba(var(--terminal-green-rgb), 0.35);
-        box-shadow: var(--terminal-glow-md);
+        box-shadow: var(--terminal-green-glow-md);
     }
 
     .terminal-hero-btn-primary:hover {
         background: transparent;
         color: var(--terminal-green);
-        box-shadow: var(--terminal-glow-sm);
+        box-shadow: var(--terminal-green-glow-sm);
     }
 
     .terminal-hero-btn-secondary {
@@ -388,13 +474,13 @@
         background: transparent;
         color: var(--terminal-green);
         border-color: rgba(var(--terminal-green-rgb), 0.35);
-        box-shadow: var(--terminal-glow-sm);
+        box-shadow: var(--terminal-green-glow-sm);
     }
 
     .terminal-hero-btn-secondary:hover {
         background: var(--terminal-green);
         color: #000;
-        box-shadow: var(--terminal-glow-md);
+        box-shadow: var(--terminal-green-glow-md);
     }
 
 
@@ -442,11 +528,11 @@
 
     .terminal-window {
         @apply overflow-hidden rounded-lg border;
-        border-color: rgba(var(--terminal-green-rgb), 0.35);
+        border-color: rgba(var(--terminal-green-rgb), 0.7);
         background: #111827;
         box-shadow:
             0 0 0 1px rgba(var(--terminal-green-rgb), 0.06),
-            0 0 28px rgba(var(--terminal-green-rgb), 0.22);
+            0 0 50px rgba(var(--terminal-green-rgb), 0.12);
     }
 
     .terminal-window-topbar {
@@ -472,5 +558,133 @@
     /* ====== TERMINAL WINDOW ====== */
 
     /* ======== HERO-CONTENT ======== */
+
+
+
+
+    /* ========= PROOF STRIP ========= */
+
+    .terminal-section-pill {
+        @apply inline-flex items-center gap-3 rounded-xl border px-4 py-2 text-sm;
+        background: rgba(12, 18, 28, 0.8);
+        border-color: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.78);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02);
+    }
+
+    .terminal-section-pill-dots {
+        @apply flex items-center gap-1.5;
+    }
+
+    .terminal-section-pill-dot {
+        @apply h-2.5 w-2.5 rounded-full;
+    }
+
+    .terminal-proof-title {
+        @apply text-center font-bold text-white text-4xl md:text-6xl;
+        letter-spacing: -0.04em;
+    }
+
+    .terminal-proof-copy {
+        @apply mx-auto max-w-[680px] text-center text-base md:text-lg;
+        color: rgba(255, 255, 255, 0.62);
+    }
+
+    .terminal-card-shell {
+        @apply rounded-xl border p-[1px] transition-all duration-300 hover:-translate-y-1;
+        background: transparent;
+    }
+
+    .terminal-card-inner {
+        @apply h-full rounded-xl p-7 transition-all duration-300;
+        background:
+            linear-gradient(180deg,
+                rgba(255, 255, 255, 0.025) 0%,
+                rgba(255, 255, 255, 0.01) 100%),
+            var(--terminal-card-bg);
+    }
+
+    .terminal-card-kicker {
+        @apply mb-5 inline-flex w-fit items-center rounded-md px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em];
+        border: 1px solid currentColor;
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .terminal-card-title {
+        @apply text-left text-2xl font-semibold text-white;
+        letter-spacing: -0.03em;
+    }
+
+    .terminal-card-copy {
+        @apply mt-4 text-base leading-7;
+        color: rgba(255, 255, 255, 0.68);
+    }
+
+    .terminal-card-meta {
+        @apply mt-8 flex items-center justify-between gap-4 text-sm;
+        color: rgba(255, 255, 255, 0.42);
+    }
+
+    .terminal-card-green {
+        border-color: var(--accent-green-border);
+        box-shadow:
+            0 0 0 1px rgba(var(--terminal-green-rgb), 0.04),
+            0 0 0 rgba(var(--terminal-green-rgb), 0);
+    }
+
+    .terminal-card-green:hover {
+        border-color: rgba(var(--terminal-green-rgb), var(--terminal-card-border-opacity-hover));
+        box-shadow:
+            0 0 0 1px rgba(var(--terminal-green-rgb), 0.1),
+            var(--terminal-green-glow-md),
+            var(--terminal-green-blur-glow);
+    }
+
+    .terminal-card-green .terminal-card-kicker {
+        color: var(--terminal-green);
+        box-shadow: var(--terminal-green-glow-sm);
+    }
+
+    .terminal-card-cyan {
+        border-color: var(--accent-cyan-border);
+        box-shadow:
+            0 0 0 1px rgba(var(--terminal-cyan-rgb), 0.04),
+            0 0 0 rgba(var(--terminal-cyan-rgb), 0);
+    }
+
+    .terminal-card-cyan:hover {
+        border-color: rgba(var(--terminal-cyan-rgb), var(--terminal-card-border-opacity-hover));
+        box-shadow:
+            0 0 0 1px rgba(var(--terminal-cyan-rgb), 0.1),
+            var(--terminal-cyan-glow-md),
+            var(--terminal-cyan-glow-lg);
+    }
+
+    .terminal-card-cyan .terminal-card-kicker {
+        color: var(--terminal-cyan);
+        box-shadow: var(--terminal-cyan-glow-sm);
+    }
+
+    .terminal-card-purple {
+        border-color: var(--accent-purple-border);
+        box-shadow:
+            0 0 0 1px rgba(var(--terminal-purple-rgb), 0.04),
+            0 0 0 rgba(var(--terminal-purple-rgb), 0);
+    }
+
+    .terminal-card-purple:hover {
+        border-color: rgba(var(--terminal-purple-rgb), var(--terminal-card-border-opacity-hover));
+        box-shadow:
+            0 0 0 1px rgba(var(--terminal-purple-rgb), 0.1),
+            var(--terminal-purple-glow-md),
+            var(--terminal-purple-glow-lg);
+    }
+
+    .terminal-card-purple .terminal-card-kicker {
+        color: var(--terminal-purple);
+        box-shadow: var(--terminal-purple-glow-sm);
+    }
+
+    /* ========= PROOF STRIP ========= */
 
 }

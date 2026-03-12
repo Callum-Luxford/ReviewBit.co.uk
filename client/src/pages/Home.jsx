@@ -22,11 +22,11 @@ function Home() {
       {/* HeroSection */}
       <HeroContent />
 
+      {/* Proof Strip */}
+      <ProofStrip />
+      
       {/* constrained sections after hero */}
       <div className="max-w-[1400px] mx-auto w-full px-4">
-        {/* Proof Strip */}
-        <ProofStrip />
-
         {/* How it Works */}
         <TimelineFeature />
 

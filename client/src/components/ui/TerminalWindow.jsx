@@ -57,7 +57,7 @@ function ReviewFeedGroup() {
 
 export default function TerminalWindow() {
   return (
-    <div className="terminal-window mt-14 w-full max-w-[760px] text-left">
+    <div className="terminal-window mt-10 w-full max-w-[760px] text-left">
       <div className="terminal-window-topbar">
         <div className="flex items-center gap-3">
           <span className="terminal-window-dot bg-red-400" />
