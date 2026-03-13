@@ -121,7 +121,7 @@ function Header() {
           </div>
 
           {/* <p className="terminal-header-logo-text">Revbotic</p> */}
-          <p className="terminal-header-logo-text">ReviewBit.sh</p>
+          <p className="terminal-header-logo-text">ReviewBit.co.uk</p>
         </Link>
 
         {/* Desktop Nav */}
