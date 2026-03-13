@@ -305,7 +305,7 @@
 @layer components {
 
     .section {
-        @apply w-full py-20 md:py-36;
+        @apply w-full py-20 md:py-20;
     }
 
     .section-sm {
@@ -499,7 +499,7 @@
     @layer components {
         .terminal-feed-viewport {
             @apply relative overflow-hidden;
-            height: 320px;
+            height: 300px;
             mask-image: linear-gradient(to bottom,
                     transparent 0%,
                     black 10%,
