@@ -5,65 +5,67 @@ import ratingImage from "../../../assets/icons/rating.png";
 
 function HowItWorks() {
   return (
-    <section className="section">
-      <div className="flex flex-col items-center">
-        <div className="terminal-section-pill">
-          <div className="terminal-section-pill-dots">
-            <span
-              className="terminal-section-pill-dot"
-              style={{ backgroundColor: "#ff5f57" }}
-            />
-            <span
-              className="terminal-section-pill-dot"
-              style={{ backgroundColor: "#febc2e" }}
-            />
-            <span
-              className="terminal-section-pill-dot"
-              style={{ backgroundColor: "#28c840" }}
-            />
+    <section className="section bg-theme_clr_2">
+      <div className="max-w-[1400px] mx-auto w-full px-4">
+        <div className="flex flex-col items-center">
+          <div className="terminal-section-pill">
+            <div className="terminal-section-pill-dots">
+              <span
+                className="terminal-section-pill-dot"
+                style={{ backgroundColor: "#ff5f57" }}
+              />
+              <span
+                className="terminal-section-pill-dot"
+                style={{ backgroundColor: "#febc2e" }}
+              />
+              <span
+                className="terminal-section-pill-dot"
+                style={{ backgroundColor: "#28c840" }}
+              />
+            </div>
+
+            <span>flow.log</span>
           </div>
 
-          <span>flow.log</span>
-        </div>
+          <div className="mt-8 text-center">
+            <h2 className="terminal-proof-title">How It Works</h2>
+            <p className="terminal-proof-copy mt-4">
+              A simple review flow that guides happy customers to Google and
+              routes issues privately before they become public.
+            </p>
+          </div>
 
-        <div className="mt-8 text-center">
-          <h2 className="terminal-proof-title">How It Works</h2>
-          <p className="terminal-proof-copy mt-4">
-            A simple review flow that guides happy customers to Google and
-            routes issues privately before they become public.
-          </p>
-        </div>
+          <div className="mt-14 grid w-full gap-6 md:grid-cols-3">
+            <HowItWorksCard
+              image={phoneQrImage}
+              title="Scan QR or open link"
+              step="STEP_01"
+              accent="terminal-card-cyan"
+            >
+              Customers scan the QR code on your card or open the direct link
+              you send them after a completed job.
+            </HowItWorksCard>
 
-        <div className="mt-14 grid w-full gap-6 md:grid-cols-3">
-          <HowItWorksCard
-            image={phoneQrImage}
-            title="Scan QR or open link"
-            step="STEP_01"
-            accent="terminal-card-cyan"
-          >
-            Customers scan the QR code on your card or open the direct link you
-            send them after a completed job.
-          </HowItWorksCard>
+            <HowItWorksCard
+              image={customerExpImage}
+              title="Select experience"
+              step="STEP_02"
+              accent="terminal-card-purple"
+            >
+              They choose whether their experience was positive or whether they
+              need help, keeping the flow quick and friction-free.
+            </HowItWorksCard>
 
-          <HowItWorksCard
-            image={customerExpImage}
-            title="Select experience"
-            step="STEP_02"
-            accent="terminal-card-purple"
-          >
-            They choose whether their experience was positive or whether they
-            need help, keeping the flow quick and friction-free.
-          </HowItWorksCard>
-
-          <HowItWorksCard
-            image={ratingImage}
-            title="Leave a review"
-            step="STEP_03"
-            accent="terminal-card-green"
-          >
-            Happy customers are sent to Google, while unhappy customers are
-            redirected into a private feedback route for follow-up.
-          </HowItWorksCard>
+            <HowItWorksCard
+              image={ratingImage}
+              title="Leave a review"
+              step="STEP_03"
+              accent="terminal-card-green"
+            >
+              Happy customers are sent to Google, while unhappy customers are
+              redirected into a private feedback route for follow-up.
+            </HowItWorksCard>
+          </div>
         </div>
       </div>
     </section>
