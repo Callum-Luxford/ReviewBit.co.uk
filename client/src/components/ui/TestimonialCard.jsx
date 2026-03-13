@@ -3,12 +3,23 @@ export default function TestimonialCard({
   role,
   quote,
   avatar = "",
-  accent,
+  accent = "green",
 }) {
   const initial = name ? name.charAt(0).toUpperCase() : "?";
 
+  const accentMap = {
+    green: "0, 255, 102",
+    cyan: "0, 217, 255",
+    purple: "139, 92, 246",
+  };
+
+  const accentRgb = accentMap[accent] || "255, 255, 255";
+
   return (
-    <article className={`testimonial-card testimonial-card--${accent}`}>
+    <article
+      className="testimonial-card"
+      style={{ "--testimonial-accent-rgb": accentRgb }}
+    >
       <div className="testimonial-card__topbar">
         <div className="testimonial-card__dots">
           <span></span>
