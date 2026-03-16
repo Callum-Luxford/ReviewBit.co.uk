@@ -1,4 +1,4 @@
-import CTAButton from "../buttons/CTAButton";
+import CTAButton from "../buttons/CtaButton";
 
 export default function PricingCard({
   name,

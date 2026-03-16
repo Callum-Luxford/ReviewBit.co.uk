@@ -69,9 +69,11 @@ function buildConnectorData(container, cards) {
   if (!container || cards.length < 2) return [];
 
   const containerRect = container.getBoundingClientRect();
+  const isMobile = window.innerWidth < 768;
 
-  const laneGap = 18; // adjust this freely
+  const laneGap = isMobile ? 14 : 18;
   const halfGap = laneGap / 2;
+  const mobileCenterOffset = laneGap;
 
   const getPointSet = (rect) => {
     const left = rect.left - containerRect.left;
@@ -80,6 +82,10 @@ function buildConnectorData(container, cards) {
     const height = rect.height;
 
     return {
+      left,
+      top,
+      width,
+      height,
       topCenter: {
         x: left + width * 0.5,
         y: top,
@@ -91,42 +97,134 @@ function buildConnectorData(container, cards) {
     };
   };
 
+  const buildRoundedElbowPath = ({
+    startX,
+    startY,
+    endX,
+    endY,
+    laneY,
+    radius,
+  }) => {
+    const verticalDirection = laneY > startY ? 1 : -1;
+    const horizontalDirection = endX > startX ? 1 : -1;
+    const finalVerticalDirection = endY > laneY ? 1 : -1;
+
+    const safeRadius = Math.max(
+      6,
+      Math.min(
+        radius,
+        Math.abs(laneY - startY) / 2,
+        Math.abs(endX - startX) / 2,
+        Math.abs(endY - laneY) / 2,
+      ),
+    );
+
+    const beforeFirstCornerY = laneY - safeRadius * verticalDirection;
+    const afterFirstCornerX = startX + safeRadius * horizontalDirection;
+
+    const beforeSecondCornerX = endX - safeRadius * horizontalDirection;
+    const afterSecondCornerY = laneY + safeRadius * finalVerticalDirection;
+
+    return [
+      `M ${startX} ${startY}`,
+      `L ${startX} ${beforeFirstCornerY}`,
+      `Q ${startX} ${laneY} ${afterFirstCornerX} ${laneY}`,
+      `L ${beforeSecondCornerX} ${laneY}`,
+      `Q ${endX} ${laneY} ${endX} ${afterSecondCornerY}`,
+      `L ${endX} ${endY}`,
+    ].join(" ");
+  };
+
   return cards.slice(0, -1).map((card, index) => {
     const nextCard = cards[index + 1];
 
-    const currentPoints = getPointSet(card.getBoundingClientRect());
-    const nextPoints = getPointSet(nextCard.getBoundingClientRect());
+    const current = getPointSet(card.getBoundingClientRect());
+    const next = getPointSet(nextCard.getBoundingClientRect());
 
-    const start = currentPoints.bottomCenter;
-    const end = nextPoints.topCenter;
+    if (isMobile) {
+      const centerX = current.left + current.width * 0.5;
+      const startY = current.top + current.height;
+      const endY = next.top;
+
+      const xA = centerX - mobileCenterOffset;
+      const xB = centerX;
+      const xC = centerX + mobileCenterOffset;
+
+      const pathA = `M ${xA} ${startY} L ${xA} ${endY}`;
+      const pathB = `M ${xB} ${startY} L ${xB} ${endY}`;
+      const pathC = `M ${xC} ${startY} L ${xC} ${endY}`;
+
+      const midY = startY + (endY - startY) * 0.5;
+
+      return {
+        pathA,
+        pathB,
+        pathC,
+        dotsA: [
+          { x: xA, y: midY - 10 },
+          { x: xA, y: midY + 10 },
+        ],
+        dotsB: [
+          { x: xB, y: midY - 10 },
+          { x: xB, y: midY + 10 },
+        ],
+        dotsC: [
+          { x: xC, y: midY - 10 },
+          { x: xC, y: midY + 10 },
+        ],
+      };
+    }
+
+    const start = current.bottomCenter;
+    const end = next.topCenter;
 
     const midY = (start.y + end.y) / 2;
     const goingRight = end.x > start.x;
+    const cornerRadius = 18;
 
-    // Mirror the X lanes depending on horizontal direction
     const greenStartX = goingRight ? start.x + halfGap : start.x - halfGap;
     const blueStartX = goingRight ? start.x - halfGap : start.x + halfGap;
 
     const greenEndX = goingRight ? end.x + halfGap : end.x - halfGap;
     const blueEndX = goingRight ? end.x - halfGap : end.x + halfGap;
 
-    // Keep the horizontal lanes vertically separated
     const greenY = midY - halfGap;
     const blueY = midY + halfGap;
 
-    const pathA = [
-      `M ${greenStartX} ${start.y}`,
-      `V ${greenY}`,
-      `H ${greenEndX}`,
-      `V ${end.y}`,
-    ].join(" ");
+    const purpleStartX = goingRight
+      ? greenStartX + laneGap
+      : greenStartX - laneGap;
 
-    const pathB = [
-      `M ${blueStartX} ${start.y}`,
-      `V ${blueY}`,
-      `H ${blueEndX}`,
-      `V ${end.y}`,
-    ].join(" ");
+    const purpleEndX = goingRight ? greenEndX + laneGap : greenEndX - laneGap;
+
+    const purpleY = greenY - laneGap;
+
+    const pathA = buildRoundedElbowPath({
+      startX: greenStartX,
+      startY: start.y,
+      endX: greenEndX,
+      endY: end.y,
+      laneY: greenY,
+      radius: cornerRadius,
+    });
+
+    const pathB = buildRoundedElbowPath({
+      startX: blueStartX,
+      startY: start.y,
+      endX: blueEndX,
+      endY: end.y,
+      laneY: blueY,
+      radius: cornerRadius,
+    });
+
+    const pathC = buildRoundedElbowPath({
+      startX: purpleStartX,
+      startY: start.y,
+      endX: purpleEndX,
+      endY: end.y,
+      laneY: purpleY,
+      radius: cornerRadius,
+    });
 
     const dotsA = [
       {
@@ -150,11 +248,24 @@ function buildConnectorData(container, cards) {
       },
     ];
 
+    const dotsC = [
+      {
+        x: purpleStartX + (purpleEndX - purpleStartX) * 0.38,
+        y: purpleY,
+      },
+      {
+        x: purpleStartX + (purpleEndX - purpleStartX) * 0.68,
+        y: purpleY,
+      },
+    ];
+
     return {
       pathA,
       pathB,
+      pathC,
       dotsA,
       dotsB,
+      dotsC,
     };
   });
 }
@@ -199,6 +310,15 @@ function FeatureCircuitOverlay({ containerRef }) {
     return `0 0 ${el.offsetWidth} ${el.offsetHeight}`;
   }, [paths, containerRef]);
 
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  const runnerRx = isMobile ? 14 : 22;
+  const runnerRy = isMobile ? 1.6 : 2.1;
+
+  const runnerDurA = isMobile ? "1.9s" : "1.35s";
+  const runnerDurB = isMobile ? "1.9s" : "1.35s";
+  const runnerDurC = isMobile ? "1.9s" : "1.35s";
+
   if (!paths.length) return null;
 
   return (
@@ -210,22 +330,81 @@ function FeatureCircuitOverlay({ containerRef }) {
     >
       {paths.map((item, index) => (
         <g key={index}>
+          <defs>
+            <mask id={`feature-runner-mask-a-${index}`}>
+              <rect x="0" y="0" width="100%" height="100%" fill="black" />
+              <path
+                d={item.pathA}
+                stroke="white"
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+            </mask>
+
+            <mask id={`feature-runner-mask-b-${index}`}>
+              <rect x="0" y="0" width="100%" height="100%" fill="black" />
+              <path
+                d={item.pathB}
+                stroke="white"
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+            </mask>
+
+            <mask id={`feature-runner-mask-c-${index}`}>
+              <rect x="0" y="0" width="100%" height="100%" fill="black" />
+              <path
+                d={item.pathC}
+                stroke="white"
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+            </mask>
+          </defs>
+
           <path
             d={item.pathA}
-            className="feature-circuit-track-glow feature-circuit-track-glow--a"
+            className="feature-circuit-trace feature-circuit-trace--a feature-circuit-trace--glow"
           />
           <path
             d={item.pathB}
-            className="feature-circuit-track-glow feature-circuit-track-glow--b"
+            className="feature-circuit-trace feature-circuit-trace--b feature-circuit-trace--glow"
+          />
+          <path
+            d={item.pathC}
+            className="feature-circuit-trace feature-circuit-trace--c feature-circuit-trace--glow"
           />
 
           <path
             d={item.pathA}
-            className="feature-circuit-track feature-circuit-track--a"
+            className="feature-circuit-trace feature-circuit-trace--a feature-circuit-trace--base"
           />
           <path
             d={item.pathB}
-            className="feature-circuit-track feature-circuit-track--b"
+            className="feature-circuit-trace feature-circuit-trace--b feature-circuit-trace--base"
+          />
+          <path
+            d={item.pathC}
+            className="feature-circuit-trace feature-circuit-trace--c feature-circuit-trace--base"
+          />
+
+          <path
+            d={item.pathA}
+            className="feature-circuit-trace feature-circuit-trace--a feature-circuit-trace--core"
+          />
+          <path
+            d={item.pathB}
+            className="feature-circuit-trace feature-circuit-trace--b feature-circuit-trace--core"
+          />
+          <path
+            d={item.pathC}
+            className="feature-circuit-trace feature-circuit-trace--c feature-circuit-trace--core"
           />
 
           {item.dotsA.map((dot, dotIndex) => (
@@ -233,7 +412,7 @@ function FeatureCircuitOverlay({ containerRef }) {
               key={`a-dot-${dotIndex}`}
               cx={dot.x}
               cy={dot.y}
-              r="3.5"
+              r="4.5"
               className="feature-circuit-static-dot feature-circuit-static-dot--a"
             />
           ))}
@@ -243,33 +422,67 @@ function FeatureCircuitOverlay({ containerRef }) {
               key={`b-dot-${dotIndex}`}
               cx={dot.x}
               cy={dot.y}
-              r="3.5"
+              r="4.5"
               className="feature-circuit-static-dot feature-circuit-static-dot--b"
             />
           ))}
 
-          <circle
-            r="2.2"
-            className="feature-circuit-runner feature-circuit-runner--a"
-          >
-            <animateMotion
-              dur="1s"
-              repeatCount="indefinite"
-              path={item.pathA}
+          {item.dotsC.map((dot, dotIndex) => (
+            <circle
+              key={`c-dot-${dotIndex}`}
+              cx={dot.x}
+              cy={dot.y}
+              r="4.5"
+              className="feature-circuit-static-dot feature-circuit-static-dot--c"
             />
-          </circle>
+          ))}
 
-          <circle
-            r="2.2"
-            className="feature-circuit-runner feature-circuit-runner--b"
-          >
-            <animateMotion
-              dur="1s"
-              begin="0.1s"
-              repeatCount="indefinite"
-              path={item.pathB}
-            />
-          </circle>
+          <g mask={`url(#feature-runner-mask-a-${index})`}>
+            <ellipse
+              rx={runnerRx}
+              ry={runnerRy}
+              className="feature-circuit-runner feature-circuit-runner--a"
+            >
+              <animateMotion
+                dur={runnerDurA}
+                repeatCount="indefinite"
+                rotate="auto"
+                path={item.pathA}
+              />
+            </ellipse>
+          </g>
+
+          <g mask={`url(#feature-runner-mask-b-${index})`}>
+            <ellipse
+              rx={runnerRx}
+              ry={runnerRy}
+              className="feature-circuit-runner feature-circuit-runner--b"
+            >
+              <animateMotion
+                dur={runnerDurB}
+                begin="0.14s"
+                repeatCount="indefinite"
+                rotate="auto"
+                path={item.pathB}
+              />
+            </ellipse>
+          </g>
+
+          <g mask={`url(#feature-runner-mask-c-${index})`}>
+            <ellipse
+              rx={runnerRx}
+              ry={runnerRy}
+              className="feature-circuit-runner feature-circuit-runner--c"
+            >
+              <animateMotion
+                dur={runnerDurC}
+                begin="0.28s"
+                repeatCount="indefinite"
+                rotate="auto"
+                path={item.pathC}
+              />
+            </ellipse>
+          </g>
         </g>
       ))}
     </svg>

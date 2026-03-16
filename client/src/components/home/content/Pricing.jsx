@@ -18,7 +18,7 @@ const pricingPlans = [
   },
   {
     name: "PRO",
-    price: "£29",
+    price: "£19",
     billing: "/month",
     accent: "purple",
     featured: true,
@@ -36,7 +36,7 @@ const pricingPlans = [
     name: "ENTERPRISE",
     price: "Custom",
     accent: "cyan",
-    cta: "[CONTACT_SALES]",
+    cta: "[CONTACT_US]",
     features: [
       "White-label setup",
       "Advanced reporting",
@@ -62,7 +62,7 @@ export default function Pricing() {
             </p>
           </div>
 
-          <div className="mt-14 grid w-full gap-6 lg:grid-cols-3">
+          <div className="mt-14 grid w-full gap-6 md:grid-cols-3">
             {pricingPlans.map((plan) => (
               <PricingCard
                 key={plan.name}
