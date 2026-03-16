@@ -1,28 +1,12 @@
 import ProofStripCard from "../../ui/ProofStripCard";
-
+import TerminalPill from "../../ui/TerminalPill";
 export default function ProofStrip() {
   return (
     <section className="section bg-theme_clr_2 w-full">
       <div className="max-w-[1400px] mx-auto w-full px-4">
         <div className="section-inner flex flex-col items-center">
-          <div className="terminal-section-pill">
-            <div className="terminal-section-pill-dots">
-              <span
-                className="terminal-section-pill-dot"
-                style={{ backgroundColor: "#ff5f57" }}
-              />
-              <span
-                className="terminal-section-pill-dot"
-                style={{ backgroundColor: "#febc2e" }}
-              />
-              <span
-                className="terminal-section-pill-dot"
-                style={{ backgroundColor: "#28c840" }}
-              />
-            </div>
-
-            <span>trending.log</span>
-          </div>
+          
+          <TerminalPill label="trending.log" />
 
           <div className="mt-8 text-center">
             <h2 className="terminal-proof-title">Trending Signals</h2>

@@ -1,30 +1,31 @@
 import TestimonialCard from "../../ui/TestimonialCard";
+import TerminalPill from "../../ui/TerminalPill";
 
 const topRowTestimonials = [
   {
     id: 1,
-    name: "Sarah Chen",
-    role: "TECH_LEAD",
+    name: "James Carter",
+    role: "OPERATIONS_MANAGER",
     quote:
-      "The terminal aesthetic combined with powerful analytics makes this the ultimate review platform for tech professionals.",
+      "Setup took a few minutes and the review flow just worked. We started collecting verified feedback the same day.",
     avatar: "",
     accent: "purple",
   },
   {
     id: 2,
-    name: "Marcus Rodriguez",
+    name: "Daniel Hughes",
     role: "PRODUCT_MANAGER",
     quote:
-      "ReviewBit transformed our product research process. The verification system is unmatched in the industry.",
+      "We needed a simple way to capture customer reviews after onboarding. This made the process automatic.",
     avatar: "",
     accent: "cyan",
   },
   {
     id: 3,
-    name: "Alex Thompson",
-    role: "STARTUP_FOUNDER",
+    name: "Oliver Bennett",
+    role: "SMALL_BUSINESS_OWNER",
     quote:
-      "Finally, a review platform that speaks our language. The cyberpunk design and powerful features are perfect.",
+      "We added the QR flow to our checkout and reviews started coming in almost immediately.",
     avatar: "",
     accent: "green",
   },
@@ -33,28 +34,28 @@ const topRowTestimonials = [
 const bottomRowTestimonials = [
   {
     id: 4,
-    name: "Ryan Delk",
-    role: "FOUNDER_OPERATOR",
+    name: "Tom Walker",
+    role: "BUSINESS_OWNER",
     quote:
-      "The setup was straightforward and the review flow feels far more polished than the tools we used before.",
+      "The setup took minutes and the automation handled the rest. It’s easily the simplest review system we’ve used.",
     avatar: "",
     accent: "green",
   },
   {
     id: 5,
-    name: "Fabrizio Rinaldi",
-    role: "GROWTH_LEAD",
+    name: "Mark Reynolds",
+    role: "MARKETING_MANAGER",
     quote:
-      "It gives us a cleaner way to guide happy customers into leaving feedback without adding friction to the process.",
+      "We wanted a cleaner way to ask happy customers for feedback. This removed the friction completely.",
     avatar: "",
     accent: "purple",
   },
   {
     id: 6,
-    name: "Jonathan Simcoe",
+    name: "Chris Patel",
     role: "AGENCY_OWNER",
     quote:
-      "A smart interface, clear flow, and a much stronger first impression for clients looking to collect reviews properly.",
+      "We rolled it out for a few clients and the difference was immediate. Much easier to guide customers into leaving reviews.",
     avatar: "",
     accent: "cyan",
   },
@@ -71,17 +72,12 @@ export default function Testimonials() {
         <div className="testimonial-hero-grid absolute inset-0" />
         {/* <div className="testimonial-hero-scanline" /> */}
       </div>
-      
+
       <div className="max-w-[1400px] mx-auto w-full px-4">
         <div className="testimonials-section__inner">
           <div className="testimonials-section__heading">
-            <div className="terminal-section-pill mb-4">
-              <div className="terminal-section-pill-dots">
-                <span className="terminal-section-pill-dot bg-red-400" />
-                <span className="terminal-section-pill-dot bg-yellow-400" />
-                <span className="terminal-section-pill-dot bg-green-400" />
-              </div>
-              <span>trust_stream.log</span>
+            <div className="mb-8">
+              <TerminalPill label="trust_stream.log" />
             </div>
 
             <h2 className="testimonials-section__title">USER_TESTIMONIALS</h2>

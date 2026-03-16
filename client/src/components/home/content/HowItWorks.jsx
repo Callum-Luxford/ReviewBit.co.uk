@@ -2,30 +2,14 @@ import HowItWorksCard from "../../ui/HowItWorksCard";
 import phoneQrImage from "../../../assets/icons/phone-qr-code.png";
 import customerExpImage from "../../../assets/icons/customer-experience.png";
 import ratingImage from "../../../assets/icons/rating.png";
+import TerminalPill from "../../ui/TerminalPill";
 
 function HowItWorks() {
   return (
     <section className="section bg-theme_clr_2">
       <div className="max-w-[1400px] mx-auto w-full px-4">
         <div className="flex flex-col items-center">
-          <div className="terminal-section-pill">
-            <div className="terminal-section-pill-dots">
-              <span
-                className="terminal-section-pill-dot"
-                style={{ backgroundColor: "#ff5f57" }}
-              />
-              <span
-                className="terminal-section-pill-dot"
-                style={{ backgroundColor: "#febc2e" }}
-              />
-              <span
-                className="terminal-section-pill-dot"
-                style={{ backgroundColor: "#28c840" }}
-              />
-            </div>
-
-            <span>flow.log</span>
-          </div>
+           <TerminalPill label="flow.log" />
 
           <div className="mt-8 text-center">
             <h2 className="terminal-proof-title">How It Works</h2>
