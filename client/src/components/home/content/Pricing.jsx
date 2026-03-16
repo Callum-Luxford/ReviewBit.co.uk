@@ -49,7 +49,7 @@ const pricingPlans = [
 
 export default function Pricing() {
   return (
-    <section className="section bg-theme_clr_1">
+    <section className="section bg-theme_clr_2">
       <div className="max-w-[1400px] mx-auto w-full px-4">
         <div className="flex flex-col items-center">
            <TerminalPill label="pricing.sys" />

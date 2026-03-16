@@ -19,11 +19,11 @@ function Home() {
       {/* Features */}
       <Features />
 
-      {/* Testimonials */}
-      <Testimonials />
-
       {/* Proof Strip */}
       <ProofStrip />
+
+      {/* Testimonials */}
+      <Testimonials />
 
       {/* Pricing */}
       <Pricing />
