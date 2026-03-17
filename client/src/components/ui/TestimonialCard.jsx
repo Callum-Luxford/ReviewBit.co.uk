@@ -2,11 +2,8 @@ export default function TestimonialCard({
   name,
   role,
   quote,
-  avatar = "",
   accent = "green",
 }) {
-  const initial = name ? name.charAt(0).toUpperCase() : "?";
-
   const accentMap = {
     green: "0, 255, 102",
     cyan: "0, 217, 255",
@@ -14,6 +11,7 @@ export default function TestimonialCard({
   };
 
   const accentRgb = accentMap[accent] || "255, 255, 255";
+  const formattedRole = role.replaceAll("_", " ");
 
   return (
     <article
@@ -34,28 +32,14 @@ export default function TestimonialCard({
 
       <div className="testimonial-card__inner">
         <div className="testimonial-card__header">
-          <div className="testimonial-card__avatar-wrap">
-            {avatar ? (
-              <img
-                src={avatar}
-                alt={`${name} avatar`}
-                className="testimonial-card__avatar"
-              />
-            ) : (
-              <div className="testimonial-card__avatar testimonial-card__avatar--fallback">
-                {initial}
-              </div>
-            )}
-          </div>
-
           <div className="testimonial-card__meta">
-            <h3 className="testimonial-card__name">{name}</h3>
-
             <p
-              className={`testimonial-card__role testimonial-card__role--${accent}`}
+              className={`testimonial-card__tag testimonial-card__tag--${accent}`}
             >
-              {role.replaceAll("_", " ")}
+              {formattedRole}
             </p>
+
+            <h3 className="testimonial-card__name">{name}</h3>
           </div>
         </div>
 

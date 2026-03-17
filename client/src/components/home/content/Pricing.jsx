@@ -52,10 +52,10 @@ export default function Pricing() {
     <section className="section bg-theme_clr_2">
       <div className="max-w-[1400px] mx-auto w-full px-4">
         <div className="flex flex-col items-center">
-           <TerminalPill label="pricing.sys" />
+          <TerminalPill label="pricing.sys" />
 
           <div className="mt-8 text-center">
-            <h2 className="terminal-proof-title">Select Plan</h2>
+            <h2 className="section-title">Select Plan</h2>
             <p className="terminal-proof-copy mt-4">
               Simple pricing for businesses that want more reviews and better
               customer feedback without adding friction to the process.

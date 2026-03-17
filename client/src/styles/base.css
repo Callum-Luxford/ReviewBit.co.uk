@@ -312,6 +312,10 @@
         @apply w-full py-12 md:py-24;
     }
 
+    .section-title {
+        @apply text-center font-bold text-white text-4xl md:text-6xl;
+        letter-spacing: -0.04em;
+    }
 
 
     /* ======== HEADER ======== */
@@ -1115,6 +1119,39 @@
         .testimonial-card__quote {
             @apply text-sm leading-7;
         }
+    }
+
+    .testimonial-card__header {
+        margin-bottom: 1rem;
+    }
+
+    .testimonial-card__meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .testimonial-card__tag {
+        display: inline-flex;
+        align-self: flex-start;
+        padding: 0.25rem 0.55rem;
+        border: 1px solid rgba(var(--testimonial-accent-rgb), 0.65);
+        border-radius: 0.35rem;
+        font-size: 0.65rem;
+        line-height: 1;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: rgba(var(--testimonial-accent-rgb), 1);
+        background: rgba(var(--testimonial-accent-rgb), 0.08);
+        box-shadow: 0 0 14px rgba(var(--testimonial-accent-rgb), 0.08);
+    }
+
+    .testimonial-card__name {
+        margin: 0;
+    }
+
+    .testimonial-card__quote {
+        margin: 0;
     }
 
     /* ========= TESTIMONIALS ========= */

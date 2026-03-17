@@ -9,10 +9,10 @@ function HowItWorks() {
     <section className="section bg-theme_clr_2">
       <div className="max-w-[1400px] mx-auto w-full px-4">
         <div className="flex flex-col items-center">
-           <TerminalPill label="flow.log" />
+          <TerminalPill label="flow.log" />
 
           <div className="mt-8 text-center">
-            <h2 className="terminal-proof-title">How It Works</h2>
+            <h2 className="section-title">How It Works</h2>
             <p className="terminal-proof-copy mt-4">
               A simple review flow that guides happy customers to Google and
               routes issues privately before they become public.

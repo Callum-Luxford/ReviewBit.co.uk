@@ -499,7 +499,7 @@ function Features() {
           <TerminalPill label="features.sys" />
 
           <div className="mt-8 text-center">
-            <h2 className="terminal-proof-title">ReviewBit Features</h2>
+            <h2 className="section-title">ReviewBit Features</h2>
             <p className="terminal-proof-copy mt-4">
               A connected review pipeline that helps you collect feedback, route
               customers correctly and understand what is happening across your

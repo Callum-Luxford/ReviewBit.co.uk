@@ -5,13 +5,12 @@ export default function ProofStrip() {
     <section className="section bg-theme_clr_2 w-full">
       <div className="max-w-[1400px] mx-auto w-full px-4">
         <div className="section-inner flex flex-col items-center">
-          
           <TerminalPill label="trending.log" />
 
           <div className="mt-8 text-center">
-            <h2 className="terminal-proof-title">Trending Signals</h2>
+            <h2 className="section-title">Trending Signals</h2>
             <p className="terminal-proof-copy mt-4">
-              The most important review patterns businesses using Review.sh are
+              The most important review patterns businesses using ReviewBit are
               focusing on right now.
             </p>
           </div>
