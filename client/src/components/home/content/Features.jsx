@@ -500,7 +500,7 @@ function Features() {
 
           <div className="mt-8 text-center">
             <h2 className="section-title">ReviewBit Features</h2>
-            <p className="terminal-proof-copy mt-4">
+            <p className="section-subtitle mt-4">
               A connected review pipeline that helps you collect feedback, route
               customers correctly and understand what is happening across your
               business.

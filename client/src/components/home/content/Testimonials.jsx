@@ -82,7 +82,7 @@ export default function Testimonials() {
 
             <h2 className="section-title">How Businesses Use ReviewBit</h2>
 
-            <p className="testimonials-section__copy">
+            <p className="section-subtitle mt-4">
               Real-world ways businesses use ReviewBit to capture more reviews
               and feedback.
             </p>

@@ -13,7 +13,7 @@ function HowItWorks() {
 
           <div className="mt-8 text-center">
             <h2 className="section-title">How It Works</h2>
-            <p className="terminal-proof-copy mt-4">
+            <p className="section-subtitle mt-4">
               A simple review flow that guides happy customers to Google and
               routes issues privately before they become public.
             </p>

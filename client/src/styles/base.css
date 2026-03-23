@@ -317,6 +317,20 @@
         letter-spacing: -0.04em;
     }
 
+    .section-subtitle {
+        @apply mx-auto max-w-[680px] text-center text-base md:text-lg;
+        color: rgba(255, 255, 255, 0.62)
+    }
+
+    .card-title {
+        @apply text-3xl font-semibold text-text_clr_1;
+        letter-spacing: -0.03em;
+    }
+
+    .card-subtitle {
+        @apply mt-4 max-w-[28ch] text-base text-text_clr_2 leading-7;
+    }
+
 
     /* ======== HEADER ======== */
 

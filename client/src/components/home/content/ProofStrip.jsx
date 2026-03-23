@@ -9,7 +9,7 @@ export default function ProofStrip() {
 
           <div className="mt-8 text-center">
             <h2 className="section-title">Trending Signals</h2>
-            <p className="terminal-proof-copy mt-4">
+            <p className="section-subtitle mt-4">
               The most important review patterns businesses using ReviewBit are
               focusing on right now.
             </p>

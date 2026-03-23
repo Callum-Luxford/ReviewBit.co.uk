@@ -17,9 +17,9 @@ export default function HowItWorksCard({
 
         <div className="terminal-card-kicker">{step}</div>
 
-        <h3 className="terminal-how-title">{title}</h3>
+        <h3 className="card-title">{title}</h3>
 
-        <p className="terminal-how-copy">{children}</p>
+        <p className="card-subtitle">{children}</p>
       </div>
     </article>
   );

@@ -19,7 +19,7 @@ app.use(
     // credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 // Body Parsing (json)
@@ -40,6 +40,9 @@ app.get("/api/health", (req, res) => {
 app.get("/api/error-test", (req, res, next) => {
   next(new Error("Test error from error-test route"));
 });
+
+const authRoutes = require("../routes/authRoutes");
+app.use("/api/auth", authRoutes);
 
 // 404 HANDLER
 app.use((req, res) => {

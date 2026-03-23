@@ -56,7 +56,7 @@ export default function Pricing() {
 
           <div className="mt-8 text-center">
             <h2 className="section-title">Select Plan</h2>
-            <p className="terminal-proof-copy mt-4">
+            <p className="section-subtitle mt-4">
               Simple pricing for businesses that want more reviews and better
               customer feedback without adding friction to the process.
             </p>
