@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const STORAGE_KEY = "reviewbit_app_boot_last_seen";
-const BOOT_COOLDOWN_MS = 15 * 60 * 10;
+const BOOT_COOLDOWN_MS = 15 * 60 * 1000;
 
 const BOOT_LINES = [
   "[SYS] reviewbit.public :: bootstrap requested",
