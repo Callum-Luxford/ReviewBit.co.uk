@@ -823,6 +823,28 @@
         .app-boot-panel__meta {
             font-size: 0.8rem;
         }
+
+        .app-boot-log__header {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            gap: 0.5rem;
+        }
+
+        .app-boot-log__body {
+            font-size: 10px;
+            line-height: 1.35;
+            gap: 0.25rem;
+        }
+
+        .app-boot-log__line {
+            gap: 0.45rem;
+        }
+
+        .app-boot-log__line span:last-child {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 
     /* ======= APP / AUTH BOOT MOBILE FLOW FIX ======= */
