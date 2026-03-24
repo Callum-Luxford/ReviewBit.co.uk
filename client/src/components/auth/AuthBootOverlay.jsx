@@ -143,7 +143,7 @@ function AuthBootOverlay({ open, mode = "login", progress = 0 }) {
                 {view.eyebrow}
               </p>
 
-              <pre className="auth-theme-ascii app-boot-panel__ascii">
+              <pre className="auth-theme-ascii app-boot-panel__ascii mt-3 max-w-full overflow-visible font-mono text-[5px] leading-[0.9] sm:text-[6px] sm:leading-[0.9] md:text-[8px] md:leading-[0.95] lg:text-[12px] lg:leading-[1.05] xl:text-[16px] xl:leading-[1]">
                 {view.titleAscii}
               </pre>
             </div>

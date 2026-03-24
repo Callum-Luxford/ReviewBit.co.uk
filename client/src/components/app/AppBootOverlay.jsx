@@ -97,7 +97,7 @@ function AppBootScreen({ progress, spinnerFrame }) {
             <div className="min-w-0">
               <p className="app-boot-panel__eyebrow">Initialising</p>
 
-              <pre className="app-boot-panel__ascii">
+              <pre className="app-boot-panel__ascii mt-3 max-w-full overflow-visible font-mono text-[5px] leading-[0.9] sm:text-[6px] sm:leading-[0.9] md:text-[8px] md:leading-[0.95] lg:text-[12px] lg:leading-[1.05] xl:text-[16px] xl:leading-[1]">
                 {String.raw`██████╗ ███████╗██╗   ██╗██╗███████╗██╗    ██╗██████╗ ██╗████████╗
 ██╔══██╗██╔════╝██║   ██║██║██╔════╝██║    ██║██╔══██╗██║╚══██╔══╝
 ██████╔╝█████╗  ██║   ██║██║█████╗  ██║ █╗ ██║██████╔╝██║   ██║
