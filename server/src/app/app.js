@@ -28,6 +28,11 @@ app.use(express.urlencoded({ extended: false }));
 // === MIDDLEWARE ===:
 
 // HEALTH CHECK ROUTE
+const requireAuth = require('../middleware/requireAuth')
+app.get('/api/auth/test', requireAuth, (req, res) => {
+  res.send('Success: requireAuth ran.')
+})
+
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     ok: true,

@@ -106,7 +106,7 @@ function Footer() {
             <div className="terminal-footer-status">
               <span>System Status :</span>
               <span className="terminal-footer-status-dot" />
-              <span className="terminal-footer-status-text">ONLINE</span>
+              <span className="terminal-footer-status-text auth-online">ONLINE</span>
             </div>
 
             <div className="flex items-center gap-6">

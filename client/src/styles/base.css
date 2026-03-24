@@ -114,6 +114,7 @@
     --font-clr-1: #ffffff;
     --font-clr-2: #b6b6b6;
     --font-clr-3: #ffffff6b;
+    --font-clr-4: #ffffff6b;
 
     /* ----------- theme colors ------------ */
     /* ----------- theme colors ------------ */
@@ -272,8 +273,9 @@
     input[type="radio"],
     select,
     textarea {
-        @apply w-full rounded-md bg-[#111827] text-white border border-gray-700;
-        caret-color: white;
+        @apply w-full border;
+        caret-color: var(--accent-green);
+        color: var(--accent-green);
     }
 
     textarea {
@@ -289,12 +291,27 @@
     input[type="search"]:focus,
     textarea:focus {
         box-shadow: none;
-        border-color: var(--focus-clr-1);
+        border-color: var(--accent-green);
     }
 
     input[type="option"],
     select {
         @apply border-none rounded-none w-fit;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    textarea:-webkit-autofill,
+    select:-webkit-autofill {
+        -webkit-text-fill-color: var(--accent-green);
+        /* your terminal green */
+        transition: background-color 9999s ease-in-out 0s;
+    }
+
+    input {
+        font-weight: 600;
+        letter-spacing: 0.5px;
     }
 }
 
@@ -330,6 +347,602 @@
     .card-subtitle {
         @apply mt-4 max-w-[28ch] text-base text-text_clr_2 leading-7;
     }
+
+    /* ======= APP BOOT SCREEN ====== */
+    /* ======= APP BOOT SCREEN ====== */
+
+    .app-boot-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        overflow: hidden;
+        background: var(--theme-clr-1);
+        color: var(--terminal-green);
+    }
+
+    .app-boot-bg {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+    }
+
+    .app-boot-bg__glow {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(circle at center,
+                rgba(var(--terminal-green-rgb), 0.08),
+                transparent 42%);
+    }
+
+    .app-boot-bg__wash {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.16),
+                rgba(0, 0, 0, 0.28));
+    }
+
+    .app-boot-bg__vignette {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(circle at center,
+                transparent 36%,
+                rgba(0, 0, 0, 0.45) 100%);
+    }
+
+    .app-boot-center {
+        position: relative;
+        z-index: 3;
+        display: flex;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        padding-inline: 0.75rem;
+    }
+
+    .app-boot-panel {
+        width: 100%;
+        max-width: 58rem;
+        border-radius: 1.6rem;
+        padding: 1.25rem;
+        backdrop-filter: none;
+        background: transparent;
+    }
+
+    .app-boot-panel__header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .app-boot-panel__eyebrow {
+        margin: 0;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.32em;
+        color: rgba(var(--terminal-green-rgb), 0.45);
+    }
+
+    .app-boot-panel__ascii {
+        margin-top: 0.75rem;
+        max-width: 100%;
+        overflow: hidden;
+        font-family: var(--font-family-base);
+        font-size: 6px;
+        line-height: 0.9;
+        color: color-mix(in srgb, var(--terminal-green) 82%, white 18%);
+    }
+
+    .app-boot-panel__spinner-wrap {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        gap: 0.75rem;
+        padding-top: 0.5rem;
+        font-family: var(--font-family-base);
+    }
+
+    .app-boot-panel__spinner-label {
+        font-size: 0.875rem;
+        color: rgba(var(--terminal-green-rgb), 0.5);
+    }
+
+    .app-boot-panel__copy {
+        margin-bottom: 1rem;
+        font-family: var(--font-family-base);
+        font-size: 0.875rem;
+        color: rgba(var(--terminal-green-rgb), 0.72);
+    }
+
+    .app-boot-progress {
+        position: relative;
+        height: 0.75rem;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 9999px;
+        border: 1px solid rgba(var(--terminal-green-rgb), 0.16);
+        background: color-mix(in srgb, var(--theme-clr-2) 70%, black 30%);
+    }
+
+    .app-boot-progress__fill {
+        height: 100%;
+        border-radius: 9999px;
+        background: linear-gradient(90deg,
+                rgba(var(--terminal-green-rgb), 0.72),
+                rgba(var(--terminal-green-rgb), 0.9));
+        transition: width 200ms ease-out;
+    }
+
+    .app-boot-panel__meta {
+        margin-top: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-family: var(--font-family-base);
+        font-size: 0.875rem;
+    }
+
+    .app-boot-panel__meta-label {
+        color: rgba(var(--terminal-green-rgb), 0.45);
+    }
+
+    .app-boot-panel__meta-value {
+        color: color-mix(in srgb, var(--terminal-green) 82%, white 18%);
+    }
+
+    .app-boot-terminal-surface {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        padding: 1rem;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .app-boot-log {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        border-radius: 2rem;
+        position: relative;
+        padding: 1.25rem 1.5rem;
+        background:
+            linear-gradient(to bottom,
+                rgba(0, 8, 10, 0.18),
+                rgba(0, 8, 10, 0.1));
+        border: 1px solid rgba(var(--terminal-green-rgb), 0.05);
+    }
+
+    .app-boot-log::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(to bottom,
+                rgba(255, 255, 255, 0.022) 0px,
+                rgba(255, 255, 255, 0.022) 1px,
+                transparent 2px,
+                transparent 5px);
+        pointer-events: none;
+        opacity: 0.18;
+    }
+
+    .app-boot-log__header {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        font-family: var(--font-family-base);
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(var(--terminal-green-rgb), 0.38);
+    }
+
+    .app-boot-log__body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        min-height: calc(100% - 32px);
+        font-family: var(--font-family-base);
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+    .app-boot-log__line {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        color: rgba(var(--terminal-green-rgb), 0);
+        opacity: 0;
+        transform: translateY(2px);
+        transition:
+            opacity 120ms linear,
+            transform 120ms linear,
+            color 120ms linear;
+        white-space: nowrap;
+    }
+
+    .app-boot-log__line--visible {
+        opacity: 1;
+        transform: translateY(0);
+        color: rgba(var(--terminal-green-rgb), 0.34);
+    }
+
+    .app-boot-log__line--current {
+        color: rgba(var(--terminal-green-rgb), 0.7);
+        animation: app-boot-flicker 0.14s steps(2) 5;
+    }
+
+    .app-boot-log__prompt {
+        color: rgba(var(--terminal-green-rgb), 0.55);
+        min-width: 8px;
+    }
+
+    .app-boot-log__cursor-line {
+        opacity: 1;
+        color: rgba(var(--terminal-green-rgb), 0.5);
+        margin-top: auto;
+    }
+
+    .app-boot-log__cursor-block {
+        display: inline-block;
+        width: 8px;
+        height: 14px;
+        background: rgba(var(--terminal-green-rgb), 0.82);
+        box-shadow: 0 0 10px rgba(var(--terminal-green-rgb), 0.32);
+        animation: app-boot-cursor 0.8s steps(1) infinite;
+    }
+
+    .app-boot-spinner-frame {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 1ch;
+        color: rgba(var(--terminal-green-rgb), 0.92);
+        font-size: 1.4rem;
+        line-height: 1;
+    }
+
+    @keyframes app-boot-cursor {
+
+        0%,
+        49% {
+            opacity: 1;
+        }
+
+        50%,
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes app-boot-flicker {
+        0% {
+            opacity: 0.35;
+        }
+
+        20% {
+            opacity: 1;
+        }
+
+        40% {
+            opacity: 0.45;
+        }
+
+        60% {
+            opacity: 1;
+        }
+
+        80% {
+            opacity: 0.6;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @media (min-width: 640px) {
+        .app-boot-panel {
+            border-radius: 2rem;
+            padding: 2rem;
+        }
+
+        .app-boot-panel__ascii {
+            font-size: 13px;
+            line-height: 1.05;
+        }
+
+        .app-boot-center {
+            padding-inline: 1.5rem;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .app-boot-terminal-surface {
+            padding: 0.75rem;
+        }
+
+        .app-boot-log {
+            border-radius: 1.5rem;
+            padding: 1rem;
+        }
+
+        .app-boot-log__header {
+            font-size: 10px;
+            letter-spacing: 0.12em;
+        }
+
+        .app-boot-log__body {
+            font-size: 11px;
+        }
+    }
+
+    /* ======= APP BOOT SCREEN ====== */
+    /* ======= APP BOOT SCREEN ====== */
+
+
+
+    /* ======= AUTH THEME COLOR HOOKS ======= */
+
+    .auth-theme-screen {
+        background: var(--theme-clr-1);
+        color: var(--terminal-green);
+    }
+
+    .auth-theme-glow {
+        background: radial-gradient(circle at center,
+                rgba(var(--terminal-green-rgb), 0.08),
+                transparent 42%);
+    }
+
+    .auth-theme-wash {
+        background: linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.16),
+                rgba(0, 0, 0, 0.28));
+    }
+
+    .auth-theme-vignette {
+        background: radial-gradient(circle at center,
+                transparent 36%,
+                rgba(0, 0, 0, 0.45) 100%);
+    }
+
+    .auth-theme-panel {
+        backdrop-filter: none;
+        background: transparent;
+    }
+
+    .auth-theme-eyebrow {
+        color: rgba(var(--terminal-green-rgb), 0.45);
+    }
+
+    .auth-theme-ascii {
+        color: color-mix(in srgb, var(--terminal-green) 82%, white 18%);
+    }
+
+    .auth-theme-spinner-label {
+        color: rgba(var(--terminal-green-rgb), 0.5);
+    }
+
+    .auth-theme-copy {
+        color: rgba(var(--terminal-green-rgb), 0.72);
+    }
+
+    .auth-theme-section-label {
+        color: rgba(var(--terminal-green-rgb), 0.45);
+    }
+
+    .auth-theme-command {
+        color: color-mix(in srgb, var(--terminal-green) 82%, white 18%);
+    }
+
+    .auth-theme-divider {
+        background: linear-gradient(to right,
+                rgba(var(--terminal-green-rgb), 0.10),
+                rgba(var(--terminal-green-rgb), 0.20),
+                transparent);
+    }
+
+    .auth-theme-progress {
+        border-color: rgba(var(--terminal-green-rgb), 0.16);
+        background: color-mix(in srgb, var(--theme-clr-2) 70%, black 30%);
+    }
+
+    .auth-theme-progress-fill {
+        background: linear-gradient(90deg,
+                rgba(var(--terminal-green-rgb), 0.72),
+                rgba(var(--terminal-green-rgb), 0.9));
+    }
+
+    .auth-theme-meta-label {
+        color: rgba(var(--terminal-green-rgb), 0.45);
+    }
+
+    .auth-theme-meta-value {
+        color: color-mix(in srgb, var(--terminal-green) 82%, white 18%);
+    }
+
+    .auth-theme-link-primary {
+        color: rgba(var(--terminal-green-rgb), 0.92);
+    }
+
+    .auth-theme-link-primary:hover {
+        color: color-mix(in srgb, var(--terminal-green) 82%, white 18%);
+    }
+
+    .auth-theme-link-active {
+        color: color-mix(in srgb, var(--terminal-green) 82%, white 18%);
+    }
+
+    .auth-theme-link-active:hover {
+        color: white;
+    }
+
+    .auth-theme-link-secondary {
+        color: rgba(var(--terminal-green-rgb), 0.72);
+    }
+
+    .auth-theme-link-secondary:hover {
+        color: white;
+    }
+
+    .auth-theme-link-divider {
+        color: rgba(var(--terminal-green-rgb), 0.20);
+    }
+
+    .auth-theme-link-accent {
+        color: rgba(var(--terminal-green-rgb), 0.75);
+    }
+
+    .auth-theme-ready {
+        color: color-mix(in srgb, var(--terminal-green) 82%, white 18%);
+    }
+
+    /* ======= AUTH THEME COLOR HOOKS ======= */
+
+
+    /* ======= LOGIN TERMINAL MOBILE FIX ======= */
+
+    .login-terminal-shell {
+        width: 100%;
+    }
+
+    .login-terminal-frame {
+        position: relative;
+        overflow: hidden;
+        border-radius: 2rem;
+        border: 1px solid rgba(var(--terminal-green-rgb), 0.08);
+        background:
+            linear-gradient(to bottom,
+                rgba(0, 8, 10, 0.18),
+                rgba(0, 8, 10, 0.1));
+        box-shadow:
+            inset 0 0 0 1px rgba(var(--terminal-green-rgb), 0.03),
+            0 0 0 1px rgba(var(--terminal-green-rgb), 0.02);
+    }
+
+    .login-terminal-frame::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(to bottom,
+                rgba(255, 255, 255, 0.022) 0px,
+                rgba(255, 255, 255, 0.022) 1px,
+                transparent 2px,
+                transparent 5px);
+        opacity: 0.18;
+    }
+
+    .login-terminal-content {
+        position: relative;
+        z-index: 2;
+        padding: 2rem;
+    }
+
+    .login-terminal-mobile-log-wrap {
+        position: relative;
+        width: 100%;
+        margin-bottom: 1.25rem;
+        pointer-events: none;
+        padding: 1.25rem 1.5rem 0;
+    }
+
+    .login-mobile-log {
+        position: relative;
+        height: auto;
+        overflow: visible;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+
+        /* important: remove the fade that was eating the cursor */
+        mask-image: none;
+        -webkit-mask-image: none;
+    }
+
+    .login-mobile-log::before {
+        content: none;
+    }
+
+    .login-mobile-log .app-boot-log__header {
+        margin-bottom: 0.85rem;
+    }
+
+    .login-mobile-log .app-boot-log__body {
+        display: flex;
+        flex-direction: column;
+        min-height: auto;
+    }
+
+    /* keep the mobile cursor directly under the log lines */
+    .login-mobile-log .app-boot-log__cursor-line {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        margin-top: 0.85rem;
+        padding-top: 0.2rem;
+        line-height: 1;
+        opacity: 1;
+        color: rgba(var(--terminal-green-rgb), 0.5);
+    }
+
+    .login-mobile-log .app-boot-log__prompt {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 8px;
+        transform: translateY(0);
+    }
+
+    .login-mobile-log .app-boot-log__cursor-block {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    @media (max-width: 640px) {
+        .login-terminal-frame {
+            border-radius: 1.5rem;
+        }
+
+        .login-terminal-mobile-log-wrap {
+            padding: 1rem 1rem 0;
+            margin-bottom: 1rem;
+        }
+
+        .login-terminal-content {
+            padding: 1rem;
+        }
+
+        .login-mobile-log .app-boot-log__cursor-line {
+            margin-top: 0.7rem;
+            gap: 0.5rem;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .login-terminal-mobile-log-wrap {
+            display: none;
+        }
+    }
+
+    /* ======= LOGIN TERMINAL MOBILE FIX ======= */
+
+
+
+
+    /* ======== FRONTPAGE ======== */
+    /* ======== FRONTPAGE ======== */
+    /* ======== FRONTPAGE ======== */
 
 
     /* ======== HEADER ======== */
@@ -1835,5 +2448,212 @@
 
     /* ======== FOOTER ======== */
 
+    /* ======== FRONTPAGE ======== */
+    /* ======== FRONTPAGE ======== */
+    /* ======== FRONTPAGE ======== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* ======== AUTH ========= */
+    /* ======== AUTH ========= */
+    /* ======== AUTH ========= */
+
+
+    /* =========================================
+       AUTH BOOT OVERLAY - TERMINAL MATCH PASS
+       ========================================= */
+
+
+    @keyframes authBootLineIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+
+    .auth-form {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .auth-form__row {
+        display: grid;
+        gap: 0.45rem;
+    }
+
+    .auth-form__label {
+        color: rgba(204, 212, 220, 0.62);
+        font-size: 0.76rem;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+    }
+
+    .auth-form__input {
+        width: 100%;
+        min-height: 58px;
+        padding: 0.95rem 1rem;
+        border: 1px solid rgba(var(--terminal-green-rgb), 0.22);
+        border-radius: 0;
+        background: transparent;
+        color: var(--terminal-green);
+        font-family: var(--font-family-base);
+        font-size: 0.95rem;
+        box-shadow: none;
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+    .auth-form__input::placeholder {
+        color: rgba(216, 225, 232, 0.18);
+    }
+
+
+    .auth-form__submit-wrap {
+        margin-top: 0.35rem;
+    }
+
+    .auth-form__submit-wrap .cta-button,
+    .auth-form__submit-wrap button {
+        width: 100%;
+    }
+
+    .auth-form__recovery {
+        justify-self: start;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: rgba(196, 205, 214, 0.36);
+        font-family: var(--font-family-base);
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+
+    .auth-form__recovery:hover {
+        color: var(--terminal-green);
+    }
+
+    .auth-form__footer {
+        margin: 1rem 0 0;
+        color: rgba(204, 212, 220, 0.42);
+        font-size: 0.88rem;
+    }
+
+    .auth-form__link {
+        color: var(--terminal-green);
+        text-decoration: none;
+        text-shadow: 0 0 8px rgba(var(--terminal-green-rgb), 0.18);
+    }
+
+    .auth-form__link:hover {
+        opacity: 0.88;
+    }
+
+
+    /* =========================================
+   AUTH TYPING / FORM REVEAL
+   ========================================= */
+
+    .auth-terminal__inline-status--fixed {
+        min-height: 92px;
+    }
+
+    .auth-terminal__panel--fixed {
+        min-height: 360px;
+    }
+
+    .auth-terminal__panel-header--fixed {
+        min-height: 96px;
+    }
+
+    .auth-terminal__typed-row {
+        min-height: 1.45em;
+        display: flex;
+        align-items: flex-start;
+        gap: 0;
+        color: rgba(214, 224, 218, 0.72);
+        font-size: 0.95rem;
+        line-height: 1.45;
+    }
+
+    .auth-terminal__typed-row--command {
+        color: var(--terminal-green);
+        text-shadow: 0 0 8px rgba(var(--terminal-green-rgb), 0.24);
+    }
+
+    .auth-terminal__typed-row--copy {
+        min-height: 3.3em;
+    }
+
+    .auth-terminal__typed-body {
+        color: rgba(214, 224, 218, 0.72);
+    }
+
+    .auth-terminal__typed-command-text {
+        color: var(--terminal-green);
+        text-shadow: 0 0 8px rgba(var(--terminal-green-rgb), 0.24);
+    }
+
+    .auth-terminal__ghost-text {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .auth-terminal__typed-row .typed-cursor,
+    .auth-terminal__typed-row--command .typed-cursor,
+    .auth-terminal__typed-row--copy .typed-cursor {
+        color: var(--terminal-green);
+        opacity: 1;
+        animation: authCursorBlink 0.9s steps(1, end) infinite;
+    }
+
+    .auth-terminal__form-stage {
+        opacity: 0;
+        transform: translateY(8px);
+        pointer-events: none;
+        transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+
+    .auth-terminal__form-stage--visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .auth-online {
+        color: var(--terminal-green);
+        text-shadow: 0 0 8px rgba(var(--terminal-green-rgb), 0.6);
+        animation: authOnlinePulse 0.85s infinite;
+    }
+
+    @keyframes authOnlinePulse {
+
+        0%,
+        100% {
+            opacity: 1;
+            text-shadow: 0 0 6px rgba(var(--terminal-green-rgb), 0.4);
+        }
+
+        50% {
+            opacity: 0.55;
+            text-shadow: 0 0 12px rgba(var(--terminal-green-rgb), 0.85);
+        }
+    }
 
 }

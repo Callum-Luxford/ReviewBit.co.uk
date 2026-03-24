@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Squash } from "hamburger-react";
+import { useAuthBoot } from "../../context/AuthBootContext";
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeAuthButton, setActiveAuthButton] = useState("signup");
+  const location = useLocation();
+
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/signup";
+
+  const { startAuthBoot } = useAuthBoot();
 
   useEffect(() => {
     const onScroll = () => {
@@ -56,47 +63,61 @@ function Header() {
         }`}
       >
         <div className="mt-24 flex flex-col gap-4 p-6 text-[#e5e7eb]">
-          <a href="#reviews" onClick={closeMenu} className="terminal-nav-link">
-            Reviews
-          </a>
+          {!isAuthPage && (
+            <>
+              <a
+                href="#reviews"
+                onClick={closeMenu}
+                className="terminal-nav-link"
+              >
+                Reviews
+              </a>
 
-          <a
-            href="#how-it-works"
-            onClick={closeMenu}
-            className="terminal-nav-link"
-          >
-            How_It_Works
-          </a>
+              <a
+                href="#how-it-works"
+                onClick={closeMenu}
+                className="terminal-nav-link"
+              >
+                How_It_Works
+              </a>
 
-          <a
-            href="#testimonials"
-            onClick={closeMenu}
-            className="terminal-nav-link"
-          >
-            Testimonials
-          </a>
+              <a
+                href="#testimonials"
+                onClick={closeMenu}
+                className="terminal-nav-link"
+              >
+                Testimonials
+              </a>
+            </>
+          )}
 
           <div
             className="mt-2 flex flex-col gap-3"
             onMouseLeave={() => setActiveAuthButton("signup")}
           >
-            <Link
-              to="/login"
-              onClick={closeMenu}
+            <button
+              type="button"
+              onClick={() => {
+                closeMenu();
+                startAuthBoot("login");
+              }}
               onMouseEnter={() => setActiveAuthButton("login")}
               className={`terminal-auth-btn ${getAuthBtnClass("login")}`}
             >
               Login
-            </Link>
+            </button>
 
-            <Link
-              to="/signup"
-              onClick={closeMenu}
+            <button
+              type="button"
+              onClick={() => {
+                closeMenu();
+                startAuthBoot("signup");
+              }}
               onMouseEnter={() => setActiveAuthButton("signup")}
               className={`terminal-auth-btn ${getAuthBtnClass("signup")}`}
             >
               Signup
-            </Link>
+            </button>
           </div>
         </div>
       </nav>
@@ -115,9 +136,7 @@ function Header() {
         {/* Logo */}
         <Link to="/" className="group flex items-center gap-3">
           <div className="terminal-header-logo-box">
-            <span className="text-sm font-medium">
-              {">_"}
-            </span>
+            <span className="text-sm font-medium">{">_"}</span>
           </div>
 
           {/* <p className="terminal-header-logo-text">Revbotic</p> */}
@@ -126,37 +145,43 @@ function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-8 md:flex">
-          <a href="#reviews" className="terminal-nav-link">
-            Reviews
-          </a>
+          {!isAuthPage && (
+            <>
+              <a href="#reviews" className="terminal-nav-link">
+                Reviews
+              </a>
 
-          <a href="#how-it-works" className="terminal-nav-link">
-            How_It_Works
-          </a>
+              <a href="#how-it-works" className="terminal-nav-link">
+                How_It_Works
+              </a>
 
-          <a href="#testimonials" className="terminal-nav-link">
-            Testimonials
-          </a>
+              <a href="#testimonials" className="terminal-nav-link">
+                Testimonials
+              </a>
+            </>
+          )}
 
           <div
             className="flex items-center gap-3"
             onMouseLeave={() => setActiveAuthButton("signup")}
           >
-            <Link
-              to="/login"
+            <button
+              type="button"
+              onClick={() => startAuthBoot("login")}
               onMouseEnter={() => setActiveAuthButton("login")}
               className={`terminal-auth-btn ${getAuthBtnClass("login")}`}
             >
               Login
-            </Link>
+            </button>
 
-            <Link
-              to="/signup"
+            <button
+              type="button"
+              onClick={() => startAuthBoot("signup")}
               onMouseEnter={() => setActiveAuthButton("signup")}
               className={`terminal-auth-btn ${getAuthBtnClass("signup")}`}
             >
               Signup
-            </Link>
+            </button>
           </div>
         </nav>
 
