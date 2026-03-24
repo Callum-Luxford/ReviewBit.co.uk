@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const STORAGE_KEY = "reviewbit_app_boot_last_seen";
-const BOOT_COOLDOWN_MS = 15 * 60 * 1000;
+const BOOT_COOLDOWN_MS = 15 * 60 * 1;
 
 const BOOT_LINES = [
   "[SYS] reviewbit.public :: bootstrap requested",
@@ -80,7 +80,7 @@ function AppBootScreen({ progress, spinnerFrame }) {
 
         <div className="app-boot-bg__glow" />
 
-        <div className="app-boot-terminal-surface">
+        <div className="app-boot-terminal-surface hidden md:block">
           <BootLog progress={progress} />
         </div>
 
@@ -90,6 +90,9 @@ function AppBootScreen({ progress, spinnerFrame }) {
 
       <div className="app-boot-center">
         <div className="app-boot-panel">
+          <div className="app-boot-mobile-log-wrap md:hidden">
+            <BootLog progress={progress} compact />
+          </div>
           <div className="app-boot-panel__header">
             <div className="min-w-0">
               <p className="app-boot-panel__eyebrow">Initialising</p>

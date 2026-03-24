@@ -127,41 +127,53 @@ function AuthBootOverlay({ open, mode = "login", progress = 0 }) {
         <div className="auth-theme-vignette pointer-events-none absolute inset-0" />
       </div>
 
-      <div className="relative z-[3] flex h-screen items-center justify-center px-3 sm:px-6">
-        <div className="auth-theme-panel w-full max-w-[58rem] rounded-[1.6rem] sm:rounded-[2rem] p-5 sm:p-8">
-          <div className="mb-5 flex items-start justify-between gap-4">
+      <div className="auth-boot-center relative z-[3] flex h-screen items-center justify-center px-3 sm:px-6">
+        <div className="auth-theme-panel auth-boot-panel app-boot-panel w-full max-w-[58rem]">
+          <div className="auth-boot-mobile-log-wrap md:hidden">
+            <BootLog
+              progress={progress}
+              lines={view.logLines}
+              headerRight={view.headerRight}
+            />
+          </div>
+
+          <div className="app-boot-panel__header">
             <div className="min-w-0">
-              <p className="auth-theme-eyebrow text-[11px] uppercase tracking-[0.32em]">
+              <p className="auth-theme-eyebrow app-boot-panel__eyebrow">
                 {view.eyebrow}
               </p>
 
-              <pre className="auth-theme-ascii mt-3 max-w-full overflow-hidden font-mono text-[6px] leading-[0.9] sm:text-[13px] sm:leading-[1.05]">
+              <pre className="auth-theme-ascii app-boot-panel__ascii">
                 {view.titleAscii}
               </pre>
             </div>
 
-            <div className="flex shrink-0 items-center gap-3 pt-2 font-mono">
-              <span className="auth-theme-spinner-label text-sm">boot</span>
+            <div className="app-boot-panel__spinner-wrap">
+              <span className="auth-theme-spinner-label app-boot-panel__spinner-label">
+                boot
+              </span>
               <span className="app-boot-spinner-frame">
                 {getSpinnerFrame(progress)}
               </span>
             </div>
           </div>
 
-          <div className="auth-theme-copy mb-4 font-mono text-sm">
+          <div className="auth-theme-copy app-boot-panel__copy">
             {view.copy}
           </div>
 
-          <div className="auth-theme-progress relative h-3 w-full overflow-hidden rounded-full border">
+          <div className="auth-theme-progress app-boot-progress">
             <div
-              className="auth-theme-progress-fill h-full rounded-full transition-[width] duration-200 ease-out"
+              className="auth-theme-progress-fill app-boot-progress__fill"
               style={{ width: `${progress}%` }}
             />
           </div>
 
-          <div className="mt-3 flex items-center justify-between font-mono text-sm">
-            <span className="auth-theme-meta-label">{view.statusLabel}</span>
-            <span className="auth-theme-meta-value">
+          <div className="app-boot-panel__meta">
+            <span className="auth-theme-meta-label app-boot-panel__meta-label">
+              {view.statusLabel}
+            </span>
+            <span className="auth-theme-meta-value app-boot-panel__meta-value">
               {Math.round(progress)}%
             </span>
           </div>
