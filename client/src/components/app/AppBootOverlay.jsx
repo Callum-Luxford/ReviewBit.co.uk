@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import BootTerminalPanel from "../terminal/BootTerminalPanel";
 
 const STORAGE_KEY = "reviewbit_app_boot_last_seen";
 const BOOT_COOLDOWN_MS = 15 * 60 * 1;
@@ -22,115 +23,25 @@ const BOOT_LINES = [
 
 const SPINNER_FRAMES = ["/", "—", "\\", "|"];
 
-function BootLog({ progress }) {
-  const visibleCount = Math.max(
-    1,
-    Math.min(
-      BOOT_LINES.length,
-      Math.floor((progress / 100) * (BOOT_LINES.length + 2)),
-    ),
-  );
-
-  return (
-    <div className="app-boot-log">
-      <div className="app-boot-log__header">
-        <span>SYSTEM LOG v2.4.1</span>
-        <span>REVIEWBIT PUBLIC BOOT</span>
-      </div>
-
-      <div className="app-boot-log__body">
-        {BOOT_LINES.map((line, index) => {
-          const isVisible = index < visibleCount;
-          const isCurrent = index === visibleCount - 1 && progress < 100;
-
-          return (
-            <p
-              key={line}
-              className={[
-                "app-boot-log__line",
-                isVisible ? "app-boot-log__line--visible" : "",
-                isCurrent ? "app-boot-log__line--current" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-            >
-              <span className="app-boot-log__prompt">{">"}</span>
-              <span>{line}</span>
-            </p>
-          );
-        })}
-
-        <p className="app-boot-log__line app-boot-log__cursor-line">
-          <span className="app-boot-log__prompt">{">"}</span>
-          <span className="app-boot-log__cursor-block" />
-        </p>
-      </div>
-    </div>
-  );
-}
-
 function AppBootScreen({ progress, spinnerFrame }) {
   return (
-    <div className="app-boot-screen">
-      <div className="app-boot-bg">
-        <div className="terminal-hero-bg">
-          <div className="terminal-hero-grid absolute inset-0" />
-          <div className="terminal-hero-scanline" />
-        </div>
-
-        <div className="app-boot-bg__glow" />
-
-        <div className="app-boot-terminal-surface hidden md:block">
-          <BootLog progress={progress} />
-        </div>
-
-        <div className="app-boot-bg__wash" />
-        <div className="app-boot-bg__vignette" />
-      </div>
-
-      <div className="app-boot-center">
-        <div className="app-boot-panel">
-          <div className="app-boot-mobile-log-wrap md:hidden">
-            <BootLog progress={progress} compact />
-          </div>
-          <div className="app-boot-panel__header">
-            <div className="min-w-0">
-              <p className="app-boot-panel__eyebrow">Initialising</p>
-
-              <pre className="app-boot-panel__ascii mt-3 max-w-full overflow-visible font-mono text-[5px] leading-[0.9] sm:text-[6px] sm:leading-[0.9] md:text-[8px] md:leading-[0.95] lg:text-[12px] lg:leading-[1.05] xl:text-[16px] xl:leading-[1]">
-                {String.raw`██████╗ ███████╗██╗   ██╗██╗███████╗██╗    ██╗██████╗ ██╗████████╗
+    <BootTerminalPanel
+      logLines={BOOT_LINES}
+      logHeaderRight="REVIEWBIT PUBLIC BOOT"
+      progress={progress}
+      spinnerFrame={spinnerFrame}
+      eyebrow="Initialising"
+      ascii={String.raw`██████╗ ███████╗██╗   ██╗██╗███████╗██╗    ██╗██████╗ ██╗████████╗
 ██╔══██╗██╔════╝██║   ██║██║██╔════╝██║    ██║██╔══██╗██║╚══██╔══╝
 ██████╔╝█████╗  ██║   ██║██║█████╗  ██║ █╗ ██║██████╔╝██║   ██║
 ██╔══██╗██╔══╝  ╚██╗ ██╔╝██║██╔══╝  ██║███╗██║██╔══██╗██║   ██║
 ██║  ██║███████╗ ╚████╔╝ ██║███████╗╚███╔███╔╝██████╔╝██║   ██║
 ╚═╝  ╚═╝╚══════╝  ╚═══╝  ╚═╝╚══════╝ ╚══╝╚══╝ ╚═════╝ ╚═╝   ╚═╝`}
-              </pre>
-            </div>
-
-            <div className="app-boot-panel__spinner-wrap">
-              <span className="app-boot-panel__spinner-label">boot</span>
-              <span className="app-boot-spinner-frame">{spinnerFrame}</span>
-            </div>
-          </div>
-
-          <div className="app-boot-panel__copy">
-            Loading workspace modules...
-          </div>
-
-          <div className="app-boot-progress">
-            <div
-              className="app-boot-progress__fill"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-
-          <div className="app-boot-panel__meta">
-            <span className="app-boot-panel__meta-label">status: active</span>
-            <span className="app-boot-panel__meta-value">{progress}%</span>
-          </div>
-        </div>
-      </div>
-    </div>
+      copy="Loading workspace modules..."
+      statusLabel="status: active"
+      mobileLogBreakpointClass="app-boot-mobile-log-wrap md:hidden"
+      desktopLogClassName="app-boot-terminal-surface hidden md:block"
+    />
   );
 }
 

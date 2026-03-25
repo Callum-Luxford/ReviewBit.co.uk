@@ -1106,36 +1106,24 @@
 
 
     /* ======= SHORT HEIGHT FALLBACK (Nest Hub / 1024x600 style screens) ======= */
-    @media (min-width: 768px) and (max-height: 650px) {
+    /* ======= SHORT HEIGHT FALLBACK (Nest Hub / 1024x600 style screens) ======= */
+    @media (min-width: 768px) and (max-width: 1280px) and (max-height: 850px) {
 
         /* ---------- BOOT OVERLAYS ---------- */
-
-        .app-boot-screen .app-boot-terminal-surface,
-        .auth-theme-screen .app-boot-terminal-surface {
-            display: none !important;
-        }
-
-        .app-boot-screen .app-boot-mobile-log-wrap,
-        .auth-theme-screen .auth-boot-mobile-log-wrap {
-            display: block !important;
-            width: 100%;
-            margin-bottom: 1rem;
-            pointer-events: none;
-        }
-
         .app-boot-screen .app-boot-center,
         .auth-theme-screen .auth-boot-center {
-            align-items: flex-start !important;
-            justify-content: flex-start !important;
             padding: 0.75rem !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
 
         .app-boot-screen .app-boot-panel,
         .auth-theme-screen .auth-boot-panel {
             width: 100%;
-            max-width: none;
+            max-width: none !important;
             min-height: calc(100vh - 1.5rem);
             padding: 1rem;
+            margin: 0 auto;
 
             position: relative;
             overflow: hidden;
@@ -1173,6 +1161,19 @@
             z-index: 1;
         }
 
+        .app-boot-screen .app-boot-terminal-surface,
+        .auth-theme-screen .app-boot-terminal-surface {
+            display: none !important;
+        }
+
+        .app-boot-screen .app-boot-mobile-log-wrap,
+        .auth-theme-screen .auth-boot-mobile-log-wrap {
+            display: block !important;
+            width: 100%;
+            margin-bottom: 1rem;
+            pointer-events: none;
+        }
+
         .app-boot-screen .app-boot-mobile-log-wrap .app-boot-log,
         .auth-theme-screen .auth-boot-mobile-log-wrap .app-boot-log {
             height: auto;
@@ -1204,6 +1205,44 @@
             min-height: auto;
         }
 
+        .app-boot-screen .app-boot-mobile-log-wrap .app-boot-log__cursor-line,
+        .auth-theme-screen .auth-boot-mobile-log-wrap .app-boot-log__cursor-line {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            margin-top: 0.85rem;
+            padding-top: 0.2rem;
+            line-height: 1;
+            opacity: 1;
+            color: rgba(var(--terminal-green-rgb), 0.5);
+        }
+
+        .app-boot-screen .app-boot-log__header,
+        .auth-theme-screen .app-boot-log__header {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            gap: 0.5rem;
+        }
+
+        .app-boot-screen .app-boot-log__body,
+        .auth-theme-screen .app-boot-log__body {
+            font-size: 10px;
+            line-height: 1.35;
+            gap: 0.25rem;
+        }
+
+        .app-boot-screen .app-boot-log__line,
+        .auth-theme-screen .app-boot-log__line {
+            gap: 0.45rem;
+        }
+
+        .app-boot-screen .app-boot-log__line span:last-child,
+        .auth-theme-screen .app-boot-log__line span:last-child {
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         /* ---------- LOGIN / SIGNUP PAGES ---------- */
 
         .auth-theme-screen .login-terminal-mobile-log-wrap {
@@ -1232,12 +1271,10 @@
             align-self: flex-start !important;
         }
 
-        /* hide desktop-only background log on login/signup too */
         .auth-theme-screen .app-boot-terminal-surface.hidden.lg\:block {
             display: none !important;
         }
 
-        /* make sure the compact boot log behaves like the working mobile version */
         .auth-theme-screen .login-mobile-log {
             height: auto;
             max-height: none;
@@ -1276,35 +1313,45 @@
             color: rgba(var(--terminal-green-rgb), 0.5);
         }
 
-        /* optional small tightening so the log fits better on short screens */
-        .auth-theme-screen .app-boot-log__header,
-        .app-boot-screen .app-boot-log__header {
+        .auth-theme-screen .app-boot-log__header {
             font-size: 10px;
             letter-spacing: 0.1em;
             gap: 0.5rem;
         }
 
-        .auth-theme-screen .app-boot-log__body,
-        .app-boot-screen .app-boot-log__body {
+        .auth-theme-screen .app-boot-log__body {
             font-size: 10px;
             line-height: 1.35;
             gap: 0.25rem;
         }
 
-        .auth-theme-screen .app-boot-log__line,
-        .app-boot-screen .app-boot-log__line {
+        .auth-theme-screen .app-boot-log__line {
             gap: 0.45rem;
         }
 
-        .auth-theme-screen .app-boot-log__line span:last-child,
-        .app-boot-screen .app-boot-log__line span:last-child {
+        .auth-theme-screen .app-boot-log__line span:last-child {
             min-width: 0;
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
+        /* ---------- EXPAND LOGIN / SIGNUP PANEL WIDTH ---------- */
+
+        .auth-theme-screen .login-terminal-shell {
+            width: 100%;
+            max-width: none !important;
+        }
+
+        .auth-theme-screen .login-terminal-frame {
+            width: 100%;
+            max-width: none !important;
+            margin: 0 auto;
+        }
     }
 
     /* ======= SHORT HEIGHT FALLBACK ======= */
+
+
 
     /* ======== FRONTPAGE ======== */
     /* ======== FRONTPAGE ======== */

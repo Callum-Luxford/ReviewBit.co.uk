@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import BootTerminalPanel from "../terminal/BootTerminalPanel";
 
 const SPINNER_FRAMES = ["/", "—", "\\", "|"];
 
@@ -49,50 +50,6 @@ const CONFIG = {
   },
 };
 
-function BootLog({ progress, lines, headerRight }) {
-  const visibleCount = Math.max(
-    1,
-    Math.min(lines.length, Math.floor((progress / 100) * (lines.length + 2))),
-  );
-
-  return (
-    <div className="app-boot-log">
-      <div className="app-boot-log__header">
-        <span>SYSTEM LOG v2.4.1</span>
-        <span>{headerRight}</span>
-      </div>
-
-      <div className="app-boot-log__body">
-        {lines.map((line, index) => {
-          const isVisible = index < visibleCount;
-          const isCurrent = index === visibleCount - 1 && progress < 100;
-
-          return (
-            <p
-              key={line}
-              className={[
-                "app-boot-log__line",
-                isVisible ? "app-boot-log__line--visible" : "",
-                isCurrent ? "app-boot-log__line--current" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-            >
-              <span className="app-boot-log__prompt">{">"}</span>
-              <span>{line}</span>
-            </p>
-          );
-        })}
-
-        <p className="app-boot-log__line app-boot-log__cursor-line">
-          <span className="app-boot-log__prompt">{">"}</span>
-          <span className="app-boot-log__cursor-block" />
-        </p>
-      </div>
-    </div>
-  );
-}
-
 function getSpinnerFrame(progress = 0) {
   const index = Math.floor(progress / 6) % SPINNER_FRAMES.length;
   return SPINNER_FRAMES[index];
@@ -106,80 +63,32 @@ function AuthBootOverlay({ open, mode = "login", progress = 0 }) {
   if (!open) return null;
 
   return (
-    <div className="auth-theme-screen fixed inset-0 z-[12000] overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="terminal-hero-bg">
-          <div className="terminal-hero-grid absolute inset-0" />
-          <div className="terminal-hero-scanline" />
-        </div>
-
-        <div className="auth-theme-glow pointer-events-none absolute inset-0" />
-
-        <div className="app-boot-terminal-surface">
-          <BootLog
-            progress={progress}
-            lines={view.logLines}
-            headerRight={view.headerRight}
-          />
-        </div>
-
-        <div className="auth-theme-wash pointer-events-none absolute inset-0" />
-        <div className="auth-theme-vignette pointer-events-none absolute inset-0" />
-      </div>
-
-      <div className="auth-boot-center relative z-[3] flex h-screen items-center justify-center px-3 sm:px-6">
-        <div className="auth-theme-panel auth-boot-panel app-boot-panel w-full max-w-[58rem]">
-          <div className="auth-boot-mobile-log-wrap md:hidden">
-            <BootLog
-              progress={progress}
-              lines={view.logLines}
-              headerRight={view.headerRight}
-            />
-          </div>
-
-          <div className="app-boot-panel__header">
-            <div className="min-w-0">
-              <p className="auth-theme-eyebrow app-boot-panel__eyebrow">
-                {view.eyebrow}
-              </p>
-
-              <pre className="auth-theme-ascii app-boot-panel__ascii mt-3 max-w-full overflow-visible font-mono text-[5px] leading-[0.9] sm:text-[6px] sm:leading-[0.9] md:text-[8px] md:leading-[0.95] lg:text-[12px] lg:leading-[1.05] xl:text-[16px] xl:leading-[1]">
-                {view.titleAscii}
-              </pre>
-            </div>
-
-            <div className="app-boot-panel__spinner-wrap">
-              <span className="auth-theme-spinner-label app-boot-panel__spinner-label">
-                boot
-              </span>
-              <span className="app-boot-spinner-frame">
-                {getSpinnerFrame(progress)}
-              </span>
-            </div>
-          </div>
-
-          <div className="auth-theme-copy app-boot-panel__copy">
-            {view.copy}
-          </div>
-
-          <div className="auth-theme-progress app-boot-progress">
-            <div
-              className="auth-theme-progress-fill app-boot-progress__fill"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-
-          <div className="app-boot-panel__meta">
-            <span className="auth-theme-meta-label app-boot-panel__meta-label">
-              {view.statusLabel}
-            </span>
-            <span className="auth-theme-meta-value app-boot-panel__meta-value">
-              {Math.round(progress)}%
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <BootTerminalPanel
+      screenClassName="auth-theme-screen fixed inset-0 z-[12000] overflow-hidden"
+      desktopLogClassName="app-boot-terminal-surface hidden md:block"
+      centerClassName="auth-boot-center relative z-[3] flex h-screen items-center justify-center px-3 sm:px-6"
+      panelClassName="auth-theme-panel auth-boot-panel app-boot-panel w-full max-w-[58rem]"
+      mobileLogBreakpointClass="auth-boot-mobile-log-wrap md:hidden"
+      glowClassName="auth-theme-glow pointer-events-none absolute inset-0"
+      washClassName="auth-theme-wash pointer-events-none absolute inset-0"
+      vignetteClassName="auth-theme-vignette pointer-events-none absolute inset-0"
+      eyebrowClassName="auth-theme-eyebrow app-boot-panel__eyebrow"
+      asciiClassName="auth-theme-ascii"
+      spinnerLabelClassName="auth-theme-spinner-label app-boot-panel__spinner-label"
+      copyClassName="auth-theme-copy app-boot-panel__copy"
+      progressClassName="auth-theme-progress app-boot-progress"
+      progressFillClassName="auth-theme-progress-fill app-boot-progress__fill"
+      metaLabelClassName="auth-theme-meta-label app-boot-panel__meta-label"
+      metaValueClassName="auth-theme-meta-value app-boot-panel__meta-value"
+      logLines={view.logLines}
+      logHeaderRight={view.headerRight}
+      progress={progress}
+      spinnerFrame={getSpinnerFrame(progress)}
+      eyebrow={view.eyebrow}
+      ascii={view.titleAscii}
+      copy={view.copy}
+      statusLabel={view.statusLabel}
+    />
   );
 }
 
