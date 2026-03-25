@@ -23,6 +23,15 @@ const BOOT_LINES = [
 
 const SPINNER_FRAMES = ["/", "—", "\\", "|"];
 
+function shouldShowBootNow() {
+  if (typeof window === "undefined") return false;
+
+  const lastSeen = Number(window.sessionStorage.getItem(STORAGE_KEY) || 0);
+  const now = Date.now();
+
+  return !lastSeen || now - lastSeen > BOOT_COOLDOWN_MS;
+}
+
 function AppBootScreen({ progress, spinnerFrame }) {
   return (
     <BootTerminalPanel
@@ -46,7 +55,8 @@ function AppBootScreen({ progress, spinnerFrame }) {
 }
 
 export default function AppBootOverlay({ children }) {
-  const [showBoot, setShowBoot] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const [showBoot, setShowBoot] = useState(() => shouldShowBootNow());
   const [progress, setProgress] = useState(0);
   const [spinnerIndex, setSpinnerIndex] = useState(0);
 
@@ -55,13 +65,9 @@ export default function AppBootOverlay({ children }) {
   const finishTimeoutRef = useRef(null);
 
   useEffect(() => {
-    const lastSeen = Number(sessionStorage.getItem(STORAGE_KEY) || 0);
-    const now = Date.now();
-    const shouldShow = !lastSeen || now - lastSeen > BOOT_COOLDOWN_MS;
+    setIsReady(true);
 
-    if (!shouldShow) return;
-
-    setShowBoot(true);
+    if (!showBoot) return;
 
     let currentProgress = 0;
 
@@ -91,7 +97,7 @@ export default function AppBootOverlay({ children }) {
       clearInterval(spinnerIntervalRef.current);
       setProgress(100);
 
-      sessionStorage.setItem(STORAGE_KEY, String(Date.now()));
+      window.sessionStorage.setItem(STORAGE_KEY, String(Date.now()));
 
       setTimeout(() => setShowBoot(false), 350);
     }, 4400);
@@ -101,23 +107,28 @@ export default function AppBootOverlay({ children }) {
       clearInterval(spinnerIntervalRef.current);
       clearTimeout(finishTimeoutRef.current);
     };
-  }, []);
+  }, [showBoot]);
 
   useEffect(() => {
     if (!showBoot) return;
+
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
 
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
 
     return () => {
-      document.documentElement.style.overflow = "";
-      document.body.style.overflow = "";
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
     };
   }, [showBoot]);
 
+  if (!isReady) return null;
+
   return (
     <>
-      {children}
+      {!showBoot && children}
       {showBoot && (
         <AppBootScreen
           progress={progress}
