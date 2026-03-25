@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import BootTerminalPanel from "../terminal/BootTerminalPanel";
 
 const SPINNER_FRAMES = ["/", "—", "\\", "|"];
@@ -59,6 +59,24 @@ function AuthBootOverlay({ open, mode = "login", progress = 0 }) {
   const view = useMemo(() => {
     return mode === "signup" ? CONFIG.signup : CONFIG.login;
   }, [mode]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousBodyTouchAction = document.body.style.touchAction;
+
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
+
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+      document.body.style.touchAction = previousBodyTouchAction;
+    };
+  }, [open]);
 
   if (!open) return null;
 
