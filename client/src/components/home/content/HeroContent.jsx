@@ -82,19 +82,21 @@ function HeroContent() {
       </div>
 
       <div className="relative z-10 mx-auto max-w-[1400px]">
-        <div className="mx-auto grid max-w-[1200px] items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        {/* <div className="mx-auto grid max-w-[1200px] items-center gap-12 lg:grid-cols-2 lg:gap-16"> */}
+        <div className="mx-auto grid max-w-[1200px] items-center gap-12 lg:grid-cols-1 lg:gap-16">
           {/* left side terminal */}
-          <div className="order-2 mx-auto w-full max-w-[760px] lg:order-1 lg:mx-0 lg:max-w-none">
+          {/* <div className="order-2 mx-auto w-full max-w-[760px] lg:order-1 lg:mx-0 lg:max-w-none">
             <TerminalWindow />
-          </div>
+          </div> */}
 
           {/* right side content */}
-          <div className="order-1 flex flex-col items-center text-center lg:order-2 lg:items-start lg:text-left">
+          {/* <div className="order-1 flex flex-col items-center justify-center text-center lg:order-2 lg:items-start lg:text-left"> */}
+          <div className="order-1 flex flex-col items-center justify-center text-center">
             <div className="terminal-command-pill">
               $ init --premium-reviews
             </div>
-
-            <h1 className="terminal-hero-title mt-6 max-w-[700px]">
+            {/* <h1 className="terminal-hero-title mt-6 max-w-[700px]"> */}
+            <h1 className="terminal-hero-title mt-6">
               Boost Your Reviews
               <span className="terminal-hero-accent mt-2">
                 <ReactTyped
@@ -106,12 +108,10 @@ function HeroContent() {
                 />
               </span>
             </h1>
-
-            <p className="terminal-hero-copy mt-6 max-w-[620px] lg:mx-0 lg:text-left">
+            <p className="terminal-hero-copy mt-6 max-w-[620px] lg:mx-0 lg:text-center">
               Let customers scan, leave a review, and grow your reputation in
               seconds.
             </p>
-
             <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row lg:items-start">
               <CTAButton to="/signup" accent="green" mode="solid-hover-outline">
                 ▶ Start Exploring
