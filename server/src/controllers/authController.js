@@ -8,8 +8,10 @@ const signup = async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
+  const normalizedEmail = email.trim().toLowerCase();
+
   try {
-    const user = await Business.findOne({ email });
+    const user = await Business.findOne({ email: normalizedEmail });
 
     if (user) {
       return res.status(400).json({ message: "Business already exists" });
@@ -31,7 +33,7 @@ const signup = async (req, res) => {
 
     const business = await Business.create({
       name,
-      email,
+      email: normalizedEmail,
       password: hashedPassword,
       slug,
     });
@@ -41,9 +43,11 @@ const signup = async (req, res) => {
     res.status(201).json({
       token,
       business: {
-        id: business._id,
+        id: business._id.toString(),
         name: business.name,
         email: business.email,
+        slug: business.slug,
+        plan: business.plan,
       },
     });
   } catch (error) {
@@ -57,8 +61,10 @@ const login = async (req, res) => {
   if (!email || !password)
     return res.status(400).json({ message: "All fields are required." });
 
+  const normalizedEmail = email.trim().toLowerCase();
+
   try {
-    const business = await Business.findOne({ email });
+    const business = await Business.findOne({ email: normalizedEmail });
     if (!business)
       return res.status(400).json({ message: "Invalid credentials" });
 
@@ -70,7 +76,7 @@ const login = async (req, res) => {
     res.status(200).json({
       token,
       business: {
-        id: business._id,
+        id: business._id.toString(),
         name: business.name,
         email: business.email,
         slug: business.slug,
@@ -82,4 +88,23 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { signup, login };
+const getMe = async (req, res) => {
+  try {
+    const business = req.business;
+    if (!business)
+      return res.status(400).json({ message: "Business not found" });
+
+    return res.status(200).json({
+      id: business._id.toString(),
+      name: business.name,
+      email: business.email,
+      slug: business.slug,
+      plan: business.plan,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+module.exports = { signup, login, getMe };
