@@ -1,7 +1,8 @@
 import { createContext, useState, useEffect } from "react";
 import { getMe } from "../api/auth";
+import { login as loginApi } from "../api/auth";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [business, setBusiness] = useState(null);
@@ -34,8 +35,20 @@ export function AuthProvider({ children }) {
     initializeAuth();
   }, []);
 
+  const login = async (credentials) => {
+    try {
+      const result = await loginApi(credentials);
+      localStorage.setItem("reviewbitToken", result.token);
+      setToken(result.token);
+      setBusiness(result.business);
+      return result.business;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ business, token, loading }}>
+    <AuthContext.Provider value={{ business, token, loading, login }}>
       {children}
     </AuthContext.Provider>
   );

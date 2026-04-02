@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
 import CTAButton from "../../components/buttons/CtaButton";
 import { ReactTyped } from "react-typed";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useContext } from "react";
 import AuthTerminalShell from "../../components/auth/AuthTerminalShell";
+import { AuthContext } from "../../context/AuthContext";
 
 const LOGIN_LINES = {
   status1: "> gateway.status :: online",
@@ -24,6 +25,25 @@ const LOGIN_BOOT_LINES = [
 
 function Login() {
   const [step, setStep] = useState(0);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const { login } = useContext(AuthContext);
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    setError(null);
+    setSubmitting(true);
+    
+    try {
+      await login({ email, password });
+    } catch (error) {
+      setError(error.message || "Login failed");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   const showForm = step >= 4;
 
@@ -117,7 +137,7 @@ function Login() {
 
   const formContent = (
     <>
-      <form className="auth-form">
+      <form className="auth-form" onSubmit={handleSubmit}>
         <div className="auth-form__row">
           <label htmlFor="email" className="auth-form__label">
             operator_email
@@ -127,6 +147,8 @@ function Login() {
             type="email"
             placeholder="you@business.com"
             className="auth-form__input"
+            onChange={(event) => setEmail(event.target.value)}
+            value={email}
           />
         </div>
 
@@ -139,6 +161,8 @@ function Login() {
             type="password"
             placeholder="Enter your password"
             className="auth-form__input"
+            onChange={(event) => setPassword(event.target.value)}
+            value={password}
           />
         </div>
 
