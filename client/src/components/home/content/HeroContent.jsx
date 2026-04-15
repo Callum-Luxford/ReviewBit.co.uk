@@ -88,7 +88,7 @@ function HeroContent() {
           <span className="rb-hero__title-line">Turn feedback into</span>
           <span className="rb-hero__accent">
             <ReactTyped
-              strings={["5-star growth.", "5-star growth."]}
+              strings={["Better Reviews", "Faster Growth", "Smart Automation"]}
               typeSpeed={48}
               backSpeed={28}
               backDelay={2600}
