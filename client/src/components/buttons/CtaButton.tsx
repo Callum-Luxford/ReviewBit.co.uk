@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import type { ReactNode, ButtonHTMLAttributes, CSSProperties } from "react";
 
 const base =
-  "relative inline-flex items-center justify-center gap-2 border font-medium transition-all duration-300 ease-out focus:outline-none";
+  "relative inline-flex items-center justify-center rounded-md border font-medium transition-all duration-300 ease-out focus:outline-none";
 
 const sizes = {
   sm: "px-3 py-2 text-sm",
@@ -15,22 +15,22 @@ const sizes = {
 
 const accents = {
   green: {
-    border: "var(--accent-green-border)",
-    text: "var(--accent-green)",
-    bg: "var(--accent-green)",
-    glow: "var(--accent-green-glow)",
+    border: "rgba(255,162,92,0.28)",
+    text: "#ffa25c",
+    bg: "#ffa25c",
+    glow: "rgba(255,162,92,0.22)",
   },
   cyan: {
-    border: "var(--accent-cyan-border)",
-    text: "var(--accent-cyan)",
-    bg: "var(--accent-cyan)",
-    glow: "var(--accent-cyan-glow)",
+    border: "rgba(90,156,181,0.28)",
+    text: "#5a9cb5",
+    bg: "#5a9cb5",
+    glow: "rgba(90,156,181,0.22)",
   },
   purple: {
-    border: "var(--accent-purple-border)",
-    text: "var(--accent-purple)",
-    bg: "var(--accent-purple)",
-    glow: "var(--accent-purple-glow)",
+    border: "rgba(127,85,177,0.28)",
+    text: "#7f55b1",
+    bg: "#7f55b1",
+    glow: "rgba(127,85,177,0.22)",
   },
 } as const;
 
@@ -58,7 +58,7 @@ export default function CTAButton({
   type = "button",
   ...props
 }: CTAButtonProps) {
-  const palette = accents[accent];
+  const palette = accents[accent] ?? accents.green;
   const s = sizes[size] ?? sizes.md;
 
   const cssVars = {
@@ -69,17 +69,17 @@ export default function CTAButton({
   } as CSSProperties;
 
   const sharedClasses = "border-[var(--btn-border)]";
+  const charcoalBg = "bg-[rgba(24,25,29,0.9)]";
 
-  const outlineClasses = "bg-[rgba(8,12,32,0.45)] text-[var(--btn-text)]";
+  const outlineClasses = `${charcoalBg} text-[var(--btn-text)]`;
 
-  const hoverFillClasses =
-    "bg-[rgba(8,12,32,0.45)] text-[var(--btn-text)] hover:bg-[var(--btn-bg)] hover:text-black hover:shadow-[0_0_15px_var(--btn-glow)]";
+  const hoverFillClasses = `${charcoalBg} text-[var(--btn-text)] hover:bg-[var(--btn-bg)] hover:text-black hover:shadow-[0_0_18px_var(--btn-glow)]`;
 
   const solidClasses =
-    "bg-[var(--btn-bg)] text-black shadow-[0_0_15px_var(--btn-glow)]";
+    "bg-[var(--btn-bg)] text-black shadow-[0_0_18px_var(--btn-glow)]";
 
   const solidHoverOutlineClasses =
-    "bg-[var(--btn-bg)] text-black shadow-[0_0_18px_var(--btn-glow)] hover:bg-[rgba(8,12,32,0.45)] hover:text-[var(--btn-text)] hover:shadow-[0_0_15px_var(--btn-glow)]";
+    "bg-[var(--btn-bg)] text-black shadow-[0_0_18px_var(--btn-glow)] hover:bg-[rgba(24,25,29,0.9)] hover:text-[var(--btn-text)]";
 
   const modeClasses =
     mode === "solid"

@@ -1,4 +1,4 @@
-@import "./styles/base.css";
+@import "./styles/base_refactored.css";
 
 @tailwind base;
 @tailwind components;

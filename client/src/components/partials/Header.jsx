@@ -40,23 +40,23 @@ function Header() {
         aria-hidden="true"
         className={`absolute inset-0 transition-all duration-300 ${
           scrolled
-            ? "bg-[#0a0e14]/90 backdrop-blur-md"
-            : "bg-[#0a0e14]/70 backdrop-blur-sm"
+            ? "bg-[#0e0e0e]/90 backdrop-blur-md"
+            : "bg-[#0e0e0e]/70 backdrop-blur-sm"
         }`}
       />
 
       {/* bottom terminal separator */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0">
         <div className="absolute inset-x-0 bottom-0 flex justify-center">
-          <div className="h-[6px] w-[34%] bg-[rgba(var(--terminal-green-rgb),0.22)] blur-md" />
+          <div className="h-[6px] w-[34%] bg-[rgba(var(--accent-primary-rgb),0.22)] blur-md" />
         </div>
 
-        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[rgba(var(--terminal-green-rgb),0.55)] to-transparent" />
+        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[rgba(var(--accent-primary-rgb),0.55)] to-transparent" />
       </div>
 
       {/* Mobile Nav */}
       <nav
-        className={`fixed top-0 right-0 z-40 h-full w-2/3 max-w-[320px] transform border-l border-[rgba(var(--terminal-green-rgb),0.20)] bg-theme_clr_2 transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 z-40 h-full w-2/3 max-w-[320px] transform border-l border-[rgba(var(--accent-primary-rgb),0.20)] bg-theme_clr_2 transition-transform duration-300 ease-in-out ${
           menuOpen
             ? "pointer-events-auto translate-x-0"
             : "pointer-events-none translate-x-full"
@@ -139,7 +139,6 @@ function Header() {
             <span className="text-sm font-medium">{">_"}</span>
           </div>
 
-          {/* <p className="terminal-header-logo-text">Revbotic</p> */}
           <p className="terminal-header-logo-text">ReviewBit.co.uk</p>
         </Link>
 
@@ -191,7 +190,7 @@ function Header() {
             toggled={menuOpen}
             toggle={setMenuOpen}
             size={24}
-            color="rgb(var(--terminal-green-rgb))"
+            color="rgb(var(--accent-primary-rgb))"
           />
         </div>
       </div>

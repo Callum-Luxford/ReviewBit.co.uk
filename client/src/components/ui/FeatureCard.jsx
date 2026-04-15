@@ -6,17 +6,29 @@ export default function FeatureCard({
   imageClassName = "",
 }) {
   const accentMap = {
-    green: "0, 255, 102",
-    cyan: "0, 217, 255",
-    purple: "139, 92, 246",
+    green: {
+      rgb: "255, 162, 92",
+      className: "feature-visual-shell--green",
+    },
+    cyan: {
+      rgb: "90, 156, 181",
+      className: "feature-visual-shell--cyan",
+    },
+    purple: {
+      rgb: "127, 85, 177",
+      className: "feature-visual-shell--purple",
+    },
   };
 
-  const accentRgb = accentMap[accent] || "255, 255, 255";
+  const accentConfig = accentMap[accent] || {
+    rgb: "255, 162, 92",
+    className: "feature-visual-shell--green",
+  };
 
   return (
     <div
-      className="feature-visual-shell"
-      style={{ "--feature-accent-rgb": accentRgb }}
+      className={["feature-visual-shell", accentConfig.className].join(" ")}
+      style={{ "--feature-accent-rgb": accentConfig.rgb }}
     >
       <div className="feature-visual-topbar">
         <div className="feature-visual-dots">

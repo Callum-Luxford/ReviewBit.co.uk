@@ -15,9 +15,11 @@ export default function FeatureRow({
 }) {
   return (
     <div
-      className={["feature-row", reverse ? "feature-row--reverse" : ""].join(
-        " ",
-      )}
+      className={[
+        "feature-row",
+        `feature-row--accent-${accent}`,
+        reverse ? "feature-row--reverse" : "",
+      ].join(" ")}
     >
       <div className="feature-row__content">
         <h3 className="feature-row__title">{title}</h3>
@@ -45,7 +47,7 @@ export default function FeatureRow({
             mode={buttonMode}
             size="md"
             type="button"
-            className="uppercase tracking-[0.12em]"
+            className="feature-row__cta-btn uppercase tracking-[0.12em]"
           >
             {`> ${buttonText}`}
           </CTAButton>

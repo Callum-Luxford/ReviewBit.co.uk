@@ -493,7 +493,7 @@ function Features() {
   const pipelineRef = useRef(null);
 
   return (
-    <section className="section bg-theme_clr_1 feature-section">
+    <section className="section bg-theme_clr_4 feature-section">
       <div className="max-w-[1400px] mx-auto w-full px-4">
         <div className="flex flex-col items-center">
           <TerminalPill label="features.sys" />

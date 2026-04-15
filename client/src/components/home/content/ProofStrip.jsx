@@ -2,7 +2,7 @@ import ProofStripCard from "../../ui/ProofStripCard";
 import TerminalPill from "../../ui/TerminalPill";
 export default function ProofStrip() {
   return (
-    <section className="section bg-theme_clr_2 w-full">
+    <section className="section bg-theme_clr_1 w-full border-b border-white/10">
       <div className="max-w-[1400px] mx-auto w-full px-4">
         <div className="section-inner flex flex-col items-center">
           <TerminalPill label="trending.log" />

@@ -66,7 +66,7 @@ export default function Testimonials() {
   const bottomTrack = [...bottomRowTestimonials, ...bottomRowTestimonials];
 
   return (
-    <section className="section testimonials-section bg-theme_clr_1">
+    <section className="section testimonials-section bg-theme_clr_2">
       {/* terminal background */}
       <div className="testimonial-hero-bg">
         <div className="testimonial-hero-grid absolute inset-0" />

@@ -23,7 +23,7 @@ function Home() {
       <ProofStrip />
 
       {/* Testimonials */}
-      <Testimonials />
+      {/* <Testimonials /> */}
 
       {/* Pricing */}
       <Pricing />

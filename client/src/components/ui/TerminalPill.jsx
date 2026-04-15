@@ -1,22 +1,8 @@
-export default function TerminalPill({ label }) {
+export default function TerminalPill({ label, accent = "primary" }) {
   return (
-    <div className="terminal-section-pill">
-      <div className="terminal-section-pill-dots">
-        <span
-          className="terminal-section-pill-dot"
-          style={{ backgroundColor: "#ff5f57" }}
-        />
-        <span
-          className="terminal-section-pill-dot"
-          style={{ backgroundColor: "#febc2e" }}
-        />
-        <span
-          className="terminal-section-pill-dot"
-          style={{ backgroundColor: "#28c840" }}
-        />
-      </div>
-
-      <span>{label}</span>
+    <div className={["terminal-section-pill", `terminal-section-pill--${accent}`].join(" ")}>
+      <span className="terminal-section-pill-indicator" aria-hidden="true" />
+      <span className="terminal-section-pill-label">{label}</span>
     </div>
   );
 }
