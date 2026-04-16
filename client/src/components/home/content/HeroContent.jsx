@@ -70,6 +70,7 @@
 
 import { ReactTyped } from "react-typed";
 import CTAButton from "../../buttons/CtaButton";
+import SolarOrbits from "../../ui/SolarOrbits";
 
 function HeroContent() {
   return (
@@ -190,20 +191,7 @@ function HeroContent() {
 
           <div className="rb-hero__right" aria-hidden="true">
             <div className="rb-hero-visual">
-              <div className="rb-hero-visual__incoming rb-hero-visual__incoming--one" />
-              <div className="rb-hero-visual__incoming rb-hero-visual__incoming--two" />
-              <div className="rb-hero-visual__incoming rb-hero-visual__incoming--three" />
-
-              <div className="rb-hero-visual__trail rb-hero-visual__trail--one" />
-              <div className="rb-hero-visual__trail rb-hero-visual__trail--two" />
-              <div className="rb-hero-visual__trail rb-hero-visual__trail--three" />
-
-              <div className="rb-hero-visual__node rb-hero-visual__node--one" />
-              <div className="rb-hero-visual__node rb-hero-visual__node--two" />
-              <div className="rb-hero-visual__node rb-hero-visual__node--three" />
-              <div className="rb-hero-visual__node rb-hero-visual__node--four" />
-
-              <div className="rb-hero-visual__orbit" />
+              <SolarOrbits size={1750} />
 
               <div className="rb-hero-visual__card rb-hero-visual__card--feedback">
                 <div className="rb-hero-visual__card-label">
