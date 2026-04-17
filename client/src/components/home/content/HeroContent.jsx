@@ -1,6 +1,7 @@
 import { ReactTyped } from "react-typed";
 import CTAButton from "../../buttons/CtaButton";
-import SolarOrbits from "../../../components/ui/SolarOrbits"
+import SolarOrbits from "../../../components/ui/SolarOrbits";
+import ReviewOrbitCore from "./ReviewOrbitCore";
 
 function HeroContent() {
   return (
@@ -77,22 +78,8 @@ function HeroContent() {
           </div>
 
           <div className="rb-hero__right" aria-hidden="true">
-
-            {/* <SolarOrbits size={1500} />` */}
-
-            <div className="rb-hero-visual rb-hero-visual--orb-scene">
-              <div className="rb-hero-visual__scene-glow" />
-              <div className="rb-hero-visual__scene-glow rb-hero-visual__scene-glow--secondary" />
-
-              <div className="rb-hero-orb-system">
-                <div className="rb-hero-orb-shadow" />
-                <div className="rb-hero-orb-wrap">
-                  <div className="rb-hero-orb">
-                    <div className="rb-hero-orb__core" />
-                    <div className="rb-hero-orb__halo" />
-                  </div>
-                </div>
-              </div>
+            <div className="rb-hero-visual rb-hero-visual--orbit-core">
+              <ReviewOrbitCore className="rb-hero-orbit-core" />
             </div>
           </div>
         </div>
