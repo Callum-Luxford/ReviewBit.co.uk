@@ -1881,71 +1881,634 @@
 
   /* ========= HOW IT WORKS ========= */
 
-  .terminal-how-card-inner {
-    @apply flex h-full flex-col items-center p-8 text-center transition-all duration-300;
+  .rb-how {
+    position: relative;
+    overflow: hidden;
     background:
-      linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.025) 0%,
-        rgba(255, 255, 255, 0.01) 100%
+      radial-gradient(
+        900px 420px at 50% 0%,
+        rgba(var(--accent-primary-rgb), 0.045) 0%,
+        rgba(var(--accent-primary-rgb), 0.015) 28%,
+        transparent 70%
       ),
-      var(--terminal-card-bg);
+      var(--theme-clr-1);
   }
 
-  .terminal-how-icon-wrap {
-    @apply mb-6 flex h-16 w-16 items-center justify-center rounded-xl;
-    background: rgba(255, 255, 255, 0.03);
+  .rb-how__inner {
+    position: relative;
+    z-index: 2;
   }
 
-  .terminal-how-icon {
-    @apply h-8 w-8;
+  .rb-how__heading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ========= TIMELINE ========= */
+
+  .rb-how__timeline {
+    position: relative;
+    margin-top: 4.5rem;
+    padding-block: 1rem 0.5rem;
+  }
+
+  .rb-how__line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .rb-how__line-track,
+  .rb-how__line-fill {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    border-radius: 9999px;
+  }
+
+  .rb-how__line-track {
+    top: 0;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02);
+  }
+
+  .rb-how__line-fill {
+    top: 0;
+    height: var(--rb-how-progress-px, 0px);
+    background: linear-gradient(
+      to bottom,
+      rgba(var(--accent-primary-rgb), 0.5),
+      rgba(var(--accent-primary-rgb), 1)
+    );
+    box-shadow:
+      0 0 12px rgba(var(--accent-primary-rgb), 0.2),
+      0 0 30px rgba(var(--accent-primary-rgb), 0.1);
+    transition: height 0.12s linear;
+  }
+
+  /* ========= ROW LAYOUT ========= */
+  /* ========= ROW LAYOUT ========= */
+
+  .rb-how__timeline {
+    --rb-how-row-gap: 16rem;
+  }
+
+  .rb-how__row {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "visual content";
+    column-gap: 4rem;
+    align-items: center;
+    min-height: 36rem;
+  }
+
+  .rb-how__row + .rb-how__row {
+    margin-top: var(--rb-how-row-gap);
+  }
+
+  .rb-how__row--left {
+    grid-template-areas: "visual content";
+  }
+
+  .rb-how__row--right {
+    grid-template-areas: "content visual";
+  }
+
+  .rb-how__col {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .rb-how__col--visual {
+    grid-area: visual;
+  }
+
+  .rb-how__col--content {
+    grid-area: content;
+  }
+
+  /* pull both sides toward the center line */
+  .rb-how__row--left .rb-how__col--visual {
+    justify-content: flex-end;
+    padding-right: 0.75rem;
+  }
+
+  .rb-how__row--left .rb-how__col--content {
+    justify-content: flex-start;
+    padding-left: 0.75rem;
+  }
+
+  .rb-how__row--right .rb-how__col--content {
+    justify-content: flex-end;
+    padding-right: 0.75rem;
+  }
+
+  .rb-how__row--right .rb-how__col--visual {
+    justify-content: flex-start;
+    padding-left: 0.75rem;
+  }
+
+  .rb-how-card--visual,
+  .rb-how-card--content {
+    width: 100%;
+  }
+
+  .rb-how-card--visual {
+    max-width: 31rem;
+  }
+
+  .rb-how-card--content {
+    max-width: 31rem;
+    text-align: left;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent;
+  }
+
+  /* ========= ENTRY ANIMATION ========= */
+
+  .rb-how__col--visual,
+  .rb-how__col--content {
+    opacity: 0;
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s ease,
+      filter 0.7s ease;
+    will-change: transform, opacity;
+  }
+
+  .rb-how__row--left .rb-how__col--visual {
+    transform: translateX(-60px);
+    filter: blur(8px);
+  }
+
+  .rb-how__row--left .rb-how__col--content {
+    transform: translateX(60px);
+    filter: blur(8px);
+  }
+
+  .rb-how__row--right .rb-how__col--content {
+    transform: translateX(-60px);
+    filter: blur(8px);
+  }
+
+  .rb-how__row--right .rb-how__col--visual {
+    transform: translateX(60px);
+    filter: blur(8px);
+  }
+
+  .rb-how__row.is-visible .rb-how__col--visual,
+  .rb-how__row.is-visible .rb-how__col--content {
+    opacity: 1;
+    transform: translateX(0);
+    filter: blur(0);
+  }
+
+  /* ========= VISUAL CARD ========= */
+
+  .rb-how-card {
+    width: 100%;
+  }
+
+  .rb-how-card--visual {
+    max-width: 36rem;
+    transition: transform 0.35s ease;
+  }
+
+  .rb-how-card--visual.terminal-card-green,
+  .rb-how-card--visual.terminal-card-cyan,
+  .rb-how-card--visual.terminal-card-purple {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+
+  .rb-how__row--left .rb-how-card--visual {
+    justify-self: end;
+  }
+
+  .rb-how__row--right .rb-how-card--visual {
+    justify-self: start;
+  }
+
+  .rb-how-card__visual-shell {
+    position: relative;
+    border-radius: 2rem;
+    padding: 1rem;
+    background: rgba(20, 22, 27, 0.82);
+    border: none;
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.015),
+      0 20px 50px rgba(0, 0, 0, 0.35);
+    transition:
+      box-shadow 0.35s ease,
+      transform 0.35s ease;
+    overflow: hidden;
+  }
+
+  .rb-how-card__visual-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.9;
+    background:
+      radial-gradient(
+        circle at 20% 20%,
+        rgba(var(--accent-primary-rgb), 0.08) 0%,
+        transparent 38%
+      ),
+      radial-gradient(
+        circle at 78% 72%,
+        rgba(var(--accent-primary-rgb), 0.045) 0%,
+        transparent 34%
+      );
+  }
+
+  .rb-how-card--visual:hover {
+    transform: translateY(-4px);
+  }
+
+  .rb-how-card--visual:hover .rb-how-card__visual-shell {
+    box-shadow:
+      0 30px 60px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(var(--accent-primary-rgb), 0.08);
+  }
+
+  .rb-how-card__visual-frame {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    border-radius: 1.5rem;
+    min-height: 24rem;
+    background: rgba(10, 10, 12, 0.9);
+    border: none;
+    overflow: hidden;
+  }
+
+  .rb-how-card__visual-placeholder {
+    flex: 1;
+    min-height: 24rem;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.015) 0%,
+      rgba(255, 255, 255, 0.005) 40%,
+      rgba(255, 255, 255, 0.015) 100%
+    );
+  }
+
+  /* ========= CONTENT SIDE ========= */
+
+  .rb-how-card--content {
+    max-width: 34rem;
+  }
+
+  .rb-how-card--content-static {
+    pointer-events: none;
+  }
+
+  .rb-how__row--left .rb-how-card--content {
+    justify-self: start;
+  }
+
+  .rb-how__row--right .rb-how-card--content {
+    justify-self: end;
+  }
+
+  /* ========= CHAPTER ========= */
+
+  .rb-how-card__chapter-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .rb-how-card__chapter-dot {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 999px;
+    border: 1px solid rgba(var(--accent-primary-rgb), 0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(var(--accent-primary-rgb), 0.08);
+    transition:
+      box-shadow 0.3s ease,
+      border-color 0.3s ease,
+      background 0.3s ease;
+  }
+
+  .rb-how-card__chapter-icon {
+    width: 1rem;
+    height: 1rem;
+    display: block;
     background-color: currentColor;
     -webkit-mask: var(--icon-mask) center / contain no-repeat;
     mask: var(--icon-mask) center / contain no-repeat;
+    color: var(--accent-primary);
+    transition: color 0.3s ease;
   }
 
-  .terminal-card-cyan .terminal-how-icon-wrap {
-    color: var(--accent-secondary);
-    box-shadow: var(--accent-secondary-glow-sm);
-    background: rgba(var(--accent-secondary-rgb), 0.12);
+  .rb-how-card__chapter {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+    transition:
+      color 0.3s ease,
+      text-shadow 0.3s ease;
   }
 
-  .terminal-card-purple .terminal-how-icon-wrap {
+  /* ========= TEXT ========= */
+
+  .rb-how-card__title {
+    margin: 0;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    color: var(--font-clr-1);
+    transition: text-shadow 0.3s ease;
+  }
+
+  .rb-how-card__copy {
+    margin-top: 1.5rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .rb-how-card__list {
+    list-style: none;
+    margin: 1.8rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .rb-how-card__list-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .rb-how-card__list-dot {
+    width: 0.4rem;
+    height: 0.4rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+  }
+
+  .rb-how-card__list-text {
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  /* ========= ACCENT VARIANTS ========= */
+
+  .rb-how-card.terminal-card-green .rb-how-card__chapter-dot {
+    border-color: rgba(var(--accent-primary-rgb), 0.35);
+    background: rgba(var(--accent-primary-rgb), 0.08);
+  }
+
+  .rb-how-card.terminal-card-green .rb-how-card__chapter,
+  .rb-how-card.terminal-card-green .rb-how-card__chapter-icon,
+  .rb-how-card.terminal-card-green .rb-how-card__list-dot {
+    color: var(--accent-primary);
+  }
+
+  .rb-how-card.terminal-card-green .rb-how-card__visual-glow {
+    background:
+      radial-gradient(
+        circle at 20% 20%,
+        rgba(var(--accent-primary-rgb), 0.08) 0%,
+        transparent 38%
+      ),
+      radial-gradient(
+        circle at 78% 72%,
+        rgba(var(--accent-primary-rgb), 0.045) 0%,
+        transparent 34%
+      );
+  }
+
+  .rb-how-card.terminal-card-green.rb-how-card--visual:hover
+    .rb-how-card__visual-shell {
+    box-shadow:
+      0 30px 60px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(var(--accent-primary-rgb), 0.08);
+  }
+
+  .rb-how-card.terminal-card-purple .rb-how-card__chapter-dot {
+    border-color: rgba(var(--accent-tertiary-rgb), 0.35);
+    background: rgba(var(--accent-tertiary-rgb), 0.08);
+  }
+
+  .rb-how-card.terminal-card-purple .rb-how-card__chapter,
+  .rb-how-card.terminal-card-purple .rb-how-card__chapter-icon,
+  .rb-how-card.terminal-card-purple .rb-how-card__list-dot {
     color: var(--accent-tertiary);
-    box-shadow: var(--accent-tertiary-glow-sm);
-    background: rgba(var(--accent-tertiary-rgb), 0.12);
   }
 
-  .terminal-card-green .terminal-how-icon-wrap {
-    color: var(--accent-primary);
-    box-shadow: var(--accent-primary-glow-sm);
-    background: rgba(var(--accent-primary-rgb), 0.12);
+  .rb-how-card.terminal-card-purple .rb-how-card__visual-glow {
+    background:
+      radial-gradient(
+        circle at 20% 20%,
+        rgba(var(--accent-tertiary-rgb), 0.08) 0%,
+        transparent 38%
+      ),
+      radial-gradient(
+        circle at 78% 72%,
+        rgba(var(--accent-tertiary-rgb), 0.045) 0%,
+        transparent 34%
+      );
   }
 
-  .terminal-how-step {
-    @apply mb-4 text-sm font-medium uppercase tracking-[0.16em];
-    color: var(--accent-primary);
+  .rb-how-card.terminal-card-purple.rb-how-card--visual:hover
+    .rb-how-card__visual-shell {
+    box-shadow:
+      0 30px 60px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(var(--accent-tertiary-rgb), 0.08);
   }
 
-  .terminal-card-cyan .terminal-how-step {
+  .rb-how-card.terminal-card-cyan .rb-how-card__chapter-dot {
+    border-color: rgba(var(--accent-secondary-rgb), 0.35);
+    background: rgba(var(--accent-secondary-rgb), 0.08);
+  }
+
+  .rb-how-card.terminal-card-cyan .rb-how-card__chapter,
+  .rb-how-card.terminal-card-cyan .rb-how-card__chapter-icon,
+  .rb-how-card.terminal-card-cyan .rb-how-card__list-dot {
     color: var(--accent-secondary);
   }
 
-  .terminal-card-purple .terminal-how-step {
-    color: var(--accent-tertiary);
+  .rb-how-card.terminal-card-cyan.rb-how-card--visual:hover
+    .rb-how-card__visual-shell {
+    box-shadow:
+      0 30px 60px rgba(0, 0, 0, 0.3),
+      0 0 30px rgba(var(--accent-secondary-rgb), 0.08);
   }
 
-  .terminal-card-green .terminal-how-step {
-    color: var(--accent-primary);
+  /* ========= ACTIVE SECTION ========= */
+
+  .rb-how__row.is-active .rb-how-card__title {
+    text-shadow: 0 0 20px rgba(var(--accent-primary-rgb), 0.08);
   }
 
-  .terminal-how-title {
-    @apply text-3xl font-semibold text-text_clr_1;
-    letter-spacing: -0.03em;
+  .rb-how__row.is-active .rb-how-card__chapter {
+    text-shadow: 0 0 10px rgba(var(--accent-primary-rgb), 0.2);
   }
 
-  .terminal-how-copy {
-    @apply mt-4 max-w-[28ch] text-base text-text_clr_2 leading-7;
+  .rb-how__row.is-active .rb-how-card__chapter-dot {
+    box-shadow:
+      0 0 20px rgba(var(--accent-primary-rgb), 0.2),
+      0 0 40px rgba(var(--accent-primary-rgb), 0.08);
+    border-color: rgba(var(--accent-primary-rgb), 0.6);
+  }
+
+  .rb-how__row.is-active .rb-how-card.terminal-card-purple .rb-how-card__title {
+    text-shadow: 0 0 20px rgba(var(--accent-tertiary-rgb), 0.08);
+  }
+
+  .rb-how__row.is-active
+    .rb-how-card.terminal-card-purple
+    .rb-how-card__chapter {
+    text-shadow: 0 0 10px rgba(var(--accent-tertiary-rgb), 0.2);
+  }
+
+  .rb-how__row.is-active
+    .rb-how-card.terminal-card-purple
+    .rb-how-card__chapter-dot {
+    box-shadow:
+      0 0 20px rgba(var(--accent-tertiary-rgb), 0.2),
+      0 0 40px rgba(var(--accent-tertiary-rgb), 0.08);
+    border-color: rgba(var(--accent-tertiary-rgb), 0.6);
+  }
+
+  .rb-how__row.is-active .rb-how-card.terminal-card-cyan .rb-how-card__title {
+    text-shadow: 0 0 20px rgba(var(--accent-secondary-rgb), 0.08);
+  }
+
+  .rb-how__row.is-active .rb-how-card.terminal-card-cyan .rb-how-card__chapter {
+    text-shadow: 0 0 10px rgba(var(--accent-secondary-rgb), 0.2);
+  }
+
+  .rb-how__row.is-active
+    .rb-how-card.terminal-card-cyan
+    .rb-how-card__chapter-dot {
+    box-shadow:
+      0 0 20px rgba(var(--accent-secondary-rgb), 0.2),
+      0 0 40px rgba(var(--accent-secondary-rgb), 0.08);
+    border-color: rgba(var(--accent-secondary-rgb), 0.6);
+  }
+
+  /* ========= MOBILE ========= */
+
+  @media (max-width: 1024px) {
+    .rb-how__timeline {
+      padding-left: 2rem;
+    }
+
+    .rb-how__line {
+      left: 0.4rem;
+      transform: none;
+    }
+
+    .rb-how__line-track,
+    .rb-how__line-fill {
+      left: 0;
+      transform: none;
+    }
+
+    .rb-how__row,
+    .rb-how__row--left,
+    .rb-how__row--right {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "visual"
+        "content";
+      row-gap: 2rem;
+      min-height: unset;
+    }
+
+    .rb-how__col {
+      display: block;
+    }
+
+    .rb-how-card--visual,
+    .rb-how-card--content {
+      max-width: 100%;
+    }
+
+    .rb-how__row--left .rb-how__col--visual,
+    .rb-how__row--left .rb-how__col--content,
+    .rb-how__row--right .rb-how__col--visual,
+    .rb-how__row--right .rb-how__col--content {
+      transform: translateY(48px);
+    }
+
+    .rb-how__row.is-visible .rb-how__col--visual,
+    .rb-how__row.is-visible .rb-how__col--content {
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .rb-how__timeline {
+      padding-left: 1.6rem;
+    }
+
+    .rb-how__line {
+      left: 0.2rem;
+    }
+
+    .rb-how-card__visual-shell {
+      border-radius: 1.5rem;
+      padding: 0.75rem;
+    }
+
+    .rb-how-card__visual-frame,
+    .rb-how-card__visual-placeholder {
+      min-height: 18rem;
+    }
+
+    .rb-how-card__chapter-dot {
+      width: 2.2rem;
+      height: 2.2rem;
+    }
+
+    .rb-how-card__chapter-icon {
+      width: 0.9rem;
+      height: 0.9rem;
+    }
+
+    .rb-how-card__title {
+      font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .rb-how-card__copy {
+      font-size: 1rem;
+    }
+
+    .rb-how-card__list-item {
+      align-items: flex-start;
+    }
   }
 
   /* ========= HOW IT WORKS ========= */

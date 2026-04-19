@@ -1,26 +1,62 @@
 export default function HowItWorksCard({
-  image,
+  icon,
   title,
   children,
   accent = "terminal-card-green",
-  step = "STEP_01",
+  chapter = "CHAPTER 01",
+  bullets = [],
+  variant = "content",
 }) {
-  return (
-    <article className={["terminal-card-shell", accent].join(" ")}>
-      <div className="terminal-how-card-inner">
-        <div className="terminal-how-icon-wrap">
-          <div
-            className="terminal-how-icon"
-            style={{ "--icon-mask": `url(${image})` }}
-          />
+  if (variant === "visual") {
+    return (
+      <article
+        className={["rb-how-card", "rb-how-card--visual", accent].join(" ")}
+      >
+        <div className="rb-how-card__visual-shell">
+          <div className="rb-how-card__visual-glow" />
+          <div className="rb-how-card__visual-frame">
+            <div className="rb-how-card__visual-placeholder" />
+          </div>
         </div>
+      </article>
+    );
+  }
 
-        <div className="terminal-card-kicker">{step}</div>
+  return (
+    <article
+      className={[
+        "rb-how-card",
+        "rb-how-card--content",
+        "rb-how-card--content-static",
+        accent,
+      ].join(" ")}
+    >
+      <div className="rb-how-card__chapter-wrap">
+        <span className="rb-how-card__chapter-dot">
+          <span
+            className="rb-how-card__chapter-icon"
+            style={{ "--icon-mask": `url(${icon})` }}
+            aria-hidden="true"
+          />
+        </span>
 
-        <h3 className="card-title">{title}</h3>
-
-        <p className="card-subtitle">{children}</p>
+        <span className="rb-how-card__chapter">{chapter}</span>
       </div>
+
+      <h3 className="rb-how-card__title">{title}</h3>
+
+      <p className="rb-how-card__copy">{children}</p>
+
+      {bullets.length > 0 && (
+        <ul className="rb-how-card__list">
+          {bullets.map((bullet) => (
+            <li key={bullet} className="rb-how-card__list-item">
+              <span className="rb-how-card__list-dot" />
+              <span className="rb-how-card__list-text">{bullet}</span>
+            </li>
+          ))}
+        </ul>
+      )}
     </article>
   );
 }
