@@ -90,36 +90,35 @@
 
 // export default HeroContent;
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ReactTyped } from "react-typed";
 import * as THREE from "three";
 import CTAButton from "../../buttons/CtaButton";
+import { useAuthBoot } from "../../../context/AuthBootContext";
 
 /**
  * HeroVisual
  * --------------------------------------------------
  * 3D globe with dotted continents and animated arc connections.
  *
- * Continent rendering:
- *  - Samples /world-map.png (equirectangular, white land on black)
- *  - Latitude-aware density so polar regions don't over-sample
- *  - Small positional jitter to avoid moiré banding on the sphere
+ * Palette source:
+ *  - Pulls --accent-primary, --accent-secondary, --accent-tertiary from
+ *    the document root at mount, so the globe always matches your CSS
+ *    variables. Falls back to sensible defaults if a variable is missing.
+ *  - Continents are off-white (the substrate). A small percentage of
+ *    dots get an accent colour, sprinkled — the globe carries a hint of
+ *    your brand without becoming "an orange ball" or "a purple ball."
  *
  * Behaviour:
  *  - Continuous slow auto-rotation (never fully pauses)
  *  - Mouse moves the camera perspective orbitally (very gentle)
- *  - Dots on the back of the globe remain partially visible (depth)
- *  - Frequent thick arcs traveling between point-of-presence nodes
+ *  - Frequent arcs traveling between point-of-presence nodes
  *  - Pulse rings bloom at arc endpoints
  *  - Respects prefers-reduced-motion
  *
  * Props:
- *  - size (number | string): target width for the globe wrap via
- *    --hero-visual-size. Numbers are treated as pixels. Strings are
- *    passed through (e.g. "min(100%, 760px)"). Default: 720.
- *  - maxSize (number | string): hard ceiling via --hero-visual-max.
- *    Used so the wrap can break out of its column on desktop but still
- *    clamp on smaller screens via the CSS breakpoints. Default: 900.
+ *  - size (number | string): target width via --hero-visual-size. Default 720.
+ *  - maxSize (number | string): hard ceiling via --hero-visual-max. Default 900.
  */
 function HeroVisual({ size = 720, maxSize = 900 }) {
   const mountRef = useRef(null);
@@ -128,6 +127,19 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
+
+    // ---- Resolve palette from CSS variables ----
+    // This means the globe always tracks whatever you set in your root CSS.
+    // Edit the accent vars in your root file → globe updates next reload.
+    const rootStyles = getComputedStyle(document.documentElement);
+    const cssVar = (name, fallback) => {
+      const v = rootStyles.getPropertyValue(name).trim();
+      return v || fallback;
+    };
+
+    const ACCENT_PRIMARY = cssVar("--accent-primary");
+    const ACCENT_SECONDARY = cssVar("--accent-secondary");
+    const ACCENT_TERTIARY = cssVar("--accent-tertiary", "#a8a8b0");
 
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -140,42 +152,59 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
       poiRadius: 2.045,
 
       // ---- Dot sampling tuning ----
-      // Base grid step (higher = fewer dots). Was 5; 7 removes ~half.
       dotGridStep: 7,
-      dotSize: 0.022,
-      // Skip factor curve by latitude — scales 0..1. Sampling chance is
-      // multiplied by cos(lat)^polarBias so polar rings don't over-sample.
+      dotSize: 0.028,
       polarBias: 1.15,
-      // Random jitter in degrees applied to each dot's lat/lon so the
-      // regular grid doesn't show as a weave on the sphere.
       jitterDegrees: 0.22,
 
-      arcMaxConcurrent: 18,
-      arcSpawnInterval: 300,
+      // ---- Brightness ----
+      // Lower than before because dots are now off-white, not orange.
+      // White doesn't need additive boosting against dark the same way.
+      dotBrightness: 1.0,
+
+      // ---- Accent dot mix ----
+      // Of all sampled land dots, this fraction get an accent colour
+      // instead of the off-white substrate colour. Keep this small —
+      // 6–10% reads as "sprinkled hints", >15% reads as "polka dots".
+      accentDotChance: 0.08,
+      // Within the accent dots, split between primary / secondary.
+      // Tertiary is intentionally absent from the globe to keep it visually
+      // tied to the two "active" brand colours.
+      accentPrimaryRatio: 0.55,
+
+      arcMaxConcurrent: 16,
+      arcSpawnInterval: 320,
       arcDuration: 2600,
-      arcThickness: 0.0048,
+      arcThickness: 0.0044,
       arcHeightBoost: 0.52,
 
       rotationSpeed: 0.00145,
-      rotationSpeedHover: 0.00055, // slowed, not stopped, on hover
+      rotationSpeedHover: 0.00055,
 
-      // Mouse orbital camera (very subtle)
       cameraDistance: 8.1,
-      maxAzimuth: 0.14, // radians (~8°)
-      maxElevation: 0.1, // radians (~5.7°)
+      maxAzimuth: 0.14,
+      maxElevation: 0.1,
       cameraLerp: 0.055,
     };
 
-    // cleaner amber/orange palette
-    const COLOR_DOT = new THREE.Color(0xff9a2f);
-    const COLOR_DOT_BRIGHT = new THREE.Color(0xffc15e);
-    const COLOR_POI = 0xfff5ea;
-    const COLOR_POI_GLOW = new THREE.Color(0xffa94d);
+    // ---- Colour palette ----
+    // Globe surface colours are intentionally muted. Accent colours come
+    // from the resolved CSS variables above.
+    const COLOR_DOT_BASE = new THREE.Color(0xd8d4cc); // off-white substrate
+    const COLOR_DOT_BASE_BRIGHT = new THREE.Color(0xeae6dc); // brighter substrate
+    const COLOR_DOT_ACCENT_A = new THREE.Color(ACCENT_PRIMARY);
+    const COLOR_DOT_ACCENT_B = new THREE.Color(ACCENT_SECONDARY);
+
+    const COLOR_POI = 0xffffff; // white core
+    const COLOR_POI_GLOW = new THREE.Color(ACCENT_PRIMARY); // warm halo
     const COLOR_RING = 0xfff6ec;
-    const COLOR_ARC = new THREE.Color(0xffaf52);
-    const COLOR_GLOBE_CORE = 0x130907;
-    const COLOR_ATMOSPHERE = new THREE.Color(0xff7a1f);
-    const COLOR_RIM = new THREE.Color(0xff8e2c);
+    const COLOR_ARC = new THREE.Color(ACCENT_PRIMARY); // arcs in primary
+
+    // Globe core stays warm-charcoal so the surface feels lived-in.
+    const COLOR_GLOBE_CORE = 0x121013;
+    // Atmosphere & rim use primary at low intensity — barely there.
+    const COLOR_ATMOSPHERE = new THREE.Color(ACCENT_PRIMARY);
+    const COLOR_RIM = new THREE.Color(ACCENT_PRIMARY);
 
     const scene = new THREE.Scene();
 
@@ -216,7 +245,7 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
     const innerGlowGeom = new THREE.SphereGeometry(CONFIG.globeRadius, 72, 72);
     const innerGlowMat = new THREE.ShaderMaterial({
       uniforms: {
-        uColor: { value: new THREE.Color(0x2a120d) },
+        uColor: { value: new THREE.Color(0x1f1a1c) },
       },
       vertexShader: `
         varying vec3 vWorldPos;
@@ -235,7 +264,7 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
         void main() {
           vec3 viewDir = normalize(cameraPosition - vWorldPos);
           float fresnel = pow(1.0 - max(dot(vNormalDir, viewDir), 0.0), 2.5);
-          float alpha = fresnel * 0.22;
+          float alpha = fresnel * 0.18;
           gl_FragColor = vec4(uColor, alpha);
         }
       `,
@@ -246,9 +275,9 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
     const innerGlow = new THREE.Mesh(innerGlowGeom, innerGlowMat);
     globeGroup.add(innerGlow);
 
-    // ===== ATMOSPHERE =====
+    // ===== ATMOSPHERE — much dimmer than before =====
     const atmosphereGeom = new THREE.SphereGeometry(
-      CONFIG.globeRadius * 1.09,
+      CONFIG.globeRadius * 1.08,
       72,
       72,
     );
@@ -267,8 +296,9 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
         varying vec3 vNormal;
         uniform vec3 uColor;
         void main() {
-          float intensity = pow(0.82 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.2);
-          gl_FragColor = vec4(uColor, 1.0) * intensity * 0.58;
+          float intensity = pow(0.82 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.4);
+          // Dropped from 0.58 → 0.32 so the atmosphere whispers rather than glows
+          gl_FragColor = vec4(uColor, 1.0) * intensity * 0.32;
         }
       `,
       side: THREE.BackSide,
@@ -279,7 +309,7 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
     const atmosphere = new THREE.Mesh(atmosphereGeom, atmosphereMat);
     scene.add(atmosphere);
 
-    // ===== RIM =====
+    // ===== RIM — softened =====
     const rimGeom = new THREE.SphereGeometry(
       CONFIG.globeRadius * 1.002,
       72,
@@ -306,7 +336,8 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
         void main() {
           vec3 viewDir = normalize(cameraPosition - vWorldPos);
           float fresnel = pow(1.0 - max(dot(vNormalDir, viewDir), 0.0), 3.6);
-          float alpha = fresnel * 0.82;
+          // Dropped from 0.82 → 0.55 — a present rim, not a halo
+          float alpha = fresnel * 0.55;
           gl_FragColor = vec4(uColor, alpha);
         }
       `,
@@ -349,14 +380,14 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
       const positions = [];
       const alphas = [];
       const sizes = [];
+      // aType encodes which colour palette this dot uses:
+      //   0 = base off-white   1 = accent primary   2 = accent secondary
+      const types = [];
 
       for (let y = 0; y < height; y += CONFIG.dotGridStep) {
-        // Latitude in degrees for the current row (equator = 0)
         const v = y / height;
         const lat = 90 - v * 180;
 
-        // cos(lat) goes 1 at equator -> 0 at poles. Raising to polarBias
-        // tightens the curve so high latitudes are thinned out.
         const latRad = (lat * Math.PI) / 180;
         const keepChance = Math.pow(
           Math.max(Math.cos(latRad), 0),
@@ -364,7 +395,6 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
         );
 
         for (let x = 0; x < width; x += CONFIG.dotGridStep) {
-          // Probabilistic skip by latitude — the main moiré killer
           if (Math.random() > keepChance) continue;
 
           const idx = (y * width + x) * 4;
@@ -379,8 +409,6 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
           let lon = u * 360 - 180;
           let jLat = lat;
 
-          // Small positional jitter so the sampling grid doesn't read as
-          // a weave when wrapped onto the sphere.
           const j = CONFIG.jitterDegrees;
           lon += (Math.random() - 0.5) * 2 * j;
           jLat += (Math.random() - 0.5) * 2 * j;
@@ -388,9 +416,19 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
           const p = latLonToVector3(jLat, lon, CONFIG.continentRadius);
 
           positions.push(p.x, p.y, p.z);
-          // Slightly lower max alpha to compensate for less additive overlap
-          alphas.push(0.7 + Math.random() * 0.2);
-          sizes.push(0.9 + Math.random() * 0.25);
+          alphas.push(0.7 + Math.random() * 0.22);
+
+          // Decide colour role for this dot
+          if (Math.random() < CONFIG.accentDotChance) {
+            const isPrimary = Math.random() < CONFIG.accentPrimaryRatio;
+            types.push(isPrimary ? 1 : 2);
+            // Accent dots are slightly larger so they read as highlights
+            sizes.push(1.05 + Math.random() * 0.18);
+          } else {
+            types.push(0);
+            // Substrate dots vary subtly in size for natural texture
+            sizes.push(0.85 + Math.random() * 0.2);
+          }
         }
       }
 
@@ -401,23 +439,30 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
       );
       geom.setAttribute("aAlpha", new THREE.Float32BufferAttribute(alphas, 1));
       geom.setAttribute("aSize", new THREE.Float32BufferAttribute(sizes, 1));
+      geom.setAttribute("aType", new THREE.Float32BufferAttribute(types, 1));
 
       const mat = new THREE.ShaderMaterial({
         uniforms: {
-          uColorA: { value: COLOR_DOT },
-          uColorB: { value: COLOR_DOT_BRIGHT },
+          uColorBase: { value: COLOR_DOT_BASE },
+          uColorBaseBright: { value: COLOR_DOT_BASE_BRIGHT },
+          uColorAccentA: { value: COLOR_DOT_ACCENT_A },
+          uColorAccentB: { value: COLOR_DOT_ACCENT_B },
           uSize: { value: CONFIG.dotSize },
+          uBrightness: { value: CONFIG.dotBrightness },
         },
         vertexShader: `
           attribute float aAlpha;
           attribute float aSize;
+          attribute float aType;
           varying float vAlpha;
           varying float vMix;
+          varying float vType;
           uniform float uSize;
 
           void main() {
             vAlpha = aAlpha;
             vMix = aSize;
+            vType = aType;
 
             vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
             gl_Position = projectionMatrix * mvPosition;
@@ -425,18 +470,36 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
           }
         `,
         fragmentShader: `
-          uniform vec3 uColorA;
-          uniform vec3 uColorB;
+          uniform vec3 uColorBase;
+          uniform vec3 uColorBaseBright;
+          uniform vec3 uColorAccentA;
+          uniform vec3 uColorAccentB;
+          uniform float uBrightness;
           varying float vAlpha;
           varying float vMix;
+          varying float vType;
 
           void main() {
             vec2 uv = gl_PointCoord - 0.5;
             float d = length(uv);
             if (d > 0.5) discard;
 
-            float soft = smoothstep(0.5, 0.16, d);
-            vec3 color = mix(uColorA, uColorB, clamp(vMix - 0.9, 0.0, 1.0));
+            float soft = smoothstep(0.5, 0.10, d);
+
+            // Pick the colour based on dot type
+            // 0 = base, 1 = accent A, 2 = accent B
+            vec3 color;
+            if (vType < 0.5) {
+              // Base substrate — interpolate base/bright by relative size
+              color = mix(uColorBase, uColorBaseBright, clamp(vMix - 0.9, 0.0, 1.0));
+            } else if (vType < 1.5) {
+              color = uColorAccentA;
+            } else {
+              color = uColorAccentB;
+            }
+
+            color *= uBrightness;
+
             gl_FragColor = vec4(color, soft * vAlpha);
           }
         `,
@@ -513,12 +576,12 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
         new THREE.Float32BufferAttribute(positions, 3),
       );
 
-      // amber halo
+      // Warm halo — primary accent at low opacity
       const haloMat = new THREE.PointsMaterial({
         color: COLOR_POI_GLOW,
-        size: 0.14,
+        size: 0.13,
         transparent: true,
-        opacity: 0.32,
+        opacity: 0.28,
         sizeAttenuation: true,
         depthWrite: false,
         depthTest: true,
@@ -527,10 +590,10 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
       const halos = new THREE.Points(geom, haloMat);
       globeGroup.add(halos);
 
-      // white core
+      // Pure white core — these are the "active nodes"
       const pointMat = new THREE.PointsMaterial({
         color: COLOR_POI,
-        size: 0.06,
+        size: 0.055,
         transparent: true,
         opacity: 1,
         sizeAttenuation: true,
@@ -586,7 +649,6 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
       const distance = start.distanceTo(end);
       const midPoint = start.clone().add(end).multiplyScalar(0.5);
 
-      // higher arcs than before
       const arcHeight = CONFIG.globeRadius + distance * CONFIG.arcHeightBoost;
       midPoint.normalize().multiplyScalar(arcHeight);
 
@@ -625,7 +687,7 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
             float trail = 0.0;
 
             if (vProgress < head) {
-              trail = smoothstep(0.20, 0.0, head - vProgress) * 0.22;
+              trail = smoothstep(0.20, 0.0, head - vProgress) * 0.20;
             }
 
             float alpha = headGlow + trail;
@@ -642,7 +704,7 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
       tube.frustumCulled = false;
       globeGroup.add(tube);
 
-      const ringGeom = new THREE.RingGeometry(0.016, 0.024, 48);
+      const ringGeom = new THREE.RingGeometry(0.014, 0.022, 48);
       const ringMat = new THREE.MeshBasicMaterial({
         color: COLOR_RING,
         transparent: true,
@@ -713,7 +775,6 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
 
     const arcInterval = setInterval(spawnArc, CONFIG.arcSpawnInterval);
 
-    // ===== MOUSE ORBITAL CAMERA =====
     let mouseX = 0;
     let mouseY = 0;
     let isHovering = false;
@@ -768,7 +829,7 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
         globeGroup.rotation.x = -0.14 + Math.sin(t * 0.14) * 0.012;
 
         if (poiData?.halos) {
-          poiData.haloMat.opacity = 0.24 + Math.sin(t * 2.2) * 0.04;
+          poiData.haloMat.opacity = 0.22 + Math.sin(t * 2.2) * 0.04;
         }
 
         for (let i = arcs.length - 1; i >= 0; i--) {
@@ -786,8 +847,8 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
 
           if (progress > 0.82 && progress < 1.28) {
             const pulseT = (progress - 0.82) / 0.46;
-            arc.ring.scale.setScalar(1 + pulseT * 2.8);
-            arc.ringMat.opacity = (1 - pulseT) * 0.95;
+            arc.ring.scale.setScalar(1 + pulseT * 2.6);
+            arc.ringMat.opacity = (1 - pulseT) * 0.85;
           }
         }
       }
@@ -867,7 +928,6 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
     };
   }, []);
 
-  // Accept numbers (treated as px) or strings (passed through as-is).
   const sizeValue = typeof size === "number" ? `${size}px` : size;
   const maxValue = typeof maxSize === "number" ? `${maxSize}px` : maxSize;
 
@@ -889,11 +949,12 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
  * HeroContent
  */
 function HeroContent() {
+  const [hoveredButton, setHoveredButton] = useState(null);
+  const { startAuthBoot } = useAuthBoot();
   return (
     <section className="rb-hero relative isolate overflow-visible px-4 pb-16 pt-40">
-      <div className="rb-hero__bg">
-        <div className="rb-hero__grid absolute inset-0" />
-      </div>
+      {/* Background — single soft corner glow, no grid */}
+      <div className="rb-hero__bg" />
 
       <div className="rb-hero__inner">
         <div className="rb-hero__content">
@@ -902,7 +963,6 @@ function HeroContent() {
               <span className="rb-hero__badge-dot" />
               <span>New: Automated Review Routing</span>
             </div>
-
             <h1 className="rb-hero__title">
               <span className="rb-hero__title-line">Boost Your Reviews</span>
               <span className="rb-hero__accent">
@@ -915,25 +975,36 @@ function HeroContent() {
                 />
               </span>
             </h1>
-
             <p className="rb-hero__copy">
               Let customers scan, leave a review, and grow your reputation in
               seconds.
             </p>
 
             <div className="rb-hero__actions">
-              <CTAButton to="/signup" accent="green" mode="solid-hover-outline">
+              <CTAButton
+                onClick={() => startAuthBoot("signup")}
+                mode="paired-switch"
+                pairState={hoveredButton === "demo" ? "inactive" : "active"}
+                onMouseEnter={() => setHoveredButton("trial")}
+                onMouseLeave={() => setHoveredButton(null)}
+              >
                 Start Free Trial
               </CTAButton>
-              <CTAButton to="/login" accent="purple" mode="hover-fill">
-                See Demo
+
+              <CTAButton
+                onClick={() => startAuthBoot("login")}
+                mode="paired-switch"
+                pairState={hoveredButton === "demo" ? "active" : "inactive"}
+                onMouseEnter={() => setHoveredButton("demo")}
+                onMouseLeave={() => setHoveredButton(null)}
+              >
+                Open Workspace
               </CTAButton>
             </div>
 
             <p className="rb-hero__note">
               14-day free trial. No credit card required.
             </p>
-
             <div className="rb-hero__trust-row">
               <span className="rb-hero__trust-pill">
                 <span className="rb-hero__trust-pill-dot rb-hero__trust-pill-dot--primary" />
@@ -943,7 +1014,7 @@ function HeroContent() {
                 <span className="rb-hero__trust-pill-dot rb-hero__trust-pill-dot--secondary" />
                 Private feedback capture
               </span>
-              <span className="rb-hero__trust-pill"> 
+              <span className="rb-hero__trust-pill">
                 <span className="rb-hero__trust-pill-dot rb-hero__trust-pill-dot--tertiary" />
                 Automated follow-up ready
               </span>
@@ -952,11 +1023,7 @@ function HeroContent() {
 
           <div className="rb-hero__right">
             <div className="rb-hero-visual rb-hero-visual--orbit-core">
-              {/*
-                size    = target width at rest (px number or any CSS length string)
-                maxSize = desktop ceiling; CSS breakpoints clamp lower on tablet/mobile
-              */}
-              <HeroVisual size={900} maxSize={1000} />
+              <HeroVisual size={800} maxSize={1000} />
             </div>
           </div>
         </div>

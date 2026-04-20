@@ -87,6 +87,7 @@
   --theme-clr-2: #1f1f1f;
   --theme-clr-3: #181a1f;
   --theme-clr-4: #141414;
+  --theme-clr-5: #050505;
 
   --button-clr-1: var(--accent-primary);
 
@@ -1411,96 +1412,180 @@
     }
   }
 
+  /* =====================================================================
+ Hero — section background
+ ---------------------------------------------------------------------
+ Premium quiet surface. No grid, no competing decor blobs, no hard
+ corners. A single warm corner glow does the atmospheric work.
+ Accent text relies on colour alone (no text-shadow) for a calmer feel.
+===================================================================== */
+
+  /* =====================================================================
+ Hero — right-side visual
+ ---------------------------------------------------------------------
+ Size control:
+   --hero-visual-size : target width (set via the HeroVisual `size` prop)
+   --hero-visual-max  : hard ceiling     (set via `maxSize` prop)
+
+ Desktop breakout:
+   On desktop the wrap is allowed to exceed its column width up to
+   --hero-visual-max. Stays centred and overflow is visible so it can
+   breathe into the hero's right-side gutter without pushing the grid wider.
+
+ Mobile clamp:
+   Breakpoints progressively clamp using 100% of the column so the globe
+   can never cause horizontal scroll on small screens, regardless of
+   what `size` was passed.
+===================================================================== */
+
+  .rb-hero__right {
+    @apply relative flex items-center justify-center;
+    min-height: 620px;
+    min-width: 0;
+    width: 100%;
+    overflow: visible;
+  }
+
+  .rb-hero-visual {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    min-height: 620px;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .rb-hero-visual--orbit-core {
+    position: relative;
+    width: 100%;
+    min-width: 0;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-visual-wrap {
+    position: relative;
+    width: min(var(--hero-visual-size, 720px), var(--hero-visual-max, 900px));
+    aspect-ratio: 1 / 1;
+    overflow: visible;
+    flex: 0 0 auto;
+    margin-inline: auto;
+  }
+
+  /* Ambient bloom — much softer than before. The Stitch reference proves
+the globe should sit on the page calmly rather than glow off it.
+Uses --accent-primary-rgb so it ties to your brand variable. */
+
+  .hero-visual-wrap::before {
+    content: "";
+    position: absolute;
+    inset: -30px;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(var(--accent-primary-rgb), 0.06) 0%,
+      rgba(var(--accent-primary-rgb), 0.02) 32%,
+      transparent 65%
+    );
+    filter: blur(24px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-visual-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    z-index: 1;
+    pointer-events: auto;
+  }
+
+  .hero-visual-canvas canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
   .rb-hero {
     @apply relative isolate px-4;
     padding-top: clamp(7.75rem, 10vw, 10.5rem);
     padding-bottom: clamp(5.5rem, 7vw, 7.5rem);
-    background: #080809;
+    background: #0d0d10;
     overflow: visible;
   }
 
+  /* Single, soft, top-right corner wash. This is the only ambient light
+in the hero — it does the same job as the Stitch reference's corner
+glow without adding any visual noise. */
   .rb-hero__bg {
+    position: absolute;
     position: absolute;
     inset: 0;
     pointer-events: none;
     background:
+
+  /* PRIMARY — warm orange (main hero light) */
       radial-gradient(
-        620px 320px at 58% 10%,
-        rgba(var(--accent-primary-rgb), 0.038) 0%,
-        rgba(var(--accent-primary-rgb), 0.01) 30%,
-        rgba(var(--accent-primary-rgb), 0.002) 46%,
-        transparent 72%
+        1000px 600px at 78% 20%,
+        rgba(var(--accent-primary-rgb), 0.12) 0%,
+        rgba(var(--accent-primary-rgb), 0.06) 25%,
+        rgba(var(--accent-primary-rgb), 0.02) 45%,
+        transparent 70%
       ),
-      linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.004) 0%,
-        rgba(255, 255, 255, 0.001) 16%,
-        rgba(255, 255, 255, 0) 30%
-      ),
-      #080809;
+      /* SECONDARY — teal/cyan (right side ambient contrast) */
+        radial-gradient(
+          800px 500px at 88% 65%,
+          rgba(var(--accent-secondary-rgb), 0.08) 0%,
+          rgba(var(--accent-secondary-rgb), 0.03) 35%,
+          transparent 70%
+        ),
+      /* TERTIARY — purple (depth + richness) */
+        radial-gradient(
+          900px 500px at 65% 85%,
+          rgba(var(--accent-tertiary-rgb), 0.07) 0%,
+          rgba(var(--accent-tertiary-rgb), 0.025) 40%,
+          transparent 70%
+        ),
+      /* LEFT SIDE BALANCE (very subtle) */
+        radial-gradient(
+          700px 400px at 20% 15%,
+          rgba(var(--accent-primary-rgb), 0.025) 0%,
+          transparent 65%
+        ),
+      /* BASE */ var(--theme-clr-5);
   }
 
-  .rb-hero__grid {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.042) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.042) 1px, transparent 1px);
-    background-size: 108px 108px;
-    background-position: center top;
-    background-repeat: repeat;
-    opacity: 0.42;
-    mask-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(0, 0, 0, 1) 78%,
-      rgba(0, 0, 0, 0.95) 88%,
-      rgba(0, 0, 0, 0.72) 95%,
-      rgba(0, 0, 0, 0.4) 100%
-    );
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 1) 0%,
-      rgba(0, 0, 0, 1) 78%,
-      rgba(0, 0, 0, 0.95) 88%,
-      rgba(0, 0, 0, 0.72) 95%,
-      rgba(0, 0, 0, 0.4) 100%
-    );
-  }
+  /* Grid removed by design — the Stitch reference proves it's not needed
+and the page reads as more premium without it. If you want a hint of
+structure back, uncomment the block below at very low opacity. */
+  /*
+.rb-hero__grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+  background-size: 120px 120px;
+  background-position: center top;
+  opacity: 0.5;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+}
+*/
 
-  .rb-hero__decor {
-    position: absolute;
-    pointer-events: none;
-    border-radius: 9999px;
-    filter: blur(48px);
-    opacity: 0.24;
-  }
-
-  .rb-hero__decor--left {
-    width: 280px;
-    height: 280px;
-    left: 7%;
-    top: 32%;
-    background: radial-gradient(
-      circle,
-      rgba(var(--accent-primary-rgb), 0.12) 0%,
-      rgba(var(--accent-primary-rgb), 0.03) 38%,
-      transparent 72%
-    );
-  }
-
+  /* Decor blobs removed — the corner glow on .rb-hero__bg replaces them.
+Keeping the selectors as no-ops so any leftover JSX doesn't 404 on
+styles. Safe to delete the elements from the markup as well. */
+  .rb-hero__decor,
+  .rb-hero__decor--left,
   .rb-hero__decor--right {
-    width: 220px;
-    height: 220px;
-    right: 10%;
-    top: 24%;
-    background: radial-gradient(
-      circle,
-      rgba(var(--accent-primary-rgb), 0.06) 0%,
-      rgba(var(--accent-primary-rgb), 0.015) 34%,
-      transparent 70%
-    );
+    display: none;
   }
 
   .rb-hero__inner {
@@ -1514,26 +1599,23 @@
 
   .rb-hero__left {
     @apply flex flex-col items-center text-center lg:items-start lg:text-left;
+    min-width: 0;
+    width: 100%;
   }
 
+  /* Slightly more refined badge — softer surface, less "card-like" */
   .rb-hero__badge {
     @apply inline-flex items-center justify-center rounded-full border px-5 py-3 text-md md:text-lg;
     gap: 0.7rem;
     margin-bottom: 1.35rem;
-    border-color: rgba(255, 255, 255, 0.08);
-    background:
-      linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.035),
-        rgba(255, 255, 255, 0.015)
-      ),
-      rgba(28, 29, 34, 0.88);
+    border-color: rgba(255, 255, 255, 0.06);
+    background: rgba(22, 22, 25, 0.65);
     color: var(--accent-primary);
     font-size: var(--font-size-md);
     font-weight: var(--font-weight-5);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.03),
-      0 10px 30px rgba(0, 0, 0, 0.16);
+    box-shadow: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   .rb-hero__badge-dot {
@@ -1541,7 +1623,7 @@
     height: 0.625rem;
     border-radius: 9999px;
     background: var(--accent-primary);
-    box-shadow: 0 0 12px rgba(var(--accent-primary-rgb), 0.35);
+    box-shadow: 0 0 10px rgba(var(--accent-primary-rgb), 0.28);
   }
 
   .rb-hero__title {
@@ -1553,12 +1635,13 @@
     display: block;
   }
 
+  /* Accent text now relies on colour alone — no text-shadow.
+The Stitch reference proves the colour is the signal; the glow was
+adding to the "brochure illustration" feel rather than the premium one. */
   .rb-hero__accent {
     @apply mt-2 block text-6xl md:mt-0 md:text-10xl;
     color: var(--accent-primary);
-    text-shadow:
-      0 0 12px rgba(var(--accent-primary-rgb), 0.14),
-      0 0 28px rgba(var(--accent-primary-rgb), 0.07);
+    text-shadow: none;
   }
 
   .rb-hero__copy {
@@ -1585,15 +1668,14 @@
   }
 
   .rb-hero__trust-pill {
-    /* @apply w-full; */
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
     padding: 0.78rem 1rem;
     border-radius: var(--border-radius-full);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    background: rgba(255, 255, 255, 0.02);
-    color: rgba(247, 245, 242, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.018);
+    color: rgba(247, 245, 242, 0.7);
     font-size: var(--font-size-sm);
     line-height: 1;
   }
@@ -1605,126 +1687,26 @@
     flex-shrink: 0;
   }
 
+  /* Softer dot glows so the pills don't compete with the CTA */
   .rb-hero__trust-pill-dot--primary {
     background: var(--accent-primary);
-    box-shadow: 0 0 10px rgba(var(--accent-primary-rgb), 0.3);
+    box-shadow: 0 0 8px rgba(var(--accent-primary-rgb), 0.22);
   }
 
   .rb-hero__trust-pill-dot--secondary {
     background: var(--accent-secondary);
-    box-shadow: 0 0 10px rgba(var(--accent-secondary-rgb), 0.24);
+    box-shadow: 0 0 8px rgba(var(--accent-secondary-rgb), 0.18);
   }
 
   .rb-hero__trust-pill-dot--tertiary {
     background: var(--accent-tertiary);
-    box-shadow: 0 0 10px rgba(var(--accent-tertiary-rgb), 0.22);
+    box-shadow: 0 0 8px rgba(var(--accent-tertiary-rgb), 0.16);
   }
 
   /* =====================================================================
-   Hero — right-side visual
-   ---------------------------------------------------------------------
-   Size control:
-     --hero-visual-size : target width (set via the HeroVisual `size` prop)
-     --hero-visual-max  : hard ceiling     (set via `maxSize` prop)
-
-   Desktop breakout:
-     On desktop the wrap is allowed to exceed its column width up to
-     --hero-visual-max. It stays centred and overflow is visible, so it
-     can breathe into the hero's right-side gutter without pushing the
-     grid wider.
-
-   Mobile clamp:
-     Breakpoints progressively clamp the width using 100% of the column
-     so the globe can never cause horizontal scroll on small screens,
-     regardless of what `size` was passed.
+BREAKPOINTS
 ===================================================================== */
 
-  .rb-hero__right {
-    @apply relative flex items-center justify-center;
-    min-height: 620px;
-    /* Allow the globe to visually break out of the column on desktop */
-    overflow: visible;
-  }
-
-  .rb-hero-visual {
-    position: relative;
-    width: 100%;
-    /* Removed the 820px cap — ceiling now lives on .hero-visual-wrap
-     via --hero-visual-max so it can be tuned per instance. */
-    min-height: 620px;
-    overflow: visible;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .rb-hero-visual--orbit-core {
-    position: relative;
-    overflow: visible;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* -------- Wrap: the sizing anchor --------
-   Desktop default:
-     width  = clamp(column, requested size, absolute max)
-     We want requested size to win even if it exceeds the column,
-     so we use a flat value capped by --hero-visual-max rather than
-     clamping to 100%. Parent's overflow:visible lets it spill safely. */
-  .hero-visual-wrap {
-    position: relative;
-    width: min(var(--hero-visual-size, 720px), var(--hero-visual-max, 900px));
-    aspect-ratio: 1 / 1;
-    overflow: visible;
-    flex: 0 0 auto;
-    /* Keep it centred inside the column so breakout is symmetrical */
-    margin-inline: auto;
-  }
-
-  /* Soft ambient bloom behind the globe */
-  .hero-visual-wrap::before {
-    content: "";
-    position: absolute;
-    inset: -40px;
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba(255, 140, 60, 0.18) 0%,
-      rgba(255, 140, 60, 0.06) 30%,
-      transparent 65%
-    );
-    filter: blur(20px);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* -------- Canvas: fills the wrap 1:1 -------- */
-  .hero-visual-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    z-index: 1;
-    /* Needed for the orbital camera mouse tracking */
-    pointer-events: auto;
-  }
-
-  .hero-visual-canvas canvas {
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  /* =====================================================================
-   BREAKPOINTS
-   Each breakpoint swaps the wrap's width formula so large globes on
-   small screens get clamped to 100% of the column. This guarantees no
-   horizontal overflow on tablet/mobile regardless of the size prop.
-===================================================================== */
-
-  /* -------- Laptop / small desktop --------
-   Stop the breakout early so the globe doesn't crowd the text column. */
   @media (max-width: 1280px) {
     .rb-hero__right {
       min-height: 560px;
@@ -1735,12 +1717,10 @@
     }
 
     .hero-visual-wrap {
-      /* Clamp to column width, capped at 640px */
-      width: min(100%, 640px);
+      width: min(var(--hero-visual-size, 720px), 100%, 640px);
     }
   }
 
-  /* -------- Tablet -------- */
   @media (max-width: 1024px) {
     .rb-hero__right {
       min-height: 480px;
@@ -1751,11 +1731,10 @@
     }
 
     .hero-visual-wrap {
-      width: min(100%, 460px);
+      width: min(var(--hero-visual-size, 720px), 100%, 460px);
     }
   }
 
-  /* -------- Mobile -------- */
   @media (max-width: 640px) {
     .rb-hero__right {
       min-height: 360px;
@@ -1767,79 +1746,14 @@
     }
 
     .hero-visual-wrap {
-      width: min(100%, 340px);
+      width: min(var(--hero-visual-size, 720px), 100%, 340px);
     }
 
     .hero-visual-wrap::before {
-      inset: -12px;
-      filter: blur(14px);
+      inset: -10px;
+      filter: blur(16px);
     }
   }
-  /* .review-orbit-core {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    isolation: isolate;
-  } */
-
-  /* .review-orbit-core__svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-  } */
-
-  /* ===== SOLAR ORBITS COMPONENT ===== */
-
-  /* ===== SOLAR ORBITS COMPONENT ===== */
-
-  /* ===== SOLAR ORBITS COMPONENT ===== */
-
-  /* .rb-solar {
-    position: absolute;
-    z-index: 0;
-    pointer-events: none;
-    aspect-ratio: 640 / 590;
-  }
-
-  .rb-solar__svg {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    display: block;
-    filter: blur(3px);
-  }
-
-  .rb-solar__ring {
-    fill: none;
-    stroke-width: 0.6;
-    stroke-linecap: round;
-  }
-
-  .rb-solar__ring--outer {
-    stroke: rgba(var(--accent-primary-rgb), 0.7);
-  }
-
-  .rb-solar__ring--middle {
-    stroke: rgba(var(--accent-secondary-rgb), 0.7);
-  }
-
-  .rb-solar__ring--inner {
-    stroke: rgba(var(--accent-tertiary-rgb), 0.7);
-  }
-
-  .rb-solar__dot--outer {
-    fill: var(--accent-primary);
-  }
-
-  .rb-solar__dot--middle {
-    fill: var(--accent-secondary);
-  }
-
-  .rb-solar__dot--inner {
-    fill: var(--accent-tertiary);
-  } */
 
   /* ======== HERO-CONTENT ======== */
   /* ======== HERO-CONTENT ======== */
@@ -2020,14 +1934,6 @@
   .rb-how {
     position: relative;
     overflow: hidden;
-    background:
-      radial-gradient(
-        900px 420px at 50% 0%,
-        rgba(var(--accent-primary-rgb), 0.045) 0%,
-        rgba(var(--accent-primary-rgb), 0.015) 28%,
-        transparent 70%
-      ),
-      var(--theme-clr-1);
   }
 
   .rb-how__inner {

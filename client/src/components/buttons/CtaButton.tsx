@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
-import type { ReactNode, ButtonHTMLAttributes, CSSProperties } from "react";
+import type {
+  ReactNode,
+  ButtonHTMLAttributes,
+  CSSProperties,
+  MouseEventHandler,
+} from "react";
 
 const base =
-  "relative inline-flex items-center justify-center rounded-md border font-medium transition-all duration-300 ease-out focus:outline-none";
+  "relative inline-flex items-center justify-center rounded-md border font-medium transition-all duration-300 ease-out focus:outline-none focus-visible:outline-none active:scale-100 active:translate-y-0";
 
 const sizes = {
   sm: "px-3 py-2 text-sm",
@@ -32,11 +37,24 @@ const accents = {
     bg: "#7f55b1",
     glow: "rgba(127,85,177,0.22)",
   },
+  neutral: {
+    border: "rgba(255,255,255,0.1)",
+    text: "rgba(247,245,242,0.85)",
+    bg: "rgba(255,255,255,0.025)",
+    glow: "rgba(255,255,255,0.08)",
+  },
 } as const;
 
 type Accent = keyof typeof accents;
 type Size = keyof typeof sizes;
-type Mode = "outline" | "hover-fill" | "solid" | "solid-hover-outline";
+type Mode =
+  | "outline"
+  | "hover-fill"
+  | "solid"
+  | "solid-hover-outline"
+  | "paired-switch";
+
+type PairState = "active" | "inactive";
 
 type CTAButtonProps = {
   to?: string;
@@ -44,8 +62,11 @@ type CTAButtonProps = {
   accent?: Accent;
   size?: Size;
   mode?: Mode;
+  pairState?: PairState;
   className?: string;
   type?: "button" | "submit" | "reset";
+  onMouseEnter?: MouseEventHandler<HTMLElement>;
+  onMouseLeave?: MouseEventHandler<HTMLElement>;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export default function CTAButton({
@@ -54,8 +75,11 @@ export default function CTAButton({
   accent = "green",
   size = "md",
   mode = "outline",
+  pairState = "inactive",
   className = "",
   type = "button",
+  onMouseEnter,
+  onMouseLeave,
   ...props
 }: CTAButtonProps) {
   const palette = accents[accent] ?? accents.green;
@@ -68,7 +92,7 @@ export default function CTAButton({
     "--btn-glow": palette.glow,
   } as CSSProperties;
 
-  const sharedClasses = "border-[var(--btn-border)]";
+  const sharedClasses = "border-[var(--btn-border)] select-none";
   const charcoalBg = "bg-[rgba(24,25,29,0.9)]";
 
   const outlineClasses = `${charcoalBg} text-[var(--btn-text)]`;
@@ -81,6 +105,11 @@ export default function CTAButton({
   const solidHoverOutlineClasses =
     "bg-[var(--btn-bg)] text-black shadow-[0_0_18px_var(--btn-glow)] hover:bg-[rgba(24,25,29,0.9)] hover:text-[var(--btn-text)]";
 
+  const pairedSwitchClasses =
+    pairState === "active"
+      ? "bg-[var(--accent-primary)] text-[#111111] border-[rgba(var(--accent-primary-rgb),0.3)] shadow-[0_0_10px_rgba(var(--accent-primary-rgb),0.07)]"
+      : "bg-[rgba(255,255,255,0.025)] text-[rgba(247,245,242,0.85)] border-[rgba(255,255,255,0.1)] shadow-none";
+
   const modeClasses =
     mode === "solid"
       ? solidClasses
@@ -88,20 +117,35 @@ export default function CTAButton({
         ? hoverFillClasses
         : mode === "solid-hover-outline"
           ? solidHoverOutlineClasses
-          : outlineClasses;
+          : mode === "paired-switch"
+            ? pairedSwitchClasses
+            : outlineClasses;
 
   const classes = `${base} ${s} ${sharedClasses} ${modeClasses} ${className}`;
 
   if (to) {
     return (
-      <Link to={to} className={classes} style={cssVars}>
+      <Link
+        to={to}
+        className={classes}
+        style={cssVars}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
         {children}
       </Link>
     );
   }
 
   return (
-    <button type={type} className={classes} style={cssVars} {...props}>
+    <button
+      type={type}
+      className={classes}
+      style={cssVars}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      {...props}
+    >
       {children}
     </button>
   );
