@@ -1412,10 +1412,11 @@
   }
 
   .rb-hero {
-    @apply relative isolate overflow-hidden px-4;
+    @apply relative isolate px-4;
     padding-top: clamp(7.75rem, 10vw, 10.5rem);
     padding-bottom: clamp(5.5rem, 7vw, 7.5rem);
     background: #080809;
+    overflow: visible;
   }
 
   .rb-hero__bg {
@@ -1619,40 +1620,175 @@
     box-shadow: 0 0 10px rgba(var(--accent-tertiary-rgb), 0.22);
   }
 
+  /* =====================================================================
+   Hero — right-side visual
+   ---------------------------------------------------------------------
+   Size control:
+     --hero-visual-size : target width (set via the HeroVisual `size` prop)
+     --hero-visual-max  : hard ceiling     (set via `maxSize` prop)
+
+   Desktop breakout:
+     On desktop the wrap is allowed to exceed its column width up to
+     --hero-visual-max. It stays centred and overflow is visible, so it
+     can breathe into the hero's right-side gutter without pushing the
+     grid wider.
+
+   Mobile clamp:
+     Breakpoints progressively clamp the width using 100% of the column
+     so the globe can never cause horizontal scroll on small screens,
+     regardless of what `size` was passed.
+===================================================================== */
+
   .rb-hero__right {
     @apply relative flex items-center justify-center;
-    min-height: 590px;
+    min-height: 620px;
+    /* Allow the globe to visually break out of the column on desktop */
     overflow: visible;
   }
 
   .rb-hero-visual {
     position: relative;
-    width: min(100%, 820px);
-    min-height: 590px;
-    overflow: visible;
-  }
-
-  .rb-hero-visual--orbit-core {
+    width: 100%;
+    /* Removed the 820px cap — ceiling now lives on .hero-visual-wrap
+     via --hero-visual-max so it can be tuned per instance. */
+    min-height: 620px;
     overflow: visible;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .review-orbit-core {
+  .rb-hero-visual--orbit-core {
+    position: relative;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* -------- Wrap: the sizing anchor --------
+   Desktop default:
+     width  = clamp(column, requested size, absolute max)
+     We want requested size to win even if it exceeds the column,
+     so we use a flat value capped by --hero-visual-max rather than
+     clamping to 100%. Parent's overflow:visible lets it spill safely. */
+  .hero-visual-wrap {
+    position: relative;
+    width: min(var(--hero-visual-size, 720px), var(--hero-visual-max, 900px));
+    aspect-ratio: 1 / 1;
+    overflow: visible;
+    flex: 0 0 auto;
+    /* Keep it centred inside the column so breakout is symmetrical */
+    margin-inline: auto;
+  }
+
+  /* Soft ambient bloom behind the globe */
+  .hero-visual-wrap::before {
+    content: "";
+    position: absolute;
+    inset: -40px;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 140, 60, 0.18) 0%,
+      rgba(255, 140, 60, 0.06) 30%,
+      transparent 65%
+    );
+    filter: blur(20px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* -------- Canvas: fills the wrap 1:1 -------- */
+  .hero-visual-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    z-index: 1;
+    /* Needed for the orbital camera mouse tracking */
+    pointer-events: auto;
+  }
+
+  .hero-visual-canvas canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* =====================================================================
+   BREAKPOINTS
+   Each breakpoint swaps the wrap's width formula so large globes on
+   small screens get clamped to 100% of the column. This guarantees no
+   horizontal overflow on tablet/mobile regardless of the size prop.
+===================================================================== */
+
+  /* -------- Laptop / small desktop --------
+   Stop the breakout early so the globe doesn't crowd the text column. */
+  @media (max-width: 1280px) {
+    .rb-hero__right {
+      min-height: 560px;
+    }
+
+    .rb-hero-visual {
+      min-height: 560px;
+    }
+
+    .hero-visual-wrap {
+      /* Clamp to column width, capped at 640px */
+      width: min(100%, 640px);
+    }
+  }
+
+  /* -------- Tablet -------- */
+  @media (max-width: 1024px) {
+    .rb-hero__right {
+      min-height: 480px;
+    }
+
+    .rb-hero-visual {
+      min-height: 480px;
+    }
+
+    .hero-visual-wrap {
+      width: min(100%, 460px);
+    }
+  }
+
+  /* -------- Mobile -------- */
+  @media (max-width: 640px) {
+    .rb-hero__right {
+      min-height: 360px;
+    }
+
+    .rb-hero-visual {
+      min-height: 360px;
+      max-width: 100%;
+    }
+
+    .hero-visual-wrap {
+      width: min(100%, 340px);
+    }
+
+    .hero-visual-wrap::before {
+      inset: -12px;
+      filter: blur(14px);
+    }
+  }
+  /* .review-orbit-core {
     position: relative;
     width: 100%;
     height: 100%;
     overflow: visible;
     isolation: isolate;
-  }
+  } */
 
-  .review-orbit-core__svg {
+  /* .review-orbit-core__svg {
     display: block;
     width: 100%;
     height: 100%;
     overflow: visible;
-  }
+  } */
 
   /* ===== SOLAR ORBITS COMPONENT ===== */
 
@@ -1660,7 +1796,7 @@
 
   /* ===== SOLAR ORBITS COMPONENT ===== */
 
-  .rb-solar {
+  /* .rb-solar {
     position: absolute;
     z-index: 0;
     pointer-events: none;
@@ -1703,7 +1839,7 @@
 
   .rb-solar__dot--inner {
     fill: var(--accent-tertiary);
-  }
+  } */
 
   /* ======== HERO-CONTENT ======== */
   /* ======== HERO-CONTENT ======== */
