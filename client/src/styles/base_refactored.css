@@ -1371,393 +1371,634 @@
     will-change: background-position;
   } */
 
-  /* ======== HERO-CONTENT ======== */
-  /* ======== HERO-CONTENT ======== */
-  /* ======== HERO-CONTENT ======== */
 
-  @keyframes rbHeroOrbFloat {
-    0%,
-    100% {
-      transform: translate(-50%, -50%) translate3d(0, 0, 0);
-    }
 
-    50% {
-      transform: translate(-50%, -50%) translate3d(0, -10px, 0);
-    }
-  }
 
-  @keyframes rbHeroOrbCorePulse {
-    0%,
-    100% {
-      opacity: 0.72;
-      transform: scale(1);
-    }
 
-    50% {
-      opacity: 0.92;
-      transform: scale(1.045);
-    }
-  }
+/* =====================================================================
+   RB GRID BACKGROUND SYSTEM
+   ---------------------------------------------------------------------
+   Pure decorative texture — opt in per section with:
+     rb-grid-bg              → enables the grid
+     rb-grid-bg--hero        → hero density
+     rb-grid-bg--lg          → large cells
+     rb-grid-bg--md          → medium cells
+     rb-grid-bg--sm          → small cells
+     rb-grid-bg--fade-bottom → fades out at the bottom edge
+   ===================================================================== */
 
-  @keyframes rbHeroOrbHaloBreath {
-    0%,
-    100% {
-      opacity: 0.22;
-      transform: translate(-50%, -50%) scale(1);
-    }
+:root {
+  --rb-grid-color: rgba(255, 255, 255, 0.062);
+  --rb-grid-line: 1px;
+}
 
-    50% {
-      opacity: 0.34;
-      transform: translate(-50%, -50%) scale(1.08);
-    }
-  }
+.rb-grid-bg {
+  position: relative;
+}
 
-  /* =====================================================================
- Hero — section background
- ---------------------------------------------------------------------
- Premium quiet surface. No grid, no competing decor blobs, no hard
- corners. A single warm corner glow does the atmospheric work.
- Accent text relies on colour alone (no text-shadow) for a calmer feel.
-===================================================================== */
-
-  /* =====================================================================
- Hero — right-side visual
- ---------------------------------------------------------------------
- Size control:
-   --hero-visual-size : target width (set via the HeroVisual `size` prop)
-   --hero-visual-max  : hard ceiling     (set via `maxSize` prop)
-
- Desktop breakout:
-   On desktop the wrap is allowed to exceed its column width up to
-   --hero-visual-max. Stays centred and overflow is visible so it can
-   breathe into the hero's right-side gutter without pushing the grid wider.
-
- Mobile clamp:
-   Breakpoints progressively clamp using 100% of the column so the globe
-   can never cause horizontal scroll on small screens, regardless of
-   what `size` was passed.
-===================================================================== */
-
-  .rb-hero__right {
-    @apply relative flex items-center justify-center;
-    min-height: 620px;
-    min-width: 0;
-    width: 100%;
-    overflow: visible;
-  }
-
-  .rb-hero-visual {
-    position: relative;
-    width: 100%;
-    min-width: 0;
-    min-height: 620px;
-    overflow: visible;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .rb-hero-visual--orbit-core {
-    position: relative;
-    width: 100%;
-    min-width: 0;
-    overflow: visible;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .hero-visual-wrap {
-    position: relative;
-    width: min(var(--hero-visual-size, 720px), var(--hero-visual-max, 900px));
-    aspect-ratio: 1 / 1;
-    overflow: visible;
-    flex: 0 0 auto;
-    margin-inline: auto;
-  }
-
-  /* Ambient bloom — much softer than before. The Stitch reference proves
-the globe should sit on the page calmly rather than glow off it.
-Uses --accent-primary-rgb so it ties to your brand variable. */
-
-  .hero-visual-wrap::before {
-    content: "";
-    position: absolute;
-    inset: -30px;
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba(var(--accent-primary-rgb), 0.06) 0%,
-      rgba(var(--accent-primary-rgb), 0.02) 32%,
-      transparent 65%
-    );
-    filter: blur(24px);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .hero-visual-canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-    z-index: 1;
-    pointer-events: auto;
-  }
-
-  .hero-visual-canvas canvas {
-    display: block;
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  .rb-hero {
-    @apply relative isolate px-4;
-    padding-top: clamp(7.75rem, 10vw, 10.5rem);
-    padding-bottom: clamp(5.5rem, 7vw, 7.5rem);
-    background: #0d0d10;
-    overflow: visible;
-  }
-
-  /* Single, soft, top-right corner wash. This is the only ambient light
-in the hero — it does the same job as the Stitch reference's corner
-glow without adding any visual noise. */
-  .rb-hero__bg {
-    position: absolute;
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-
-  /* PRIMARY — warm orange (main hero light) */
-      radial-gradient(
-        1000px 600px at 78% 20%,
-        rgba(var(--accent-primary-rgb), 0.12) 0%,
-        rgba(var(--accent-primary-rgb), 0.06) 25%,
-        rgba(var(--accent-primary-rgb), 0.02) 45%,
-        transparent 70%
-      ),
-      /* SECONDARY — teal/cyan (right side ambient contrast) */
-        radial-gradient(
-          800px 500px at 88% 65%,
-          rgba(var(--accent-secondary-rgb), 0.08) 0%,
-          rgba(var(--accent-secondary-rgb), 0.03) 35%,
-          transparent 70%
-        ),
-      /* TERTIARY — purple (depth + richness) */
-        radial-gradient(
-          900px 500px at 65% 85%,
-          rgba(var(--accent-tertiary-rgb), 0.07) 0%,
-          rgba(var(--accent-tertiary-rgb), 0.025) 40%,
-          transparent 70%
-        ),
-      /* LEFT SIDE BALANCE (very subtle) */
-        radial-gradient(
-          700px 400px at 20% 15%,
-          rgba(var(--accent-primary-rgb), 0.025) 0%,
-          transparent 65%
-        ),
-      /* BASE */ var(--theme-clr-5);
-  }
-
-  /* Grid removed by design — the Stitch reference proves it's not needed
-and the page reads as more premium without it. If you want a hint of
-structure back, uncomment the block below at very low opacity. */
-  /*
-.rb-hero__grid {
+.rb-grid-bg::before {
+  content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
+  z-index: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
-  background-size: 120px 120px;
-  background-position: center top;
-  opacity: 0.5;
-  mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+    linear-gradient(
+      var(--rb-grid-color) var(--rb-grid-line),
+      transparent var(--rb-grid-line)
+    ),
+    linear-gradient(
+      90deg,
+      var(--rb-grid-color) var(--rb-grid-line),
+      transparent var(--rb-grid-line)
+    );
+  background-size: var(--rb-grid-cell, 120px) var(--rb-grid-cell, 120px);
+  background-position: left top;
 }
-*/
 
-  /* Decor blobs removed — the corner glow on .rb-hero__bg replaces them.
-Keeping the selectors as no-ops so any leftover JSX doesn't 404 on
-styles. Safe to delete the elements from the markup as well. */
-  .rb-hero__decor,
-  .rb-hero__decor--left,
-  .rb-hero__decor--right {
-    display: none;
+/* Density presets — reuse anywhere across the site */
+.rb-grid-bg--lg {
+  --rb-grid-cell: 120px;
+}
+.rb-grid-bg--md {
+  --rb-grid-cell: 80px;
+}
+.rb-grid-bg--sm {
+  --rb-grid-cell: 48px;
+}
+
+/* Optional fade at the bottom edge */
+.rb-grid-bg--fade-bottom::before {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 6%,
+    #000 82%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 6%,
+    #000 82%,
+    transparent 100%
+  );
+}
+
+/* All direct children sit above the ::before grid texture */
+.rb-grid-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ======== HERO-CONTENT ======== */
+/* ======== HERO-CONTENT ======== */
+/* ======== HERO-CONTENT ======== */
+
+@keyframes rbHeroSystemDotPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes rbHeroReadoutBlink {
+  0%,
+  48% {
+    opacity: 1;
+  }
+  50%,
+  98% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ─── Section shell ─────────────────────────────────────── */
+
+.rb-hero {
+  position: relative;
+  isolation: isolate;
+  background: #0c0c0e;
+  overflow: hidden;
+  min-height: 100svh;
+}
+
+/*
+  Hero grid needs to visually begin BELOW the fixed header
+  without increasing hero height.
+*/
+.rb-grid-bg--hero {
+  --rb-grid-cell: 12.5vw;
+}
+
+.rb-grid-bg--hero::before {
+  top: var(--header-offset, 3rem);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  inset: auto 0 0 0;
+  height: calc(100% - var(--header-offset, 3rem));
+  background-size: 12.5vw calc((100svh - var(--header-offset, 3rem)) / 6);
+  background-position: left top;
+}
+
+/* Accent colour washes — above ::before grid, below content */
+.rb-hero__bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    radial-gradient(
+      ellipse 800px 700px at 78% 40%,
+      rgba(var(--accent-primary-rgb), 0.13) 0%,
+      rgba(var(--accent-primary-rgb), 0.05) 40%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 500px 500px at 85% 75%,
+      rgba(var(--accent-secondary-rgb), 0.05) 0%,
+      transparent 65%
+    );
+}
+
+/* ─── 1400px constraint ─────────────────────────────────── */
+
+.rb-hero__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1400px;
+  margin-inline: auto;
+  margin-top: var(--header-offset, 3rem);
+  min-height: calc(100svh - var(--header-offset, 3rem));
+  border-left: 1px solid rgba(255, 255, 255, 0.065);
+  border-right: 1px solid rgba(255, 255, 255, 0.065);
+}
+
+/* ─── Structural grid ───────────────────────────────────── */
+
+.rb-hero__grid-layout {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+  min-height: calc(100svh - var(--header-offset, 3rem));
+}
+
+/* Every direct child gets the grid-line border */
+.rb-hero__grid-layout > * {
+  border-right: 1px solid rgba(255, 255, 255, 0.065);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+}
+
+.rb-hero__cell--nav-left {
+  grid-column: 1 / 5;
+  grid-row: 1;
+  border-top: 1px solid rgba(255, 255, 255, 0.065);
+}
+
+.rb-hero__cell--nav-right {
+  grid-column: 5 / 9;
+  grid-row: 1;
+  border-top: 1px solid rgba(255, 255, 255, 0.065);
+}
+
+.rb-hero__cell--bot-left {
+  grid-column: 1 / 5;
+  grid-row: 6;
+}
+
+.rb-hero__cell--bot-right {
+  grid-column: 5 / 9;
+  grid-row: 6;
+}
+
+/* panels sit EXACTLY between row 1 and row 6 */
+.rb-hero__left {
+  grid-column: 1 / 5;
+  grid-row: 2 / 6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  min-width: 0;
+  min-height: 0;
+  background: #0e0e10;
+}
+
+.rb-hero__frame {
+  grid-column: 5 / 9;
+  grid-row: 2 / 6;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: #0e0e10;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  z-index: 2;
+}
+
+/* ─── Left text content ─────────────────────────────────── */
+
+.rb-hero__system-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-family: var(--font-family-alt-1);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.rb-hero__system-label-dot {
+  display: inline-block;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 9999px;
+  background: var(--accent-secondary);
+  box-shadow: 0 0 6px rgba(var(--accent-secondary-rgb), 0.7);
+  flex-shrink: 0;
+  animation: rbHeroSystemDotPulse 2.4s ease-in-out infinite;
+}
+
+.rb-hero__title {
+  width: 100%;
+  font-size: clamp(2.8rem, 5.5vw, 5.2rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.025em;
+  color: var(--font-clr-1);
+}
+
+.rb-hero__title-line {
+  display: block;
+}
+
+.rb-hero__accent {
+  display: block;
+  margin-top: 0.05em;
+  font-size: clamp(2.6rem, 5.2vw, 4.9rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.025em;
+  color: var(--accent-primary);
+}
+
+.rb-hero__copy {
+  margin-top: 1.25rem;
+  max-width: 400px;
+  font-size: clamp(0.78rem, 1vw, 0.88rem);
+  line-height: 1.72;
+  color: rgba(247, 245, 242, 0.46);
+}
+
+.rb-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+}
+
+.rb-hero__actions > * {
+  min-width: 150px;
+}
+
+/* ─── Frame internals ───────────────────────────────────── */
+
+.rb-hero__frame-tick {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.rb-hero__frame-tick--tl {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid rgba(255, 255, 255, 0.55);
+  border-left: 2px solid rgba(255, 255, 255, 0.55);
+}
+
+.rb-hero__frame-tick--tr {
+  top: -1px;
+  right: -1px;
+  border-top: 2px solid rgba(255, 255, 255, 0.55);
+  border-right: 2px solid rgba(255, 255, 255, 0.55);
+}
+
+.rb-hero__frame-tick--bl {
+  bottom: -1px;
+  left: -1px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.55);
+  border-left: 2px solid rgba(255, 255, 255, 0.55);
+}
+
+.rb-hero__frame-tick--br {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.55);
+  border-right: 2px solid rgba(255, 255, 255, 0.55);
+}
+
+.rb-hero__frame-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  flex-shrink: 0;
+}
+
+.rb-hero__frame-readout {
+  font-family: var(--font-family-alt-1);
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.25);
+  white-space: nowrap;
+}
+
+.rb-hero__frame-readout--ok {
+  color: rgba(var(--accent-secondary-rgb), 0.65);
+}
+
+.rb-hero__frame-readout--blink {
+  animation: rbHeroReadoutBlink 1.8s steps(1) infinite;
+}
+
+.rb-hero__frame-vticks {
+  position: absolute;
+  top: 2.2rem;
+  right: 0;
+  bottom: 2rem;
+  width: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-block: 0.5rem;
+  z-index: 3;
+  pointer-events: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.rb-hero__frame-vtick {
+  display: block;
+  width: 7px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.rb-hero__frame-vtick:nth-child(even) {
+  width: 4px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.rb-hero__frame-stage {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 1.25rem;
+  padding-right: 1.75rem;
+  overflow: hidden;
+}
+
+.rb-hero__frame-inset {
+  position: absolute;
+  inset: 0.65rem;
+  right: 1.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.rb-hero__frame-bottombar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.4rem 1.6rem 0.45rem 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  flex-shrink: 0;
+}
+
+/* ─── Globe visual ──────────────────────────────────────── */
+
+.rb-hero-visual,
+.rb-hero-visual--orbit-core {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.hero-visual-wrap {
+  position: relative;
+  width: min(var(--hero-visual-size, 480px), var(--hero-visual-max, 560px), 90%);
+  aspect-ratio: 1 / 1;
+  overflow: visible;
+  flex: 0 0 auto;
+  margin-inline: auto;
+}
+
+.hero-visual-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(var(--accent-primary-rgb), 0.06) 0%,
+    transparent 65%
+  );
+  filter: blur(18px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-visual-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.hero-visual-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ─── Responsive ────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .rb-grid-bg--hero {
+    --rb-grid-cell: 12.5vw;
+    --rb-hero-mobile-row: 12.5vw;
+  }
+
+  .rb-grid-bg--hero::before {
+    top: var(--header-offset, 3rem);
+    height: calc(100% - var(--header-offset, 3rem));
+    background-size: var(--rb-grid-cell) var(--rb-hero-mobile-row);
   }
 
   .rb-hero__inner {
-    @apply relative z-10 mx-auto w-full max-w-[1400px];
+    max-width: 100%;
+    margin-top: var(--header-offset, 3rem);
+    min-height: calc(100svh - var(--header-offset, 3rem));
+    border-left: none;
+    border-right: none;
   }
 
-  .rb-hero__content {
-    @apply grid items-center gap-16 lg:grid-cols-2 lg:gap-8 mt-8 2xl:mt-0;
-    min-height: calc(88vh - 4.75rem - 7rem);
+  .rb-hero__grid-layout {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows:
+      var(--rb-hero-mobile-row)
+      auto
+      minmax(240px, 1fr)
+      var(--rb-hero-mobile-row);
+    min-height: calc(100svh - var(--header-offset, 3rem));
+  }
+
+  .rb-hero__cell--nav-left {
+    grid-column: 1 / 3;
+    grid-row: 1;
+  }
+
+  .rb-hero__cell--nav-right {
+    grid-column: 3 / 5;
+    grid-row: 1;
   }
 
   .rb-hero__left {
-    @apply flex flex-col items-center text-center lg:items-start lg:text-left;
-    min-width: 0;
-    width: 100%;
+    grid-column: 1 / 5;
+    grid-row: 2;
+    justify-content: center;
+    padding: 1.75rem 1.5rem;
   }
 
-  /* Slightly more refined badge — softer surface, less "card-like" */
-  .rb-hero__badge {
-    @apply inline-flex items-center justify-center rounded-full border px-5 py-3 text-md md:text-lg;
-    gap: 0.7rem;
-    margin-bottom: 1.35rem;
-    border-color: rgba(255, 255, 255, 0.06);
-    background: rgba(22, 22, 25, 0.65);
-    color: var(--accent-primary);
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-5);
-    box-shadow: none;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+  .rb-hero__frame {
+    grid-column: 1 / 5;
+    grid-row: 3;
+    min-height: 240px;
   }
 
-  .rb-hero__badge-dot {
-    width: 0.625rem;
-    height: 0.625rem;
-    border-radius: 9999px;
-    background: var(--accent-primary);
-    box-shadow: 0 0 10px rgba(var(--accent-primary-rgb), 0.28);
+  .rb-hero__cell--bot-left {
+    grid-column: 1 / 3;
+    grid-row: 4;
   }
 
-  .rb-hero__title {
-    @apply w-full text-7xl font-bold text-text_clr_1 md:text-11xl;
-    line-height: 0.94;
+  .rb-hero__cell--bot-right {
+    grid-column: 3 / 5;
+    grid-row: 4;
   }
 
-  .rb-hero__title-line {
+  .hero-visual-wrap {
+    width: min(320px, 70vw);
+  }
+}
+
+@media (max-width: 640px) {
+  .rb-grid-bg--hero {
+    --rb-grid-cell: 12.5vw;
+    --rb-hero-mobile-row: 12.5vw;
+  }
+
+  .rb-grid-bg--hero::before {
+    top: var(--header-offset, 3rem);
+    height: calc(100% - var(--header-offset, 3rem));
+    background-size: var(--rb-grid-cell) var(--rb-hero-mobile-row);
+  }
+
+  .rb-hero__inner {
+    margin-top: var(--header-offset, 3rem);
+    min-height: calc(100svh - var(--header-offset, 3rem));
+  }
+
+  .rb-hero__grid-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows:
+      var(--rb-hero-mobile-row)
+      auto
+      minmax(210px, 1fr)
+      var(--rb-hero-mobile-row);
+    min-height: calc(100svh - var(--header-offset, 3rem));
+  }
+
+  .rb-hero__cell--nav-left {
+    grid-column: 1 / 2;
+    grid-row: 1;
     display: block;
+    border-top: 1px solid rgba(255, 255, 255, 0.065);
   }
 
-  /* Accent text now relies on colour alone — no text-shadow.
-The Stitch reference proves the colour is the signal; the glow was
-adding to the "brochure illustration" feel rather than the premium one. */
-  .rb-hero__accent {
-    @apply mt-2 block text-6xl md:mt-0 md:text-10xl;
-    color: var(--accent-primary);
-    text-shadow: none;
+  .rb-hero__cell--nav-right {
+    grid-column: 2 / 3;
+    grid-row: 1;
+    display: block;
+    border-top: 1px solid rgba(255, 255, 255, 0.065);
   }
 
-  .rb-hero__copy {
-    @apply mt-5 text-lg text-text_clr_4 md:text-xl;
-    max-width: 34rem;
+  .rb-hero__left {
+    grid-column: 1 / 3;
+    grid-row: 2;
+    justify-content: center;
+    padding: 1.35rem 1.1rem;
   }
 
-  .rb-hero__actions {
-    @apply mt-12 flex flex-wrap items-center justify-center md:justify-start gap-4 md:mt-7;
+  .rb-hero__frame {
+    grid-column: 1 / 3;
+    grid-row: 3;
+    min-height: 210px;
   }
 
-  .rb-hero__actions > a,
-  .rb-hero__actions > button,
-  .rb-hero__actions > * {
-    min-width: 220px;
+  .rb-hero__cell--bot-left {
+    grid-column: 1 / 2;
+    grid-row: 4;
   }
 
-  .rb-hero__note {
-    @apply mt-4 text-lg text-text_clr_4;
+  .rb-hero__cell--bot-right {
+    grid-column: 2 / 3;
+    grid-row: 4;
   }
 
-  .rb-hero__trust-row {
-    @apply mt-8 flex flex-col md:flex-row flex-wrap items-center gap-3;
+  .hero-visual-wrap {
+    width: min(220px, 62vw);
   }
+}
 
-  .rb-hero__trust-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    padding: 0.78rem 1rem;
-    border-radius: var(--border-radius-full);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(255, 255, 255, 0.018);
-    color: rgba(247, 245, 242, 0.7);
-    font-size: var(--font-size-sm);
-    line-height: 1;
-  }
+/* Legacy no-ops */
+.rb-hero__decor,
+.rb-hero__decor--left,
+.rb-hero__decor--right {
+  display: none;
+}
 
-  .rb-hero__trust-pill-dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 9999px;
-    flex-shrink: 0;
-  }
-
-  /* Softer dot glows so the pills don't compete with the CTA */
-  .rb-hero__trust-pill-dot--primary {
-    background: var(--accent-primary);
-    box-shadow: 0 0 8px rgba(var(--accent-primary-rgb), 0.22);
-  }
-
-  .rb-hero__trust-pill-dot--secondary {
-    background: var(--accent-secondary);
-    box-shadow: 0 0 8px rgba(var(--accent-secondary-rgb), 0.18);
-  }
-
-  .rb-hero__trust-pill-dot--tertiary {
-    background: var(--accent-tertiary);
-    box-shadow: 0 0 8px rgba(var(--accent-tertiary-rgb), 0.16);
-  }
-
-  /* =====================================================================
-BREAKPOINTS
-===================================================================== */
-
-  @media (max-width: 1280px) {
-    .rb-hero__right {
-      min-height: 560px;
-    }
-
-    .rb-hero-visual {
-      min-height: 560px;
-    }
-
-    .hero-visual-wrap {
-      width: min(var(--hero-visual-size, 720px), 100%, 640px);
-    }
-  }
-
-  @media (max-width: 1024px) {
-    .rb-hero__right {
-      min-height: 480px;
-    }
-
-    .rb-hero-visual {
-      min-height: 480px;
-    }
-
-    .hero-visual-wrap {
-      width: min(var(--hero-visual-size, 720px), 100%, 460px);
-    }
-  }
-
-  @media (max-width: 640px) {
-    .rb-hero__right {
-      min-height: 360px;
-    }
-
-    .rb-hero-visual {
-      min-height: 360px;
-      max-width: 100%;
-    }
-
-    .hero-visual-wrap {
-      width: min(var(--hero-visual-size, 720px), 100%, 340px);
-    }
-
-    .hero-visual-wrap::before {
-      inset: -10px;
-      filter: blur(16px);
-    }
-  }
-
-  /* ======== HERO-CONTENT ======== */
-  /* ======== HERO-CONTENT ======== */
-  /* ======== HERO-CONTENT ======== */
+/* ======== HERO-CONTENT ======== */
+/* ======== HERO-CONTENT ======== */
+/* ======== HERO-CONTENT ======== */
 
   /* ========= PROOF STRIP ========= */
 

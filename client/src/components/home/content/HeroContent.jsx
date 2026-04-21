@@ -859,20 +859,30 @@ function HeroVisual({ size = 720, maxSize = 900 }) {
 function HeroContent() {
   const [hoveredButton, setHoveredButton] = useState(null);
   const { startAuthBoot } = useAuthBoot();
+
   return (
-    <section className="rb-hero relative isolate overflow-visible px-4 pb-16 pt-40">
-      {/* Background — single soft corner glow, no grid */}
+    <section className="rb-hero rb-grid-bg rb-grid-bg--hero">
+      {/* Accent colour washes */}
       <div className="rb-hero__bg" />
 
+      {/* 1400px constrained container */}
       <div className="rb-hero__inner">
-        <div className="rb-hero__content">
+        <div className="rb-hero__grid-layout">
+
+          {/* ── ROW 1 — top pad, pushes panels down from header ─ */}
+          <div className="rb-hero__cell rb-hero__cell--nav-left" />
+          <div className="rb-hero__cell rb-hero__cell--nav-right" />
+
+          {/* ── ROW 2 LEFT — text content ───────────────────── */}
           <div className="rb-hero__left">
-            <div className="rb-hero__badge">
-              <span className="rb-hero__badge-dot" />
-              <span>New: Automated Review Routing</span>
+            <div className="rb-hero__system-label">
+              <span className="rb-hero__system-label-dot" />
+              <span>System Status&nbsp;·&nbsp;Active</span>
             </div>
+
             <h1 className="rb-hero__title">
-              <span className="rb-hero__title-line">Boost Your Reviews</span>
+              <span className="rb-hero__title-line">Boost Your</span>
+              <span className="rb-hero__title-line">Reviews</span>
               <span className="rb-hero__accent">
                 <ReactTyped
                   strings={["Less Effort", "Less Hassle", "On Autopilot"]}
@@ -883,9 +893,10 @@ function HeroContent() {
                 />
               </span>
             </h1>
+
             <p className="rb-hero__copy">
               Let customers scan, leave a review, and grow your reputation in
-              seconds.
+              seconds. Capture, route, and resolve at the speed of compute.
             </p>
 
             <div className="rb-hero__actions">
@@ -896,9 +907,8 @@ function HeroContent() {
                 onMouseEnter={() => setHoveredButton("trial")}
                 onMouseLeave={() => setHoveredButton(null)}
               >
-                Start Free Trial
+                Initialize Engine
               </CTAButton>
-
               <CTAButton
                 onClick={() => startAuthBoot("login")}
                 mode="paired-switch"
@@ -909,31 +919,44 @@ function HeroContent() {
                 Open Workspace
               </CTAButton>
             </div>
+          </div>
 
-            <p className="rb-hero__note">
-              14-day free trial. No credit card required.
-            </p>
-            <div className="rb-hero__trust-row">
-              <span className="rb-hero__trust-pill">
-                <span className="rb-hero__trust-pill-dot rb-hero__trust-pill-dot--primary" />
-                Public review routing
-              </span>
-              <span className="rb-hero__trust-pill">
-                <span className="rb-hero__trust-pill-dot rb-hero__trust-pill-dot--secondary" />
-                Private feedback capture
-              </span>
-              <span className="rb-hero__trust-pill">
-                <span className="rb-hero__trust-pill-dot rb-hero__trust-pill-dot--tertiary" />
-                Automated follow-up ready
+          {/* ── ROW 2 RIGHT — globe frame panel ─────────────── */}
+          <div className="rb-hero__frame">
+            <span className="rb-hero__frame-tick rb-hero__frame-tick--tl" />
+            <span className="rb-hero__frame-tick rb-hero__frame-tick--tr" />
+            <span className="rb-hero__frame-tick rb-hero__frame-tick--bl" />
+            <span className="rb-hero__frame-tick rb-hero__frame-tick--br" />
+
+            <div className="rb-hero__frame-topbar">
+              <span className="rb-hero__frame-readout">COORD: 51.90 // FRE 14</span>
+              <span className="rb-hero__frame-readout rb-hero__frame-readout--ok">SYS_OK</span>
+            </div>
+
+            <div className="rb-hero__frame-vticks" aria-hidden="true">
+              {Array.from({ length: 14 }).map((_, i) => (
+                <span key={i} className="rb-hero__frame-vtick" />
+              ))}
+            </div>
+
+            <div className="rb-hero__frame-stage">
+              <div className="rb-hero__frame-inset" />
+              <div className="rb-hero-visual rb-hero-visual--orbit-core">
+                <HeroVisual size={480} maxSize={560} />
+              </div>
+            </div>
+
+            <div className="rb-hero__frame-bottombar">
+              <span className="rb-hero__frame-readout rb-hero__frame-readout--blink">
+                RENDERING FLOW...
               </span>
             </div>
           </div>
 
-          <div className="rb-hero__right">
-            <div className="rb-hero-visual rb-hero-visual--orbit-core">
-              <HeroVisual size={800} maxSize={1000} />
-            </div>
-          </div>
+          {/* ── ROW 3 — bottom pad, space below panels ───────── */}
+          <div className="rb-hero__cell rb-hero__cell--bot-left" />
+          <div className="rb-hero__cell rb-hero__cell--bot-right" />
+
         </div>
       </div>
     </section>
