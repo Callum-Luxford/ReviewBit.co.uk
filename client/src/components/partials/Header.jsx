@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Squash } from "hamburger-react";
 import { useAuthBoot } from "../../context/AuthBootContext";
@@ -7,18 +7,15 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeAuthButton, setActiveAuthButton] = useState("signup");
+
   const location = useLocation();
+  const { startAuthBoot } = useAuthBoot();
 
   const isAuthPage =
     location.pathname === "/login" || location.pathname === "/signup";
 
-  const { startAuthBoot } = useAuthBoot();
-
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 0);
-    };
-
+    const onScroll = () => setScrolled(window.scrollY > 6);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -29,34 +26,23 @@ function Header() {
 
   function getAuthBtnClass(buttonName) {
     const isActive = activeAuthButton === buttonName;
-
     return isActive ? "terminal-auth-btn-active" : "terminal-auth-btn-inactive";
   }
 
   return (
-    <header className="fixed top-0 left-0 z-[9998] w-full h-24">
-      {/* background */}
+    <header className="terminal-site-header fixed top-0 left-0 z-[9998] w-full h-24">
       <div
-        aria-hidden="true"
-        className={`absolute inset-0 transition-all duration-300 ${
+        className={`terminal-site-header__bg absolute inset-0 transition-all duration-300 ${
           scrolled
-            ? "bg-[#0e0e0e]/90 backdrop-blur-md"
-            : "bg-[#0e0e0e]/70 backdrop-blur-sm"
+            ? "bg-[rgba(14,14,14,0.92)] backdrop-blur-md"
+            : "bg-[rgba(14,14,14,0.82)] backdrop-blur-sm"
         }`}
+        aria-hidden="true"
       />
-
-      {/* bottom terminal separator */}
-      <div className="pointer-events-none absolute inset-x-0 bottom-0">
-        <div className="absolute inset-x-0 bottom-0 flex justify-center">
-          <div className="h-[6px] w-[34%] bg-[rgba(var(--accent-primary-rgb),0.22)] blur-md" />
-        </div>
-
-        <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-[rgba(var(--accent-primary-rgb),0.55)] to-transparent" />
-      </div>
 
       {/* Mobile Nav */}
       <nav
-        className={`fixed top-0 right-0 z-40 h-full w-2/3 max-w-[320px] transform border-l border-[rgba(var(--accent-primary-rgb),0.20)] bg-theme_clr_2 transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 z-40 h-full w-2/3 max-w-[320px] transform border-l border-[var(--ui-line)] bg-[var(--theme-clr-2)] transition-transform duration-300 ease-in-out ${
           menuOpen
             ? "pointer-events-auto translate-x-0"
             : "pointer-events-none translate-x-full"
@@ -132,20 +118,22 @@ function Header() {
         onClick={closeMenu}
       />
 
-      <div className="relative mx-auto flex h-full max-w-[1400px] items-center justify-between px-4 md:px-6">
-        {/* Logo */}
-        <Link to="/" className="group flex items-center gap-3">
-          <div className="terminal-header-logo-box">
-            <span className="text-sm font-medium">{">_"}</span>
+      <div className="terminal-site-shell relative mx-auto h-full max-w-[1400px] px-4 md:px-6">
+        <div className="relative flex h-full items-center">
+          {/* LEFT SEGMENT */}
+          <div className="terminal-site-header__segment terminal-site-header__segment--left flex h-full items-center pr-6">
+            <Link to="/" className="group flex items-center gap-3">
+              <div className="terminal-header-logo-box">
+                <span className="text-sm font-medium">{">_"}</span>
+              </div>
+
+              <p className="terminal-header-logo-text">ReviewBit.co.uk</p>
+            </Link>
           </div>
 
-          <p className="terminal-header-logo-text">ReviewBit.co.uk</p>
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav className="hidden items-center gap-8 md:flex">
+          {/* CENTER SEGMENT - desktop only */}
           {!isAuthPage && (
-            <>
+            <nav className="terminal-site-header__center-nav absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center md:flex">
               <a href="#reviews" className="terminal-nav-link">
                 Reviews
               </a>
@@ -157,41 +145,44 @@ function Header() {
               <a href="#testimonials" className="terminal-nav-link">
                 Testimonials
               </a>
-            </>
+            </nav>
           )}
 
-          <div
-            className="flex items-center gap-3"
-            onMouseLeave={() => setActiveAuthButton("signup")}
-          >
-            <button
-              type="button"
-              onClick={() => startAuthBoot("login")}
-              onMouseEnter={() => setActiveAuthButton("login")}
-              className={`terminal-auth-btn ${getAuthBtnClass("login")}`}
+          {/* RIGHT SEGMENT */}
+          <div className="terminal-site-header__segment terminal-site-header__segment--right ml-auto hidden h-full items-center pl-6 md:flex">
+            <div
+              className="flex items-center gap-3"
+              onMouseLeave={() => setActiveAuthButton("signup")}
             >
-              Login
-            </button>
+              <button
+                type="button"
+                onClick={() => startAuthBoot("login")}
+                onMouseEnter={() => setActiveAuthButton("login")}
+                className={`terminal-auth-btn ${getAuthBtnClass("login")}`}
+              >
+                Login
+              </button>
 
-            <button
-              type="button"
-              onClick={() => startAuthBoot("signup")}
-              onMouseEnter={() => setActiveAuthButton("signup")}
-              className={`terminal-auth-btn ${getAuthBtnClass("signup")}`}
-            >
-              Signup
-            </button>
+              <button
+                type="button"
+                onClick={() => startAuthBoot("signup")}
+                onMouseEnter={() => setActiveAuthButton("signup")}
+                className={`terminal-auth-btn ${getAuthBtnClass("signup")}`}
+              >
+                Signup
+              </button>
+            </div>
           </div>
-        </nav>
 
-        {/* Mobile Toggle */}
-        <div className="absolute right-4 top-1/2 z-[10000] -translate-y-1/2 md:hidden">
-          <Squash
-            toggled={menuOpen}
-            toggle={setMenuOpen}
-            size={24}
-            color="rgb(var(--accent-primary-rgb))"
-          />
+          {/* Mobile Toggle */}
+          <div className="absolute right-0 top-1/2 z-[10000] -translate-y-1/2 md:hidden">
+            <Squash
+              toggled={menuOpen}
+              toggle={setMenuOpen}
+              size={24}
+              color="rgb(var(--accent-primary-rgb))"
+            />
+          </div>
         </div>
       </div>
     </header>

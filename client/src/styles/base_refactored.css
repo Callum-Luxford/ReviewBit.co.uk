@@ -271,11 +271,12 @@
 
   /* === SITE FRAME (left + right borders) === */
 
- :root {
-  --site-frame-gutter: clamp(12px, 3vw, 32px);
-  --site-frame-line: var(--ui-line);
+/* === SITE FRAME (left + right borders) === */
 
+:root {
   --ui-line: rgba(255, 255, 255, 0.065);
+  --site-frame-gutter: clamp(12px, 4vw, 120px);
+  --site-frame-line: var(--ui-line);
 }
 
 .site-frame {
@@ -1327,70 +1328,50 @@
   /* ======== FRONTPAGE ======== */
   /* ======== FRONTPAGE ======== */
 
-  /* ======== HEADER ======== */
+ /* ======== HEADER ======== */
 
-  .terminal-header-logo-box {
-    @apply flex h-10 w-10 items-center justify-center border rounded-xl text-[var(--accent-primary)];
-    border-color: rgba(var(--accent-primary-rgb), 0.28);
-    background:
-      linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.03),
-        rgba(255, 255, 255, 0.01)
-      ),
-      rgba(var(--accent-primary-rgb), 0.05);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 10px 30px rgba(0, 0, 0, 0.18);
-  }
-
-  .terminal-header-logo-text {
-    @apply text-lg font-semibold tracking-tight text-text_clr_1;
-  }
-
-  .terminal-nav-link {
-    @apply text-xs uppercase tracking-[0.18em] transition text-text_clr_1;
-  }
-
-  .terminal-nav-link:hover {
-    color: var(--accent-primary);
-  }
-
-  .terminal-auth-btn {
-    @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 border;
-    border-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-  }
-
-  .terminal-auth-btn-active {
-    background: var(--accent-primary);
-    color: #111111;
-    border-color: rgba(var(--accent-primary-rgb), 0.3);
-    box-shadow: var(--accent-primary-glow-sm);
-  }
-
-  .terminal-auth-btn-inactive {
-    background: rgba(255, 255, 255, 0.025);
-    color: var(--font-clr-1);
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .terminal-site-header {
+.terminal-site-header {
   border-bottom: 1px solid var(--ui-line);
-  background: rgba(14, 14, 14, 0.88);
-  backdrop-filter: blur(10px);
 }
 
-.terminal-site-footer {
-  border-top: 1px solid var(--ui-line);
+.terminal-site-header__bg {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(14, 14, 14, 0.9) 0%,
+      rgba(14, 14, 14, 0.82) 100%
+    );
 }
 
 .terminal-site-shell {
   position: relative;
 }
 
-.terminal-site-shell::before,
+/* .terminal-site-shell::before,
 .terminal-site-shell::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--ui-line);
+  pointer-events: none;
+} */
+
+.terminal-site-shell::before {
+  left: 0;
+}
+
+.terminal-site-shell::after {
+  right: 0;
+}
+
+.terminal-site-header__segment {
+  position: relative;
+}
+
+.terminal-site-header__segment--left::after,
+.terminal-site-header__segment--right::before {
   content: "";
   position: absolute;
   top: 0;
@@ -1400,14 +1381,77 @@
   pointer-events: none;
 }
 
-.terminal-site-shell::before {
+.terminal-site-header__segment--left::after {
+  right: 0;
+}
+
+.terminal-site-header__segment--right::before {
   left: 0;
 }
 
-.terminal-site-shell::after {
-  right: 0;
+.terminal-site-header__center-nav {
+  gap: clamp(1.5rem, 3vw, 3rem);
 }
-  /* ======== HEADER ======== */
+
+.terminal-header-logo-box {
+  @apply flex h-10 w-10 items-center justify-center border rounded-xl text-[var(--accent-primary)];
+  border-color: rgba(var(--accent-primary-rgb), 0.28);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(255, 255, 255, 0.01)
+    ),
+    rgba(var(--accent-primary-rgb), 0.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+.terminal-header-logo-text {
+  @apply text-lg font-semibold tracking-tight text-text_clr_1;
+}
+
+.terminal-nav-link {
+  @apply text-xs uppercase tracking-[0.18em] transition text-text_clr_1;
+}
+
+.terminal-nav-link:hover {
+  color: var(--accent-primary);
+}
+
+.terminal-auth-btn {
+  @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 border;
+  border-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.terminal-auth-btn-active {
+  background: var(--accent-primary);
+  color: #111111;
+  border-color: rgba(var(--accent-primary-rgb), 0.3);
+  box-shadow: var(--accent-primary-glow-sm);
+}
+
+.terminal-auth-btn-inactive {
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--font-clr-1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 767px) {
+  .terminal-site-shell::before,
+  .terminal-site-shell::after {
+    display: none;
+  }
+
+  .terminal-site-header__segment--left::after,
+  .terminal-site-header__segment--right::before {
+    display: none;
+  }
+}
+
+/* ======== HEADER ======== */
 
   /* .rb-hero__scanline {
     position: absolute;
