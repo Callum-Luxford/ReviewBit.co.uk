@@ -242,6 +242,8 @@
 @layer components {
   .section {
     @apply w-full py-20 md:py-20;
+    border-bottom: 1px solid var(--site-frame-line);
+    border-top: 1px solid var(--site-frame-line);
   }
 
   .section-sm {
@@ -1567,7 +1569,7 @@
   .rb-hero {
     position: relative;
     isolation: isolate;
-    background: #0c0c0e;
+    background: var(--theme-clr-1);
     overflow: hidden;
     min-height: 100svh;
   }
@@ -1590,9 +1592,25 @@
     background-size:
       calc(100% / 8) calc((100svh - var(--header-offset, 3rem)) / 6);
     background-position: left top;
+
+    /* hide the outermost hero grid edge lines so they don't double with the site frame */
+    mask-image: linear-gradient(to right,
+        transparent 0,
+        transparent 1px,
+        #000 1px,
+        #000 calc(100% - 1px),
+        transparent calc(100% - 1px),
+        transparent 100%);
+    -webkit-mask-image: linear-gradient(to right,
+        transparent 0,
+        transparent 1px,
+        #000 1px,
+        #000 calc(100% - 1px),
+        transparent calc(100% - 1px),
+        transparent 100%);
   }
 
-  .rb-hero__bg {
+  /* .rb-hero__bg {
     position: absolute;
     inset: 0;
     pointer-events: none;
@@ -1605,7 +1623,7 @@
       radial-gradient(ellipse 500px 500px at 85% 75%,
         rgba(var(--accent-secondary-rgb), 0.05) 0%,
         transparent 65%);
-  }
+  } */
 
   /* ─── Full-width layout wrapper ─────────────────────────── */
 
@@ -1932,11 +1950,36 @@
   .rb-hero__core-stage {
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    grid-template-rows: 1fr auto 1fr;
     overflow: hidden;
   }
+
+  /* REMOVE FOR FULL VISUAL FILL */
+  /* REMOVE FOR FULL VISUAL FILL */
+  /* REMOVE FOR FULL VISUAL FILL */
+  .rb-hero__core-zone {
+    position: relative;
+    min-height: 0;
+  }
+
+  .rb-hero__core-zone--top {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .rb-hero__core-zone--middle {
+    position: relative;
+    min-height: clamp(20rem, 40%, 21rem);
+    overflow: hidden;
+  }
+
+  .rb-hero__core-zone--bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  /* REMOVE FOR FULL VISUAL FILL */
+  /* REMOVE FOR FULL VISUAL FILL */
+  /* REMOVE FOR FULL VISUAL FILL */
 
   .rb-hero__core-grid {
     position: absolute;
@@ -1945,7 +1988,7 @@
       linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
     background-size: 3.25rem 3.25rem;
-    opacity: 0.34;
+    opacity: 0.22;
   }
 
 
@@ -2294,6 +2337,9 @@
   /* ======== HERO-CONTENT ======== */
   /* ======== HERO-CONTENT ======== */
   /* ======== HERO-CONTENT ======== */
+
+
+
   /* ========= PROOF STRIP ========= */
 
   .terminal-section-pill {
@@ -2453,12 +2499,19 @@
   }
 
   /* ========= PROOF STRIP ========= */
+  /* ========= PROOF STRIP ========= */
+  /* ========= PROOF STRIP ========= */
 
+
+
+  /* ========= HOW IT WORKS ========= */
+  /* ========= HOW IT WORKS ========= */
   /* ========= HOW IT WORKS ========= */
 
   .rb-how {
     position: relative;
     overflow: hidden;
+    border-top: 1px solid var(--site-frame-line);
   }
 
   .rb-how__inner {

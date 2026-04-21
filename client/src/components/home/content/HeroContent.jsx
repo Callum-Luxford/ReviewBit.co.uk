@@ -993,13 +993,25 @@ function HeroContent() {
                 </div>
 
                 <div className="rb-hero__core-stage">
-                  <div className="rb-hero__core-grid" aria-hidden="true" />
-                  
+                  {/* top spacer zone */}
+                  <div className="rb-hero__core-zone rb-hero__core-zone--top">
+                    <div className="rb-hero__core-zone-box rb-hero__core-zone-box--top" />
+                  </div>
 
-                  <div className="rb-hero__core-plane" aria-hidden="true" />
+                  {/* middle globe zone */}
+                  <div className="rb-hero__core-zone rb-hero__core-zone--middle">
+                    <div className="rb-hero__core-grid" aria-hidden="true" />
 
-                  <div className="rb-hero__core-orbit">
-                    <HeroVisual size={420} maxSize={500} />
+                    <div className="rb-hero__core-plane" aria-hidden="true" />
+
+                    <div className="rb-hero__core-orbit">
+                      <HeroVisual size={420} maxSize={500} />
+                    </div>
+                  </div>
+
+                  {/* bottom spacer zone */}
+                  <div className="rb-hero__core-zone rb-hero__core-zone--bottom">
+                    <div className="rb-hero__core-zone-box rb-hero__core-zone-box--bottom" />
                   </div>
                 </div>
 

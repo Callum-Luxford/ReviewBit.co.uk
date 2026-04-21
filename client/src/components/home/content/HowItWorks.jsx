@@ -180,7 +180,7 @@ function HowItWorks() {
   return (
     <section
       ref={sectionRef}
-      className="rb-how section bg-theme_clr_1 border-b border-white/10"
+      className="rb-how section bg-theme_clr_1"
       style={{ "--rb-how-progress-px": `${progressPx}px` }}
     >
       <div className="rb-how__inner max-w-[1400px] mx-auto w-full px-4">
