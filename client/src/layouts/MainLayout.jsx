@@ -7,7 +7,7 @@ import ParticlesBackground from "../components/effects/ParticlesBackground";
 
 function MainLayout() {
   return (
-    <div className="min-h-screen app-shell">
+    <div className="min-h-screen app-shell site-frame">
       {/* <ParticlesBackground /> */}
       {/* <ParticlesBackground originId="hero-particles-origin" /> */}
 

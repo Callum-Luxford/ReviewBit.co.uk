@@ -154,7 +154,7 @@
   --gradient-clr-2: var(--accent-secondary);
   --focus-clr-1: var(--accent-tertiary);
 
-  --header-offset: 3rem;
+ --header-offset: clamp(3rem, 6vh, 4.5rem);
   --rb-scroll: 0px;
 }
 
@@ -268,6 +268,35 @@
   .card-subtitle {
     @apply mt-4 max-w-[28ch] text-base text-text_clr_2 leading-7;
   }
+
+  /* === SITE FRAME (left + right borders) === */
+
+ :root {
+  --site-frame-gutter: clamp(12px, 3vw, 32px);
+  --site-frame-line: var(--ui-line);
+
+  --ui-line: rgba(255, 255, 255, 0.065);
+}
+
+.site-frame {
+  position: relative;
+  min-height: 100svh;
+  padding-inline: var(--site-frame-gutter);
+}
+
+.site-frame::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: var(--site-frame-gutter);
+  right: var(--site-frame-gutter);
+  pointer-events: none;
+  z-index: 40;
+  border-left: 1px solid var(--site-frame-line);
+  border-right: 1px solid var(--site-frame-line);
+}
+
 
   /* ======= APP BOOT SCREEN ====== */
   /* ======= APP BOOT SCREEN ====== */
@@ -1345,6 +1374,39 @@
     color: var(--font-clr-1);
     border-color: rgba(255, 255, 255, 0.1);
   }
+  
+  .terminal-site-header {
+  border-bottom: 1px solid var(--ui-line);
+  background: rgba(14, 14, 14, 0.88);
+  backdrop-filter: blur(10px);
+}
+
+.terminal-site-footer {
+  border-top: 1px solid var(--ui-line);
+}
+
+.terminal-site-shell {
+  position: relative;
+}
+
+.terminal-site-shell::before,
+.terminal-site-shell::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--ui-line);
+  pointer-events: none;
+}
+
+.terminal-site-shell::before {
+  left: 0;
+}
+
+.terminal-site-shell::after {
+  right: 0;
+}
   /* ======== HEADER ======== */
 
   /* .rb-hero__scanline {
@@ -1378,13 +1440,8 @@
 /* =====================================================================
    RB GRID BACKGROUND SYSTEM
    ---------------------------------------------------------------------
-   Pure decorative texture — opt in per section with:
-     rb-grid-bg              → enables the grid
-     rb-grid-bg--hero        → hero density
-     rb-grid-bg--lg          → large cells
-     rb-grid-bg--md          → medium cells
-     rb-grid-bg--sm          → small cells
-     rb-grid-bg--fade-bottom → fades out at the bottom edge
+   Generic background grid utility for other sections.
+   Hero uses its own full-screen layout grid below.
    ===================================================================== */
 
 :root {
@@ -1416,18 +1473,18 @@
   background-position: left top;
 }
 
-/* Density presets — reuse anywhere across the site */
 .rb-grid-bg--lg {
   --rb-grid-cell: 120px;
 }
+
 .rb-grid-bg--md {
   --rb-grid-cell: 80px;
 }
+
 .rb-grid-bg--sm {
   --rb-grid-cell: 48px;
 }
 
-/* Optional fade at the bottom edge */
 .rb-grid-bg--fade-bottom::before {
   mask-image: linear-gradient(
     to bottom,
@@ -1445,7 +1502,6 @@
   );
 }
 
-/* All direct children sit above the ::before grid texture */
 .rb-grid-bg > * {
   position: relative;
   z-index: 1;
@@ -1489,31 +1545,32 @@
   min-height: 100svh;
 }
 
-/*
-  Hero grid needs to visually begin BELOW the fixed header
-  without increasing hero height.
-*/
-.rb-grid-bg--hero {
-  --rb-grid-cell: 12.5vw;
+/* disable generic utility grid on hero */
+.rb-grid-bg--hero::before {
+  content: none;
 }
 
-.rb-grid-bg--hero::before {
-  top: var(--header-offset, 3rem);
-  bottom: 0;
-  left: 0;
-  right: 0;
-  inset: auto 0 0 0;
-  height: calc(100% - var(--header-offset, 3rem));
-  background-size: 12.5vw calc((100svh - var(--header-offset, 3rem)) / 6);
+/* full-screen hero grid */
+.rb-hero::before {
+  content: "";
+  position: absolute;
+  inset: var(--header-offset, 3rem) 0 0 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.065) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.065) 1px, transparent 1px);
+  background-size:
+    calc(100% / 8)
+    calc((100svh - var(--header-offset, 3rem)) / 6);
   background-position: left top;
 }
 
-/* Accent colour washes — above ::before grid, below content */
 .rb-hero__bg {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
   background:
     radial-gradient(
       ellipse 800px 700px at 78% 40%,
@@ -1528,45 +1585,41 @@
     );
 }
 
-/* ─── 1400px constraint ─────────────────────────────────── */
+/* ─── Full-width layout wrapper ─────────────────────────── */
 
 .rb-hero__inner {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   width: 100%;
-  max-width: 1400px;
-  margin-inline: auto;
-  margin-top: var(--header-offset, 3rem);
-  min-height: calc(100svh - var(--header-offset, 3rem));
-  border-left: 1px solid rgba(255, 255, 255, 0.065);
-  border-right: 1px solid rgba(255, 255, 255, 0.065);
+  max-width: none;
+  margin: 0;
+  padding-top: var(--header-offset, 3rem);
+  min-height: 100svh;
 }
 
-/* ─── Structural grid ───────────────────────────────────── */
+/* ─── Real layout grid ──────────────────────────────────── */
 
 .rb-hero__grid-layout {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(8, minmax(0, 1fr));
   grid-template-rows: repeat(6, minmax(0, 1fr));
   min-height: calc(100svh - var(--header-offset, 3rem));
 }
 
-/* Every direct child gets the grid-line border */
 .rb-hero__grid-layout > * {
-  border-right: 1px solid rgba(255, 255, 255, 0.065);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+  position: relative;
+  z-index: 1;
 }
 
 .rb-hero__cell--nav-left {
   grid-column: 1 / 5;
   grid-row: 1;
-  border-top: 1px solid rgba(255, 255, 255, 0.065);
 }
 
 .rb-hero__cell--nav-right {
   grid-column: 5 / 9;
   grid-row: 1;
-  border-top: 1px solid rgba(255, 255, 255, 0.065);
 }
 
 .rb-hero__cell--bot-left {
@@ -1579,29 +1632,49 @@
   grid-row: 6;
 }
 
-/* panels sit EXACTLY between row 1 and row 6 */
+/* Panels placed directly on the full-screen grid */
 .rb-hero__left {
-  grid-column: 1 / 5;
+  grid-column: 2 / 5;
   grid-row: 2 / 6;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 3rem 2.5rem;
   min-width: 0;
   min-height: 0;
+  width: 100%;
+  padding: 3rem 2.25rem;
   background: #0e0e10;
+  position: relative;
+}
+
+/* clean outer shell only — no center seam */
+.rb-hero__left::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* REMOVE this completely */
+.rb-hero__left::after {
+  display: none;
 }
 
 .rb-hero__frame {
-  grid-column: 5 / 9;
+  grid-column: 5 / 8;
   grid-row: 2 / 6;
   position: relative;
   display: flex;
   flex-direction: column;
   min-width: 0;
   min-height: 0;
+  width: 100%;
   background: #0e0e10;
-  overflow: hidden;
+  /* overflow: hidden; */
   border: 1px solid rgba(255, 255, 255, 0.12);
   z-index: 2;
 }
@@ -1813,7 +1886,11 @@
 
 .hero-visual-wrap {
   position: relative;
-  width: min(var(--hero-visual-size, 480px), var(--hero-visual-max, 560px), 90%);
+  width: min(
+    var(--hero-visual-size, 480px),
+    var(--hero-visual-max, 560px),
+    90%
+  );
   aspect-ratio: 1 / 1;
   overflow: visible;
   flex: 0 0 auto;
@@ -1852,140 +1929,125 @@
 
 /* ─── Responsive ────────────────────────────────────────── */
 
+@media (min-width: 1440px) {
+  .rb-hero__left {
+    grid-column: 3 / 5;
+    grid-row: 2 / 6;
+  }
+
+  .rb-hero__frame {
+    grid-column: 5 / 7;
+    grid-row: 2 / 6;
+  }
+}
+
 @media (max-width: 1024px) {
-  .rb-grid-bg--hero {
-    --rb-grid-cell: 12.5vw;
-    --rb-hero-mobile-row: 12.5vw;
-  }
-
-  .rb-grid-bg--hero::before {
-    top: var(--header-offset, 3rem);
-    height: calc(100% - var(--header-offset, 3rem));
-    background-size: var(--rb-grid-cell) var(--rb-hero-mobile-row);
-  }
-
-  .rb-hero__inner {
-    max-width: 100%;
-    margin-top: var(--header-offset, 3rem);
-    min-height: calc(100svh - var(--header-offset, 3rem));
-    border-left: none;
-    border-right: none;
+  .rb-hero::before {
+    background-size:
+      calc(100% / 8)
+      calc((100svh - var(--header-offset, 3rem)) / 4);
   }
 
   .rb-hero__grid-layout {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(8, minmax(0, 1fr));
     grid-template-rows:
-      var(--rb-hero-mobile-row)
+      12.5vw
       auto
-      minmax(240px, 1fr)
-      var(--rb-hero-mobile-row);
+      minmax(260px, 1fr)
+      12.5vw;
     min-height: calc(100svh - var(--header-offset, 3rem));
   }
 
   .rb-hero__cell--nav-left {
-    grid-column: 1 / 3;
+    grid-column: 1 / 5;
     grid-row: 1;
   }
 
   .rb-hero__cell--nav-right {
-    grid-column: 3 / 5;
+    grid-column: 5 / 9;
     grid-row: 1;
   }
 
   .rb-hero__left {
-    grid-column: 1 / 5;
+    grid-column: 1 / 9;
     grid-row: 2;
-    justify-content: center;
-    padding: 1.75rem 1.5rem;
+    justify-content: flex-start;
+    padding: 1.6rem 1.4rem;
   }
 
   .rb-hero__frame {
-    grid-column: 1 / 5;
+    grid-column: 1 / 9;
     grid-row: 3;
-    min-height: 240px;
+    min-height: 260px;
   }
 
   .rb-hero__cell--bot-left {
-    grid-column: 1 / 3;
+    grid-column: 1 / 5;
     grid-row: 4;
   }
 
   .rb-hero__cell--bot-right {
-    grid-column: 3 / 5;
+    grid-column: 5 / 9;
     grid-row: 4;
   }
 
   .hero-visual-wrap {
-    width: min(320px, 70vw);
+    width: min(280px, 62vw);
   }
 }
 
 @media (max-width: 640px) {
-  .rb-grid-bg--hero {
-    --rb-grid-cell: 12.5vw;
-    --rb-hero-mobile-row: 12.5vw;
-  }
-
-  .rb-grid-bg--hero::before {
-    top: var(--header-offset, 3rem);
-    height: calc(100% - var(--header-offset, 3rem));
-    background-size: var(--rb-grid-cell) var(--rb-hero-mobile-row);
-  }
-
-  .rb-hero__inner {
-    margin-top: var(--header-offset, 3rem);
-    min-height: calc(100svh - var(--header-offset, 3rem));
+  .rb-hero::before {
+    background-size:
+      calc(100% / 8)
+      calc((100svh - var(--header-offset, 3rem)) / 4);
   }
 
   .rb-hero__grid-layout {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(8, minmax(0, 1fr));
     grid-template-rows:
-      var(--rb-hero-mobile-row)
+      12.5vw
       auto
-      minmax(210px, 1fr)
-      var(--rb-hero-mobile-row);
+      minmax(220px, 1fr)
+      12.5vw;
     min-height: calc(100svh - var(--header-offset, 3rem));
   }
 
   .rb-hero__cell--nav-left {
-    grid-column: 1 / 2;
+    grid-column: 1 / 5;
     grid-row: 1;
-    display: block;
-    border-top: 1px solid rgba(255, 255, 255, 0.065);
   }
 
   .rb-hero__cell--nav-right {
-    grid-column: 2 / 3;
+    grid-column: 5 / 9;
     grid-row: 1;
-    display: block;
-    border-top: 1px solid rgba(255, 255, 255, 0.065);
   }
 
   .rb-hero__left {
-    grid-column: 1 / 3;
+    grid-column: 1 / 9;
     grid-row: 2;
-    justify-content: center;
-    padding: 1.35rem 1.1rem;
+    justify-content: flex-start;
+    padding: 1.25rem 1rem;
   }
 
   .rb-hero__frame {
-    grid-column: 1 / 3;
+    grid-column: 1 / 9;
     grid-row: 3;
-    min-height: 210px;
+    min-height: 220px;
   }
 
   .rb-hero__cell--bot-left {
-    grid-column: 1 / 2;
+    grid-column: 1 / 5;
     grid-row: 4;
   }
 
   .rb-hero__cell--bot-right {
-    grid-column: 2 / 3;
+    grid-column: 5 / 9;
     grid-row: 4;
   }
 
   .hero-visual-wrap {
-    width: min(220px, 62vw);
+    width: min(200px, 56vw);
   }
 }
 
@@ -1999,7 +2061,6 @@
 /* ======== HERO-CONTENT ======== */
 /* ======== HERO-CONTENT ======== */
 /* ======== HERO-CONTENT ======== */
-
   /* ========= PROOF STRIP ========= */
 
   .terminal-section-pill {
