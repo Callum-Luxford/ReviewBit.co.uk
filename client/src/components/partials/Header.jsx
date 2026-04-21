@@ -118,64 +118,72 @@ function Header() {
         onClick={closeMenu}
       />
 
-      <div className="terminal-site-shell relative mx-auto h-full max-w-[1400px] px-4 md:px-6">
-        <div className="relative flex h-full items-center">
-          {/* LEFT SEGMENT */}
-          <div className="terminal-site-header__segment terminal-site-header__segment--left flex h-full items-center pr-6">
-            <Link to="/" className="group flex items-center gap-3">
-              <div className="terminal-header-logo-box">
-                <span className="text-sm font-medium">{">_"}</span>
-              </div>
+      <div className="terminal-site-shell h-full w-full">
+        <div className="terminal-site-header__row">
+          {/* LEFT BLOCK */}
+          <div className="terminal-site-header__segment terminal-site-header__segment--left">
+            <div className="terminal-site-header__inner">
+              <Link to="/" className="group flex items-center gap-3">
+                <div className="terminal-header-logo-box">
+                  <span className="text-sm font-medium">{">_"}</span>
+                </div>
 
-              <p className="terminal-header-logo-text">ReviewBit.co.uk</p>
-            </Link>
-          </div>
-
-          {/* CENTER SEGMENT - desktop only */}
-          {!isAuthPage && (
-            <nav className="terminal-site-header__center-nav absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center md:flex">
-              <a href="#reviews" className="terminal-nav-link">
-                Reviews
-              </a>
-
-              <a href="#how-it-works" className="terminal-nav-link">
-                How_It_Works
-              </a>
-
-              <a href="#testimonials" className="terminal-nav-link">
-                Testimonials
-              </a>
-            </nav>
-          )}
-
-          {/* RIGHT SEGMENT */}
-          <div className="terminal-site-header__segment terminal-site-header__segment--right ml-auto hidden h-full items-center pl-6 md:flex">
-            <div
-              className="flex items-center gap-3"
-              onMouseLeave={() => setActiveAuthButton("signup")}
-            >
-              <button
-                type="button"
-                onClick={() => startAuthBoot("login")}
-                onMouseEnter={() => setActiveAuthButton("login")}
-                className={`terminal-auth-btn ${getAuthBtnClass("login")}`}
-              >
-                Login
-              </button>
-
-              <button
-                type="button"
-                onClick={() => startAuthBoot("signup")}
-                onMouseEnter={() => setActiveAuthButton("signup")}
-                className={`terminal-auth-btn ${getAuthBtnClass("signup")}`}
-              >
-                Signup
-              </button>
+                <p className="terminal-header-logo-text">ReviewBit.co.uk</p>
+              </Link>
             </div>
           </div>
 
-          {/* Mobile Toggle */}
-          <div className="absolute right-0 top-1/2 z-[10000] -translate-y-1/2 md:hidden">
+          {/* CENTER BLOCK */}
+          <div className="terminal-site-header__segment terminal-site-header__segment--center hidden md:block">
+            <div className="terminal-site-header__inner">
+              {!isAuthPage && (
+                <nav className="terminal-site-header__center-nav">
+                  <a href="#reviews" className="terminal-nav-link">
+                    Reviews
+                  </a>
+
+                  <a href="#how-it-works" className="terminal-nav-link">
+                    How_It_Works
+                  </a>
+
+                  <a href="#testimonials" className="terminal-nav-link">
+                    Testimonials
+                  </a>
+                </nav>
+              )}
+            </div>
+          </div>
+
+          {/* RIGHT BLOCK */}
+          <div className="terminal-site-header__segment terminal-site-header__segment--right hidden md:block">
+            <div className="terminal-site-header__inner">
+              <div
+                className="flex items-center gap-3"
+                onMouseLeave={() => setActiveAuthButton("signup")}
+              >
+                <button
+                  type="button"
+                  onClick={() => startAuthBoot("login")}
+                  onMouseEnter={() => setActiveAuthButton("login")}
+                  className={`terminal-auth-btn ${getAuthBtnClass("login")}`}
+                >
+                  Login
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => startAuthBoot("signup")}
+                  onMouseEnter={() => setActiveAuthButton("signup")}
+                  className={`terminal-auth-btn ${getAuthBtnClass("signup")}`}
+                >
+                  Signup
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* MOBILE TOGGLE */}
+          <div className="terminal-site-header__mobile md:hidden">
             <Squash
               toggled={menuOpen}
               toggle={setMenuOpen}
