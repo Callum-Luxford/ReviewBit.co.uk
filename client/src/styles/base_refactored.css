@@ -2393,7 +2393,7 @@
     .rb-hero__frame {
       grid-column: 1 / 9;
       grid-row: 3;
-      min-height: 420px;
+      min-height: 500px;
     }
 
     .rb-hero__core-zone--middle {
@@ -2451,25 +2451,11 @@
     }
 
     .rb-hero__frame {
-      min-height: 460px;
+      min-height: 650px;
     }
 
     .rb-hero__core-zone--middle {
-      min-height: clamp(26rem, 42%, 21rem);
-    }
-
-    .rb-hero__frame-stage {
-      padding: 1rem;
-      padding-right: 1.35rem;
-    }
-
-    .rb-hero__frame-inset {
-      inset: 0.55rem;
-      right: 0.95rem;
-    }
-
-    .hero-visual-wrap {
-      width: min(205px, 58vw);
+      min-height: clamp(40rem, 42%, 21rem);
     }
   }
 
