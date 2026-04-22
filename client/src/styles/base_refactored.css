@@ -1552,64 +1552,58 @@
 
 
 
-  /* =====================================================================
-   RB GRID BACKGROUND SYSTEM
-   ---------------------------------------------------------------------
-   Generic background grid utility for other sections.
-   Hero uses its own full-screen layout grid below.
-   ===================================================================== */
+  /* =========================================
+     SECTION GRID SYSTEM (REUSABLE)
+  ========================================= */
 
-  :root {
-    --rb-grid-color: rgba(255, 255, 255, 0.062);
-    --rb-grid-line: 1px;
-  }
-
-  .rb-grid-bg {
+  .section-grid {
     position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--section-grid-cols, 8), minmax(0, 1fr));
+    grid-template-rows: repeat(var(--section-grid-rows, 6), minmax(0, 1fr));
+    min-height: var(--section-grid-min-height, calc(100svh - var(--header-offset, 3rem)));
   }
 
-  .rb-grid-bg::before {
+  .section-grid--8x6 {
+    --section-grid-cols: 8;
+    --section-grid-rows: 6;
+  }
+
+  .section-grid--16x12 {
+    --section-grid-cols: 16;
+    --section-grid-rows: 12;
+  }
+
+  .section-grid::before {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 0;
     background-image:
-      linear-gradient(var(--rb-grid-color) var(--rb-grid-line),
-        transparent var(--rb-grid-line)),
-      linear-gradient(90deg,
-        var(--rb-grid-color) var(--rb-grid-line),
-        transparent var(--rb-grid-line));
-    background-size: var(--rb-grid-cell, 120px) var(--rb-grid-cell, 120px);
+      linear-gradient(rgba(255, 255, 255, 0.065) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.065) 1px, transparent 1px);
+    background-size:
+      calc(100% / var(--section-grid-cols, 8)) calc(100% / var(--section-grid-rows, 6));
     background-position: left top;
-  }
 
-  .rb-grid-bg--lg {
-    --rb-grid-cell: 120px;
-  }
-
-  .rb-grid-bg--md {
-    --rb-grid-cell: 80px;
-  }
-
-  .rb-grid-bg--sm {
-    --rb-grid-cell: 48px;
-  }
-
-  .rb-grid-bg--fade-bottom::before {
-    mask-image: linear-gradient(to bottom,
-        transparent 0%,
-        #000 6%,
-        #000 82%,
+    mask-image: linear-gradient(to right,
+        transparent 0,
+        transparent 1px,
+        #000 1px,
+        #000 calc(100% - 1px),
+        transparent calc(100% - 1px),
         transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom,
-        transparent 0%,
-        #000 6%,
-        #000 82%,
+    -webkit-mask-image: linear-gradient(to right,
+        transparent 0,
+        transparent 1px,
+        #000 1px,
+        #000 calc(100% - 1px),
+        transparent calc(100% - 1px),
         transparent 100%);
   }
 
-  .rb-grid-bg>* {
+  .section-grid>* {
     position: relative;
     z-index: 1;
   }
@@ -1657,43 +1651,13 @@
     min-height: 100svh;
   }
 
-  /* disable generic utility grid on hero */
+  /* kill old fake hero grid */
+  .rb-hero::before,
   .rb-grid-bg--hero::before {
     content: none;
   }
 
-  /* full-screen hero grid */
-  .rb-hero::before {
-    content: "";
-    position: absolute;
-    inset: var(--header-offset, 3rem) 0 0 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.065) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.065) 1px, transparent 1px);
-    background-size:
-      calc(100% / 8) calc((100svh - var(--header-offset, 3rem)) / 6);
-    background-position: left top;
-
-    /* hide the outermost hero grid edge lines so they don't double with the site frame */
-    mask-image: linear-gradient(to right,
-        transparent 0,
-        transparent 1px,
-        #000 1px,
-        #000 calc(100% - 1px),
-        transparent calc(100% - 1px),
-        transparent 100%);
-    -webkit-mask-image: linear-gradient(to right,
-        transparent 0,
-        transparent 1px,
-        #000 1px,
-        #000 calc(100% - 1px),
-        transparent calc(100% - 1px),
-        transparent 100%);
-  }
-
-  /* .rb-hero__bg {
+  .rb-hero__bg {
     position: absolute;
     inset: 0;
     pointer-events: none;
@@ -1706,7 +1670,7 @@
       radial-gradient(ellipse 500px 500px at 85% 75%,
         rgba(var(--accent-secondary-rgb), 0.05) 0%,
         transparent 65%);
-  } */
+  }
 
   /* ─── Full-width layout wrapper ─────────────────────────── */
 
@@ -1723,18 +1687,12 @@
   /* ─── Real layout grid ──────────────────────────────────── */
 
   .rb-hero__grid-layout {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-    grid-template-rows: repeat(6, minmax(0, 1fr));
-    min-height: calc(100svh - var(--header-offset, 3rem));
+    --section-grid-cols: 8;
+    --section-grid-rows: 6;
+    --section-grid-min-height: calc(100svh - var(--header-offset, 3rem));
   }
 
-  .rb-hero__grid-layout>* {
-    position: relative;
-    z-index: 1;
-  }
-
+  /* actual row placeholders */
   .rb-hero__cell--nav-left {
     grid-column: 1 / 5;
     grid-row: 1;
@@ -1755,7 +1713,7 @@
     grid-row: 6;
   }
 
-  /* Panels placed directly on the full-screen grid */
+  /* Panels placed directly on the real grid */
   .rb-hero__left {
     grid-column: 2 / 5;
     grid-row: 2 / 6;
@@ -1770,19 +1728,16 @@
     position: relative;
   }
 
-  /* clean outer shell only — no center seam */
   .rb-hero__left::before {
     content: "";
     position: absolute;
     inset: 0;
     pointer-events: none;
-
     border-top: 1px solid rgba(255, 255, 255, 0.12);
     border-left: 1px solid rgba(255, 255, 255, 0.12);
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   }
 
-  /* REMOVE this completely */
   .rb-hero__left::after {
     display: none;
   }
@@ -1797,7 +1752,6 @@
     min-height: 0;
     width: 100%;
     background: #0e0e10;
-    /* overflow: hidden; */
     border: 1px solid rgba(255, 255, 255, 0.12);
     z-index: 2;
   }
@@ -1869,23 +1823,6 @@
   }
 
   /* ─── Frame internals ───────────────────────────────────── */
-
-  @keyframes rbHeroReadoutBlink {
-
-    0%,
-    48% {
-      opacity: 1;
-    }
-
-    50%,
-    98% {
-      opacity: 0.25;
-    }
-
-    100% {
-      opacity: 1;
-    }
-  }
 
   .rb-hero__frame-tick {
     position: absolute;
@@ -2002,7 +1939,6 @@
     z-index: 2;
   }
 
-  /* INNER CORE PANEL */
   .rb-hero__core-panel {
     position: absolute;
     inset: 0;
@@ -2035,9 +1971,6 @@
     overflow: hidden;
   }
 
-  /* REMOVE FOR FULL VISUAL FILL */
-  /* REMOVE FOR FULL VISUAL FILL */
-  /* REMOVE FOR FULL VISUAL FILL */
   .rb-hero__core-zone {
     position: relative;
     min-height: 0;
@@ -2057,10 +1990,6 @@
     border-top: 1px solid rgba(255, 255, 255, 0.12);
   }
 
-  /* REMOVE FOR FULL VISUAL FILL */
-  /* REMOVE FOR FULL VISUAL FILL */
-  /* REMOVE FOR FULL VISUAL FILL */
-
   .rb-hero__core-grid {
     position: absolute;
     inset: 0;
@@ -2070,7 +1999,6 @@
     background-size: 3.25rem 3.25rem;
     opacity: 0.22;
   }
-
 
   .rb-hero__core-plane {
     position: absolute;
@@ -2100,142 +2028,6 @@
 
   .rb-hero__core-orbit .hero-visual-wrap {
     width: min(82%, 21rem);
-  }
-
-  .rb-hero__core-callout {
-    position: absolute;
-    z-index: 4;
-    pointer-events: none;
-  }
-
-  .rb-hero__core-callout-box {
-    position: absolute;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    background: rgba(10, 10, 12, 0.45);
-  }
-
-  .rb-hero__core-callout-box--sm {
-    width: 3rem;
-    height: 1.45rem;
-  }
-
-  .rb-hero__core-callout-box--rail {
-    width: 0.55rem;
-    height: 3rem;
-  }
-
-  .rb-hero__core-callout-notch {
-    position: absolute;
-    right: 0.2rem;
-    width: 0.7rem;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.16);
-  }
-
-  .rb-hero__core-callout-notch--top {
-    top: 0.25rem;
-  }
-
-  .rb-hero__core-callout-notch--bottom {
-    bottom: 0.25rem;
-  }
-
-  .rb-hero__core-callout-line {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.16);
-  }
-
-  .rb-hero__core-callout--tr {
-    top: 1.2rem;
-    right: 1.55rem;
-    width: 5.2rem;
-    height: 2.4rem;
-  }
-
-  .rb-hero__core-callout-line--tr-h {
-    top: 0.35rem;
-    right: 2.5rem;
-    width: 2.55rem;
-    height: 1px;
-  }
-
-  .rb-hero__core-callout-line--tr-v {
-    top: 0.35rem;
-    right: 2.5rem;
-    width: 1px;
-    height: 0.95rem;
-  }
-
-  .rb-hero__core-callout--tr .rb-hero__core-callout-box {
-    top: 0;
-    right: 0;
-  }
-
-  .rb-hero__core-callout--ml {
-    left: 1.35rem;
-    top: 44%;
-    width: 3.5rem;
-    height: 4rem;
-  }
-
-  .rb-hero__core-callout-line--ml-h {
-    left: 0.55rem;
-    top: 1.75rem;
-    width: 2.1rem;
-    height: 1px;
-  }
-
-  .rb-hero__core-callout-line--ml-v {
-    left: 0.55rem;
-    top: 0.95rem;
-    width: 1px;
-    height: 0.8rem;
-  }
-
-  .rb-hero__core-callout--ml .rb-hero__core-callout-box {
-    left: 0;
-    top: 0.55rem;
-  }
-
-  .rb-hero__core-callout-box--rail .rb-hero__core-callout-notch {
-    right: auto;
-    left: 0.1rem;
-    width: 0.35rem;
-  }
-
-  .rb-hero__core-callout--bl {
-    left: 1.85rem;
-    bottom: 1.4rem;
-    width: 4.8rem;
-    height: 3.3rem;
-  }
-
-  .rb-hero__core-callout-line--bl-v {
-    left: 1.2rem;
-    bottom: 1.55rem;
-    width: 1px;
-    height: 1.15rem;
-  }
-
-  .rb-hero__core-callout-line--bl-h {
-    left: 1.2rem;
-    bottom: 1.55rem;
-    width: 2.25rem;
-    height: 1px;
-  }
-
-  .rb-hero__core-callout--bl .rb-hero__core-callout-box {
-    left: 0;
-    bottom: 0;
-  }
-
-  .rb-hero__frame-bottombar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 0.4rem 1.6rem 0.45rem 0.85rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
-    flex-shrink: 0;
   }
 
   /* ─── Globe visual ──────────────────────────────────────── */
@@ -2293,29 +2085,12 @@
 
   /* ─── Responsive ────────────────────────────────────────── */
 
-  @media (min-width: 1440px) {
-    .rb-hero__left {
-      grid-column: 2 / 6;
-      grid-row: 2 / 6;
-    }
-
-    .rb-hero__frame {
-      grid-column: 5 / 8;
-      grid-row: 2 / 6;
-    }
-  }
-
   @media (max-width: 1024px) {
-    .rb-hero::before {
-      background-size:
-        calc(100% / 8) calc((100svh - var(--header-offset, 3rem)) / 4);
-    }
-
     .rb-hero__grid-layout {
-      grid-template-columns: repeat(8, minmax(0, 1fr));
+      --section-grid-rows: 4;
+      --section-grid-min-height: calc(100svh - var(--header-offset, 3rem));
       grid-template-rows:
-        12.5vw auto minmax(260px, 1fr) 12.5vw;
-      min-height: calc(100svh - var(--header-offset, 3rem));
+        3.5rem auto minmax(340px, 1fr) 3.5rem;
     }
 
     .rb-hero__cell--nav-left {
@@ -2338,7 +2113,7 @@
     .rb-hero__frame {
       grid-column: 1 / 9;
       grid-row: 3;
-      min-height: 260px;
+      min-height: 340px;
     }
 
     .rb-hero__cell--bot-left {
@@ -2351,67 +2126,28 @@
       grid-row: 4;
     }
 
-    .hero-visual-wrap {
+    .rb-hero__core-orbit .hero-visual-wrap {
       width: min(280px, 62vw);
-    }
-
-    .rb-hero__core-zone--middle {
-      min-height: clamp(25rem, 40%, 21rem);
     }
   }
 
   @media (max-width: 640px) {
-    .rb-hero::before {
-      background-size:
-        calc(100% / 8) calc((100svh - var(--header-offset, 3rem)) / 4);
-    }
-
     .rb-hero__grid-layout {
-      grid-template-columns: repeat(8, minmax(0, 1fr));
+      --section-grid-rows: 4;
+      --section-grid-min-height: calc(100dvh - var(--header-offset, 3rem) + 5rem);
       grid-template-rows:
-        12.5vw auto minmax(220px, 1fr) 12.5vw;
-      min-height: calc(100dvh - var(--header-offset, 3rem) + 5.5rem);
-    }
-
-    .rb-hero__cell--nav-left {
-      grid-column: 1 / 5;
-      grid-row: 1;
-    }
-
-    .rb-hero__cell--nav-right {
-      grid-column: 5 / 9;
-      grid-row: 1;
+        3.5rem auto minmax(540px, 1fr) 3.5rem;
     }
 
     .rb-hero__left {
       grid-column: 1 / 9;
       grid-row: 2;
-      justify-content: flex-start;
-      padding: 1.25rem 1rem;
     }
 
     .rb-hero__frame {
       grid-column: 1 / 9;
       grid-row: 3;
-      min-height: 650px;
-    }
-
-    .rb-hero__frame-stage {
-      padding: 1rem;
-      padding-right: 1.35rem;
-    }
-
-    .rb-hero__frame-inset {
-      inset: 0.55rem;
-      right: 0.95rem;
-    }
-
-    .rb-hero__core-stage {
-      grid-template-rows: 1fr minmax(30rem, 58%) 1fr;
-    }
-
-    .rb-hero__core-zone--middle {
-      min-height: 15rem;
+      min-height: 540px;
     }
 
     .rb-hero__core-orbit {
@@ -2425,153 +2161,14 @@
       width: 100%;
       margin-inline: auto;
     }
-
-    .rb-hero__core-plane {
-      bottom: 13%;
-    }
-
-    .rb-hero__cell--bot-left {
-      grid-column: 1 / 5;
-      grid-row: 4;
-    }
-
-    .rb-hero__cell--bot-right {
-      grid-column: 5 / 9;
-      grid-row: 4;
-    }
   }
 
-  /* ===== NEST HUB FIX (short-height desktop/tablet) ===== */
-  @media (min-width: 900px) and (max-width: 1400px) and (max-height: 700px) {
-    .rb-hero__grid-layout {
-      grid-template-rows:
-        3.5rem auto minmax(320px, 1fr) 3.5rem;
-      min-height: calc(100svh - var(--header-offset, 3rem));
-    }
-
-    .rb-hero__frame {
-      min-height: 360px;
-    }
-
-    .rb-hero__core-zone--middle {
-      min-height: 20rem;
-    }
-
-  }
-
-  /* ===== SURFACE DUO / TALL NARROW STACK FIX ===== */
-  @media (min-width: 540px) and (max-width: 720px) and (max-height: 900px) {
-    .rb-hero__grid-layout {
-      height: auto;
-      min-height: calc(100svh - var(--header-offset, 3rem) + 5rem);
-    }
-
-    .rb-hero__frame {
-      min-height: 650px;
-    }
-
-    .rb-hero__core-stage {
-      grid-template-rows: 1fr minmax(22rem, 58%) 1fr;
-    }
-
-    .rb-hero__core-orbit .hero-visual-wrap {
-      width: min(300px, 56vw);
-      margin-inline: auto;
-    }
-
-  }
-
-  /* ===== HERO SHORT-HEIGHT FIX (Nest Hub / 1024x600-ish) ===== */
-  @media (min-width: 1100px) and (max-width: 1366px) and (max-height: 900px) {
-    .rb-hero__grid-layout {
-      height: calc(100svh - var(--header-offset, 3rem));
-      min-height: calc(100svh - var(--header-offset, 3rem));
-    }
-  }
-
-  /* ===== REAL PHONE SAFETY FIX (iPhone / small real devices) ===== */
-  /* @media (max-width: 430px) and (hover: none) and (pointer: coarse) {
-    .rb-hero__grid-layout {
-      min-height: calc(100dvh - var(--header-offset, 3rem) + 5.5rem);
-    }
-
-    .rb-hero__frame {
-      min-height: 650px;
-    }
-
-    .rb-hero__frame-stage {
-      padding: 1rem;
-      padding-right: 1.35rem;
-    }
-
-    .rb-hero__frame-inset {
-      inset: 0.55rem;
-      right: 0.95rem;
-    }
-
-    .rb-hero__core-stage {
-      grid-template-rows: 1fr minmax(30rem, 58%) 1fr;
-    }
-
-    .rb-hero__core-zone--middle {
-      min-height: 15rem;
-    }
-
-    .rb-hero__core-orbit {
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .rb-hero__core-orbit .hero-visual-wrap {
-      width: 100%;
-      margin-inline: auto;
-    }
-
-    .rb-hero__core-plane {
-      bottom: 13%;
-    }
-  } */
-
-
-  /* ===== iPad Mini landscape fix ===== */
-  @media (width: 1024px) and (height: 768px) and (orientation: landscape) {
-    .rb-hero__frame {
-      min-height: 380px;
-    }
-
-    .rb-hero__core-stage {
-      grid-template-rows: 1fr minmax(18rem, 58%) 1fr;
-    }
-
-    .rb-hero__core-zone--middle {
-      min-height: 18rem;
-    }
-
-    .rb-hero__core-orbit .hero-visual-wrap {
-      width: min(260px, 34vw);
-      margin-inline: auto;
-    }
-
-    .rb-hero__core-stage {
-      grid-template-rows: 1fr minmax(20rem, 58%) 1fr;
-    }
-
-  }
-
-
-  /* ===== STACKED LANDSCAPE PHONE FIX ===== */
   @media (max-width: 950px) and (max-height: 900px) and (orientation: landscape) {
-    .rb-hero::before {
-      background-size:
-        calc(100% / 8) 3.5rem;
-    }
-
     .rb-hero__grid-layout {
+      --section-grid-rows: 4;
+      --section-grid-min-height: calc(100dvh - var(--header-offset, 3rem));
       grid-template-rows:
-        3.5rem auto minmax(280px, 1fr) 3.5rem;
-      min-height: calc(100dvh - var(--header-offset, 3rem));
+        3.5rem auto minmax(302px, 1fr) 3.5rem;
     }
 
     .rb-hero__left {
@@ -2600,13 +2197,6 @@
       min-height: 14rem;
     }
 
-    .rb-hero__core-orbit {
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
     .rb-hero__core-orbit .hero-visual-wrap {
       width: min(190px, 34vh);
       margin-inline: auto;
@@ -2614,6 +2204,42 @@
 
     .rb-hero__core-plane {
       bottom: 12%;
+    }
+  }
+
+  @media (min-width: 900px) and (max-width: 1400px) and (max-height: 700px) {
+    .rb-hero__grid-layout {
+      --section-grid-rows: 4;
+      --section-grid-min-height: calc(100svh - var(--header-offset, 3rem));
+      grid-template-rows:
+        3.5rem auto minmax(360px, 1fr) 3.5rem;
+    }
+
+    .rb-hero__frame {
+      min-height: 360px;
+    }
+
+    .rb-hero__core-zone--middle {
+      min-height: 20rem;
+    }
+  }
+
+  @media (width: 1024px) and (height: 768px) and (orientation: landscape) {
+    .rb-hero__frame {
+      min-height: 380px;
+    }
+
+    .rb-hero__core-stage {
+      grid-template-rows: 1fr minmax(20rem, 58%) 1fr;
+    }
+
+    .rb-hero__core-zone--middle {
+      min-height: 18rem;
+    }
+
+    .rb-hero__core-orbit .hero-visual-wrap {
+      width: min(260px, 34vw);
+      margin-inline: auto;
     }
   }
 

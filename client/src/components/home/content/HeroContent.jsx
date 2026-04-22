@@ -861,13 +861,13 @@ function HeroContent() {
   const { startAuthBoot } = useAuthBoot();
 
   return (
-    <section className="rb-hero rb-grid-bg rb-grid-bg--hero">
+    <section className="rb-hero">
       {/* Accent colour washes */}
       <div className="rb-hero__bg" />
 
       {/* 1400px constrained container */}
       <div className="rb-hero__inner">
-        <div className="rb-hero__grid-layout">
+        <div className="rb-hero__grid-layout section-grid section-grid--8x6">
           {/* ── ROW 1 — top pad, pushes panels down from header ─ */}
           <div className="rb-hero__cell rb-hero__cell--nav-left" />
           <div className="rb-hero__cell rb-hero__cell--nav-right" />
