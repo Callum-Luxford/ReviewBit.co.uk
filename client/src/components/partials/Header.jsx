@@ -30,7 +30,7 @@ function Header() {
   }
 
   return (
-    <header className="terminal-site-header fixed top-0 left-0 z-[9998] w-full h-24">
+    <header className="terminal-site-header fixed top-0 left-0 z-[9998] h-24 w-full">
       <div
         className={`terminal-site-header__bg absolute inset-0 transition-all duration-300 ${
           scrolled
@@ -120,9 +120,9 @@ function Header() {
 
       <div className="terminal-site-shell h-full w-full">
         <div className="terminal-site-header__row">
-          {/* LEFT BLOCK */}
+          {/* LEFT */}
           <div className="terminal-site-header__segment terminal-site-header__segment--left">
-            <div className="terminal-site-header__inner">
+            <div className="terminal-site-header__inner terminal-site-header__inner--left">
               <Link to="/" className="group flex items-center gap-3">
                 <div className="terminal-header-logo-box">
                   <span className="text-sm font-medium">{">_"}</span>
@@ -133,8 +133,8 @@ function Header() {
             </div>
           </div>
 
-          {/* CENTER BLOCK */}
-          <div className="terminal-site-header__segment terminal-site-header__segment--center hidden md:block">
+          {/* CENTER */}
+          <div className="terminal-site-header__segment terminal-site-header__segment--center hidden min-[950px]:block">
             <div className="terminal-site-header__inner">
               {!isAuthPage && (
                 <nav className="terminal-site-header__center-nav">
@@ -154,9 +154,9 @@ function Header() {
             </div>
           </div>
 
-          {/* RIGHT BLOCK */}
-          <div className="terminal-site-header__segment terminal-site-header__segment--right hidden md:block">
-            <div className="terminal-site-header__inner">
+          {/* RIGHT */}
+          <div className="terminal-site-header__segment terminal-site-header__segment--right hidden min-[950px]:block">
+            <div className="terminal-site-header__inner terminal-site-header__inner--right">
               <div
                 className="flex items-center gap-3"
                 onMouseLeave={() => setActiveAuthButton("signup")}
@@ -183,7 +183,7 @@ function Header() {
           </div>
 
           {/* MOBILE TOGGLE */}
-          <div className="terminal-site-header__mobile md:hidden">
+          <div className="terminal-site-header__mobile min-[950px]:hidden">
             <Squash
               toggled={menuOpen}
               toggle={setMenuOpen}

@@ -1,11 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"); */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
 
 /* ROOT STYLES */
 :root {
   /* --font-family-base: "JetBrains Mono", sans-serif; */
-  --font-family-base: "Roboto", sans-serif;
+  --font-family-base: "Orbitron",
+    sans-serif;
   --font-family-alt-1: "IBM Plex Mono", sans-serif;
 
   --font-size-2xs: clamp(0.5rem, 1vw, 0.625rem);
@@ -174,6 +177,7 @@
     background-color: var(--theme-clr-1);
     font-family: "Roboto", sans-serif;
     font-family: var(--font-family-base);
+    letter-spacing: var(--letter-spacing-7);
     transition: padding-right 0.2s ease;
   }
 
@@ -1297,6 +1301,8 @@
   /* ======== FRONTPAGE ======== */
 
   /* ======== HEADER ======== */
+  /* ======== HEADER ======== */
+  /* ======== HEADER ======== */
 
   .terminal-site-header {
     border-bottom: 1px solid var(--ui-line);
@@ -1313,6 +1319,7 @@
     position: relative;
     width: 100%;
     height: 100%;
+    padding-inline: 0;
   }
 
   .terminal-site-header__row {
@@ -1335,6 +1342,14 @@
     justify-content: center;
     width: 100%;
     height: 100%;
+  }
+
+  .terminal-site-header__inner--left {
+    justify-content: center;
+  }
+
+  .terminal-site-header__inner--right {
+    justify-content: center;
   }
 
   .terminal-site-header__segment--center::before,
@@ -1360,15 +1375,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: clamp(1.5rem, 3vw, 3rem);
+    gap: clamp(0.85rem, 1.5vw, 2rem);
   }
 
   .terminal-site-header__mobile {
     position: absolute;
-    right: 1rem;
     top: 50%;
+    right: var(--site-frame-gutter);
     transform: translateY(-50%);
     z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .terminal-header-logo-box {
@@ -1385,11 +1403,16 @@
   }
 
   .terminal-header-logo-text {
-    @apply text-lg font-semibold tracking-tight text-text_clr_1;
+    @apply font-semibold tracking-tight text-text_clr_1;
+    font-size: 1rem;
+    white-space: nowrap;
   }
 
   .terminal-nav-link {
-    @apply text-xs uppercase tracking-[0.18em] transition text-text_clr_1;
+    @apply uppercase transition text-text_clr_1;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    white-space: nowrap;
   }
 
   .terminal-nav-link:hover {
@@ -1397,7 +1420,7 @@
   }
 
   .terminal-auth-btn {
-    @apply inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 border;
+    @apply inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 border;
     border-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
   }
@@ -1415,13 +1438,39 @@
     border-color: rgba(255, 255, 255, 0.1);
   }
 
-  @media (max-width: 767px) {
+  /* tighten 3-column layout before burger */
+  @media (min-width: 950px) and (max-width: 1150px) {
+    .terminal-site-header__center-nav {
+      gap: 0.8rem;
+    }
+
+    .terminal-nav-link {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+    }
+
+    .terminal-header-logo-text {
+      font-size: 0.92rem;
+    }
+
+    .terminal-auth-btn {
+      padding: 0.7rem 0.9rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  /* mobile / tablet burger layout */
+  @media (max-width: 949px) {
+    .terminal-site-shell {
+      padding-inline: var(--site-frame-gutter);
+    }
+
     .terminal-site-header__row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       height: 100%;
-      padding-inline: 1rem;
+      position: relative;
     }
 
     .terminal-site-header__segment--center::before,
@@ -1432,13 +1481,47 @@
     .terminal-site-header__segment--left {
       display: block;
       flex: 1;
+      min-width: 0;
     }
 
     .terminal-site-header__inner {
       justify-content: flex-start;
     }
+
+    .terminal-site-header__inner--left {
+      justify-content: flex-start;
+    }
+
+    .terminal-site-header__mobile {
+      right: 0;
+    }
   }
 
+  /* ======== HEADER ======== */
+  /* ======== HEADER ======== */
+  /* ======== HEADER ======== */
+
+
+
+
+  /* tablet tightening (still 3-column) */
+  /* @media (min-width: 768px) and (max-width: 1024px) {
+    .terminal-nav-link {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+    }
+
+    .terminal-header-logo-text {
+      font-size: 0.92rem;
+    }
+
+    .terminal-auth-btn {
+      font-size: 0.8rem;
+    }
+  } */
+
+  /* ======== HEADER ======== */
+  /* ======== HEADER ======== */
   /* ======== HEADER ======== */
 
   /* .rb-hero__scanline {
@@ -1746,11 +1829,10 @@
   }
 
   .rb-hero__title {
+    @apply text-6xl lg:text-9xl;
     width: 100%;
-    font-size: clamp(2.8rem, 5.5vw, 5.2rem);
-    font-weight: 900;
+    font-weight: 600;
     line-height: 0.92;
-    letter-spacing: -0.025em;
     color: var(--font-clr-1);
   }
 
@@ -1759,21 +1841,19 @@
   }
 
   .rb-hero__accent {
+    @apply text-5xl lg:text-8xl;
     display: block;
     margin-top: 0.05em;
-    font-size: clamp(2.6rem, 5.2vw, 4.9rem);
-    font-weight: 900;
+    font-weight: 600;
     line-height: 0.92;
-    letter-spacing: -0.025em;
     color: var(--accent-primary);
   }
 
   .rb-hero__copy {
+    @apply text-md lg:text-lg text-text_clr_4;
     margin-top: 1.25rem;
     max-width: 400px;
-    font-size: clamp(0.78rem, 1vw, 0.88rem);
-    line-height: 1.72;
-    color: rgba(247, 245, 242, 0.46);
+    line-height: 1.4;
   }
 
   .rb-hero__actions {
@@ -2215,12 +2295,12 @@
 
   @media (min-width: 1440px) {
     .rb-hero__left {
-      grid-column: 3 / 5;
+      grid-column: 2 / 6;
       grid-row: 2 / 6;
     }
 
     .rb-hero__frame {
-      grid-column: 5 / 7;
+      grid-column: 5 / 8;
       grid-row: 2 / 6;
     }
   }
@@ -2274,6 +2354,10 @@
     .hero-visual-wrap {
       width: min(280px, 62vw);
     }
+
+    .rb-hero__core-zone--middle {
+      min-height: clamp(25rem, 40%, 21rem);
+    }
   }
 
   @media (max-width: 640px) {
@@ -2309,7 +2393,11 @@
     .rb-hero__frame {
       grid-column: 1 / 9;
       grid-row: 3;
-      min-height: 220px;
+      min-height: 420px;
+    }
+
+    .rb-hero__core-zone--middle {
+      min-height: clamp(25rem, 40%, 21rem);
     }
 
     .rb-hero__cell--bot-left {
@@ -2324,6 +2412,36 @@
 
     .hero-visual-wrap {
       width: min(200px, 56vw);
+    }
+  }
+
+  /* ===== HERO SHORT-HEIGHT FIX (Nest Hub / 1024x600-ish) ===== */
+  @media (min-width: 768px) and (max-width: 1100px) and (max-height: 700px) {
+    .rb-hero__grid-layout {
+      grid-template-rows:
+        3.5rem auto minmax(400px, 1fr) 3.5rem;
+    }
+  }
+
+  /* ===== SURFACE DUO / TALL NARROW STACK FIX ===== */
+  @media (min-width: 540px) and (max-width: 720px) and (max-height: 900px) {
+    .rb-hero__grid-layout {
+      height: auto;
+      min-height: calc(100svh - var(--header-offset, 3rem) + 5rem);
+    }
+
+    .rb-hero__frame {
+      min-height: 450px;
+    }
+
+    
+  }
+
+  /* ===== HERO SHORT-HEIGHT FIX (Nest Hub / 1024x600-ish) ===== */
+  @media (min-width: 1100px) and (max-width: 1366px) and (max-height: 900px) {
+    .rb-hero__grid-layout {
+      height: calc(100svh - var(--header-offset, 3rem));
+      min-height: calc(100svh - var(--header-offset, 3rem));
     }
   }
 
@@ -2849,18 +2967,18 @@
   /* ========= TEXT ========= */
 
   .rb-how-card__title {
+    @apply text-2xl md:text-4xl;
     margin: 0;
-    font-size: clamp(2.4rem, 4vw, 4rem);
-    font-weight: 700;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: var(--letter-spacing-5);
     color: var(--font-clr-1);
     transition: text-shadow 0.3s ease;
   }
 
   .rb-how-card__copy {
+    @apply text-md md:text-md;
     margin-top: 1.5rem;
-    font-size: 1.05rem;
     line-height: 1.7;
     color: rgba(255, 255, 255, 0.65);
   }
@@ -2874,11 +2992,10 @@
   }
 
   .rb-how-card__list-item {
+    @apply text-sm text-text_clr_1;
     display: flex;
     gap: 0.75rem;
     align-items: center;
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.92);
   }
 
   .rb-how-card__list-dot {
@@ -2890,7 +3007,7 @@
   }
 
   .rb-how-card__list-text {
-    color: rgba(255, 255, 255, 0.92);
+    @apply text-text_clr_3;
   }
 
   /* ========= ACCENT VARIANTS ========= */

@@ -7,7 +7,7 @@ import type {
 } from "react";
 
 const base =
-  "relative inline-flex items-center justify-center rounded-md border font-medium transition-all duration-300 ease-out focus:outline-none focus-visible:outline-none active:scale-100 active:translate-y-0";
+  "relative inline-flex items-center justify-center border text-md transition-all duration-300 ease-out focus:outline-none focus-visible:outline-none active:scale-100 active:translate-y-0";
 
 const sizes = {
   sm: "px-3 py-2 text-sm",
