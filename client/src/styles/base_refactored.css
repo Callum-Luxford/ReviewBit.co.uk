@@ -2441,12 +2441,22 @@
     }
   }
 
-  /* ===== HERO SHORT-HEIGHT FIX (Nest Hub / 1024x600-ish) ===== */
-  @media (min-width: 768px) and (max-width: 1100px) and (max-height: 700px) {
+  /* ===== NEST HUB FIX (short-height desktop/tablet) ===== */
+  @media (min-width: 900px) and (max-width: 1400px) and (max-height: 700px) {
     .rb-hero__grid-layout {
       grid-template-rows:
-        3.5rem auto minmax(400px, 1fr) 3.5rem;
+        3.5rem auto minmax(320px, 1fr) 3.5rem;
+      min-height: calc(100svh - var(--header-offset, 3rem));
     }
+
+    .rb-hero__frame {
+      min-height: 360px;
+    }
+
+    .rb-hero__core-zone--middle {
+      min-height: 20rem;
+    }
+
   }
 
   /* ===== SURFACE DUO / TALL NARROW STACK FIX ===== */
@@ -2523,6 +2533,89 @@
       bottom: 13%;
     }
   } */
+
+
+  /* ===== iPad Mini landscape fix ===== */
+  @media (width: 1024px) and (height: 768px) and (orientation: landscape) {
+    .rb-hero__frame {
+      min-height: 380px;
+    }
+
+    .rb-hero__core-stage {
+      grid-template-rows: 1fr minmax(18rem, 58%) 1fr;
+    }
+
+    .rb-hero__core-zone--middle {
+      min-height: 18rem;
+    }
+
+    .rb-hero__core-orbit .hero-visual-wrap {
+      width: min(260px, 34vw);
+      margin-inline: auto;
+    }
+
+    .rb-hero__core-stage {
+      grid-template-rows: 1fr minmax(20rem, 58%) 1fr;
+    }
+
+  }
+
+
+  /* ===== STACKED LANDSCAPE PHONE FIX ===== */
+  @media (max-width: 950px) and (max-height: 900px) and (orientation: landscape) {
+    .rb-hero::before {
+      background-size:
+        calc(100% / 8) 3.5rem;
+    }
+
+    .rb-hero__grid-layout {
+      grid-template-rows:
+        3.5rem auto minmax(280px, 1fr) 3.5rem;
+      min-height: calc(100dvh - var(--header-offset, 3rem));
+    }
+
+    .rb-hero__left {
+      padding: 1rem 1rem 0.85rem;
+    }
+
+    .rb-hero__frame {
+      min-height: 302px;
+    }
+
+    .rb-hero__frame-stage {
+      padding: 0.9rem;
+      padding-right: 1.2rem;
+    }
+
+    .rb-hero__frame-inset {
+      inset: 0.5rem;
+      right: 0.85rem;
+    }
+
+    .rb-hero__core-stage {
+      grid-template-rows: 1fr minmax(14rem, 58%) 1fr;
+    }
+
+    .rb-hero__core-zone--middle {
+      min-height: 14rem;
+    }
+
+    .rb-hero__core-orbit {
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rb-hero__core-orbit .hero-visual-wrap {
+      width: min(190px, 34vh);
+      margin-inline: auto;
+    }
+
+    .rb-hero__core-plane {
+      bottom: 12%;
+    }
+  }
 
   /* Legacy no-ops */
   .rb-hero__decor,
