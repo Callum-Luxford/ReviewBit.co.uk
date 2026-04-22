@@ -2098,8 +2098,7 @@
     .rb-hero__grid-layout {
       --section-grid-rows: 4;
       --section-grid-min-height: calc(100svh - var(--header-offset, 3rem));
-      grid-template-rows:
-        3.5rem auto minmax(340px, 1fr) 3.5rem;
+      grid-template-rows: 3.5rem auto minmax(340px, 1fr) 3.5rem;
     }
 
     .rb-hero__cell--nav-left {
@@ -2138,15 +2137,13 @@
     .rb-hero__core-orbit .hero-visual-wrap {
       width: min(280px, 62vw);
     }
-
   }
 
   @media (max-width: 640px) {
     .rb-hero__grid-layout {
       --section-grid-rows: 4;
       --section-grid-min-height: calc(100dvh - var(--header-offset, 3rem) + 5rem);
-      grid-template-rows:
-        3.5rem auto minmax(540px, 1fr) 3.5rem;
+      grid-template-rows: 3.5rem auto minmax(540px, 1fr) 3.5rem;
     }
 
     .rb-hero__left {
@@ -2162,29 +2159,24 @@
       min-height: 540px;
     }
 
-    .rb-hero__frame-stage {
+    .rb-hero__frame-body {
       padding: 1rem;
       padding-right: 1.35rem;
     }
 
-    .rb-hero__frame-inset {
+    .rb-hero__frame-inset,
+    .rb-hero__inner-frame {
       inset: 0.55rem;
       right: 0.95rem;
     }
 
-    .rb-hero__core-stage {
-      grid-template-rows: 1fr minmax(22rem, 58%) 1fr;
+    .rb-hero__inner-frame {
+      --rb-inner-top-size: 2.4rem;
+      --rb-inner-bottom-size: 2.4rem;
     }
 
-    .rb-hero__core-zone--middle {
+    .rb-hero__inner-section--middle {
       min-height: 15rem;
-    }
-
-    .rb-hero__core-orbit {
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .rb-hero__core-orbit .hero-visual-wrap {
@@ -2195,15 +2187,14 @@
     .rb-hero__core-plane {
       bottom: 13%;
     }
-
   }
 
+  /* ===== STACKED LANDSCAPE PHONE FIX ===== */
   @media (max-width: 950px) and (max-height: 900px) and (orientation: landscape) {
     .rb-hero__grid-layout {
       --section-grid-rows: 4;
       --section-grid-min-height: calc(100dvh - var(--header-offset, 3rem));
-      grid-template-rows:
-        3.5rem auto minmax(302px, 1fr) 3.5rem;
+      grid-template-rows: 3.5rem auto minmax(302px, 1fr) 3.5rem;
     }
 
     .rb-hero__left {
@@ -2214,63 +2205,82 @@
       min-height: 302px;
     }
 
-    .rb-hero__frame-stage {
+    .rb-hero__frame-body {
       padding: 0.9rem;
       padding-right: 1.2rem;
     }
 
-    .rb-hero__frame-inset {
+    .rb-hero__frame-inset,
+    .rb-hero__inner-frame {
       inset: 0.5rem;
       right: 0.85rem;
     }
 
-    .rb-hero__core-stage {
-      grid-template-rows: 1fr auto 1fr;
+    .rb-hero__inner-frame {
+      --rb-inner-top-size: 0;
+      --rb-inner-bottom-size: 0;
     }
 
-    .rb-hero__core-zone--middle {
-      min-height: 0;
+    .rb-hero__inner-section--middle {
+      min-height: 14rem;
+    }
+
+    .rb-hero__core-orbit {
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .rb-hero__core-orbit .hero-visual-wrap {
-      width: min(190px, 34vh);
+      width: min(240px, 60vh);
       margin-inline: auto;
     }
 
     .rb-hero__core-plane {
       bottom: 12%;
     }
-
   }
 
+  /* ===== NEST HUB FIX ===== */
   @media (min-width: 900px) and (max-width: 1400px) and (max-height: 700px) {
     .rb-hero__grid-layout {
       --section-grid-rows: 4;
       --section-grid-min-height: calc(100svh - var(--header-offset, 3rem));
-      grid-template-rows:
-        3.5rem auto minmax(360px, 1fr) 3.5rem;
+      grid-template-rows: 3.5rem auto minmax(360px, 1fr) 3.5rem;
     }
 
     .rb-hero__frame {
       min-height: 360px;
     }
 
-    .rb-hero__core-zone--middle {
-      min-height: 20rem;
+    .rb-hero__inner-frame {
+      --rb-inner-top-size: 0;
+      --rb-inner-bottom-size: 0;
+    }
+
+    .rb-hero__inner-section--middle {
+      min-height: 12rem;
+    }
+
+    .rb-hero__core-orbit .hero-visual-wrap {
+      width: min(240px, 28vw);
     }
   }
 
+  /* ===== iPad Mini landscape fix ===== */
   @media (width: 1024px) and (height: 768px) and (orientation: landscape) {
     .rb-hero__frame {
       min-height: 380px;
     }
 
-    .rb-hero__core-stage {
-      grid-template-rows: 1fr minmax(20rem, 58%) 1fr;
+    .rb-hero__inner-frame {
+      --rb-inner-top-size: 0;
+      --rb-inner-bottom-size: 0;
     }
 
-    .rb-hero__core-zone--middle {
-      min-height: 0;
+    .rb-hero__inner-section--middle {
+      min-height: 12rem;
     }
 
     .rb-hero__core-orbit .hero-visual-wrap {
@@ -2278,6 +2288,13 @@
       margin-inline: auto;
     }
   }
+
+    /* ===== PORTRAIT TABLET / FOLD FIX ===== */
+    @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+      .rb-hero__core-orbit .hero-visual-wrap {
+        width: min(360px, 52vw);
+      }
+    }
 
   /* Legacy no-ops */
   .rb-hero__decor,
