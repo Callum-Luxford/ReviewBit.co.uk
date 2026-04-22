@@ -1860,13 +1860,24 @@
     border-right: 2px solid rgba(255, 255, 255, 0.55);
   }
 
-  .rb-hero__frame-topbar {
+  .rb-hero__frame-topbar,
+  .rb-hero__frame-bottombar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.5rem 0.85rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     flex-shrink: 0;
+    min-height: 2rem;
+    padding: 0.5rem 0.95rem;
+  }
+
+  .rb-hero__frame-topbar {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .rb-hero__frame-bottombar {
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    justify-content: flex-end;
+    padding-right: 1.4rem;
   }
 
   .rb-hero__frame-readout {
@@ -1890,11 +1901,28 @@
     animation: rbHeroReadoutBlink 1.8s steps(1) infinite;
   }
 
+  .rb-hero__frame-body {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    padding: 1.25rem;
+    padding-right: 1.75rem;
+  }
+
+  .rb-hero__frame-inset {
+    position: absolute;
+    inset: 0.65rem;
+    right: 1.4rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+
   .rb-hero__frame-vticks {
     position: absolute;
-    top: 2.2rem;
+    top: 0.65rem;
     right: 0;
-    bottom: 2rem;
+    bottom: 0.65rem;
     width: 14px;
     display: flex;
     flex-direction: column;
@@ -1918,99 +1946,56 @@
     background: rgba(255, 255, 255, 0.1);
   }
 
-  .rb-hero__frame-stage {
-    position: relative;
-    flex: 1 1 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 0;
-    padding: 1.25rem;
-    padding-right: 1.75rem;
-    overflow: hidden;
-  }
+  /* === inner frame === */
 
-  .rb-hero__frame-inset {
+  .rb-hero__inner-frame {
+    --rb-inner-top-size: 2.5rem;
+    --rb-inner-bottom-size: 2.5rem;
+
     position: absolute;
     inset: 0.65rem;
     right: 1.4rem;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    pointer-events: none;
     z-index: 2;
-  }
-
-  .rb-hero__core-panel {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-  }
-
-  .rb-hero__core-panel-bottombar {
-    position: absolute;
-    left: 0.95rem;
-    right: 1.4rem;
-    bottom: 0.8rem;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    z-index: 4;
-    pointer-events: none;
-  }
-
-  .rb-hero__core-stage {
-    position: absolute;
-    inset: 0;
     display: grid;
-    grid-template-rows: auto 1fr auto;
+    grid-template-rows:
+      var(--rb-inner-top-size) 1fr var(--rb-inner-bottom-size);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     overflow: hidden;
   }
 
-  .rb-hero__core-zone {
+  .rb-hero__inner-section {
     position: relative;
     min-height: 0;
   }
 
-  .rb-hero__core-zone--top {
+  .rb-hero__inner-section--top {
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
   }
 
-  .rb-hero__core-zone-topbar {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 0.7rem 1.4rem 0.7rem 0.95rem;
-  }
-
-  .rb-hero__core-zone--middle {
+  .rb-hero__inner-section--middle {
     position: relative;
     min-height: clamp(20rem, 40%, 21rem);
     overflow: hidden;
   }
 
-  .rb-hero__core-zone--bottom {
+  .rb-hero__inner-section--bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.12);
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
   }
 
-  .rb-hero__core-zone-bottombar {
+  .rb-hero__inner-section-bar {
     width: 100%;
     display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    padding: 0.75rem 1.4rem 0.75rem 0.95rem;
+    align-items: center;
   }
 
-  .rb-hero__core-zone-bottom-readout {
-    display: inline-flex;
-    align-items: center;
+  .rb-hero__inner-section-bar--top {
+    justify-content: flex-start;
+    padding: 0.7rem 1.4rem 0.7rem 0.95rem;
+  }
+
+  .rb-hero__inner-section-bar--bottom {
     justify-content: flex-end;
-    text-align: right;
+    padding: 0.75rem 1.4rem 0.75rem 0.95rem;
   }
 
   .rb-hero__core-grid {

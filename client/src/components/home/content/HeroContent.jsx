@@ -927,6 +927,7 @@ function HeroContent() {
             <span className="rb-hero__frame-tick rb-hero__frame-tick--bl" />
             <span className="rb-hero__frame-tick rb-hero__frame-tick--br" />
 
+            {/* OUTER TOP BAR */}
             <div className="rb-hero__frame-topbar">
               <span className="rb-hero__frame-readout">
                 COORD: 51.90 // FRE 14
@@ -936,89 +937,88 @@ function HeroContent() {
               </span>
             </div>
 
-            <div className="rb-hero__frame-vticks" aria-hidden="true">
-              {Array.from({ length: 14 }).map((_, i) => (
-                <span key={i} className="rb-hero__frame-vtick" />
-              ))}
-            </div>
-
-            <div className="rb-hero__frame-stage">
+            {/* OUTER FRAME BODY */}
+            <div className="rb-hero__frame-body">
               <div className="rb-hero__frame-inset" />
 
-              {/* INNER PANEL */}
-              <div className="rb-hero__core-panel">
-                {/* top-right callout */}
-                <div
-                  className="rb-hero__core-callout rb-hero__core-callout--tr"
-                  aria-hidden="true"
-                >
-                  <span className="rb-hero__core-callout-line rb-hero__core-callout-line--tr-h" />
-                  <span className="rb-hero__core-callout-line rb-hero__core-callout-line--tr-v" />
-                  <div className="rb-hero__core-callout-box rb-hero__core-callout-box--sm">
-                    <span className="rb-hero__core-callout-notch rb-hero__core-callout-notch--top" />
-                    <span className="rb-hero__core-callout-notch rb-hero__core-callout-notch--bottom" />
-                  </div>
-                </div>
+              <div className="rb-hero__inner-frame">
+                {/* INNER TOP SECTION */}
+                <div className="rb-hero__inner-section rb-hero__inner-section--top">
+                  <div className="rb-hero__inner-section-bar rb-hero__inner-section-bar--top">
+                    <span className="rb-hero__frame-readout">
+                      COORD. FL.03 // PR 68
+                    </span>
 
-                {/* mid-left callout */}
-                <div
-                  className="rb-hero__core-callout rb-hero__core-callout--ml"
-                  aria-hidden="true"
-                >
-                  <span className="rb-hero__core-callout-line rb-hero__core-callout-line--ml-h" />
-                  <span className="rb-hero__core-callout-line rb-hero__core-callout-line--ml-v" />
-                  <div className="rb-hero__core-callout-box rb-hero__core-callout-box--rail">
-                    <span className="rb-hero__core-callout-notch rb-hero__core-callout-notch--top" />
-                    <span className="rb-hero__core-callout-notch rb-hero__core-callout-notch--bottom" />
-                  </div>
-                </div>
-
-                {/* bottom-left callout */}
-                <div
-                  className="rb-hero__core-callout rb-hero__core-callout--bl"
-                  aria-hidden="true"
-                >
-                  <span className="rb-hero__core-callout-line rb-hero__core-callout-line--bl-v" />
-                  <span className="rb-hero__core-callout-line rb-hero__core-callout-line--bl-h" />
-                  <div className="rb-hero__core-callout-box rb-hero__core-callout-box--sm">
-                    <span className="rb-hero__core-callout-notch rb-hero__core-callout-notch--top" />
-                    <span className="rb-hero__core-callout-notch rb-hero__core-callout-notch--bottom" />
-                  </div>
-                </div>
-
-                <div className="rb-hero__core-stage">
-                  <div className="rb-hero__core-zone rb-hero__core-zone--top">
-                    <div className="rb-hero__core-zone-topbar">
-                      <span className="rb-hero__frame-readout">
-                        COORD. FL.03 // PR 68
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="rb-hero__core-zone rb-hero__core-zone--middle">
-                    <div className="rb-hero__core-grid" aria-hidden="true" />
-                    <div className="rb-hero__core-plane" aria-hidden="true" />
-
-                    <div className="rb-hero__core-orbit">
-                      <HeroVisual size={420} maxSize={500} />
-                    </div>
-                  </div>
-
-                  <div className="rb-hero__core-zone rb-hero__core-zone--bottom">
-                    <div className="rb-hero__core-zone-bottombar">
-                      <span className="rb-hero__frame-readout rb-hero__frame-readout--dim rb-hero__core-zone-bottom-readout">
-                        RENDERCORE FLD...
-                      </span>
+                    <div
+                      className="rb-hero__core-callout rb-hero__core-callout--tr"
+                      aria-hidden="true"
+                    >
+                      <span className="rb-hero__core-callout-line rb-hero__core-callout-line--tr-h" />
+                      <span className="rb-hero__core-callout-line rb-hero__core-callout-line--tr-v" />
+                      <div className="rb-hero__core-callout-box rb-hero__core-callout-box--sm">
+                        <span className="rb-hero__core-callout-notch rb-hero__core-callout-notch--top" />
+                        <span className="rb-hero__core-callout-notch rb-hero__core-callout-notch--bottom" />
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="rb-hero__core-panel-bottombar">
-                  <span className="rb-hero__frame-readout rb-hero__frame-readout--dim rb-hero__frame-readout--blink">
-                    RENDERING FLOW...
-                  </span>
+                {/* INNER MIDDLE SECTION */}
+                <div className="rb-hero__inner-section rb-hero__inner-section--middle">
+                  <div className="rb-hero__core-grid" aria-hidden="true" />
+                  <div
+                    className="rb-hero__core-callout rb-hero__core-callout--ml"
+                    aria-hidden="true"
+                  >
+                    <span className="rb-hero__core-callout-line rb-hero__core-callout-line--ml-h" />
+                    <span className="rb-hero__core-callout-line rb-hero__core-callout-line--ml-v" />
+                    <div className="rb-hero__core-callout-box rb-hero__core-callout-box--rail">
+                      <span className="rb-hero__core-callout-notch rb-hero__core-callout-notch--top" />
+                      <span className="rb-hero__core-callout-notch rb-hero__core-callout-notch--bottom" />
+                    </div>
+                  </div>
+
+                  <div className="rb-hero__core-plane" aria-hidden="true" />
+
+                  <div className="rb-hero__core-orbit">
+                    <HeroVisual size={420} maxSize={500} />
+                  </div>
+                </div>
+
+                {/* INNER BOTTOM SECTION */}
+                <div className="rb-hero__inner-section rb-hero__inner-section--bottom">
+                  <div
+                    className="rb-hero__core-callout rb-hero__core-callout--bl"
+                    aria-hidden="true"
+                  >
+                    <span className="rb-hero__core-callout-line rb-hero__core-callout-line--bl-v" />
+                    <span className="rb-hero__core-callout-line rb-hero__core-callout-line--bl-h" />
+                    <div className="rb-hero__core-callout-box rb-hero__core-callout-box--sm">
+                      <span className="rb-hero__core-callout-notch rb-hero__core-callout-notch--top" />
+                      <span className="rb-hero__core-callout-notch rb-hero__core-callout-notch--bottom" />
+                    </div>
+                  </div>
+
+                  <div className="rb-hero__inner-section-bar rb-hero__inner-section-bar--bottom">
+                    <span className="rb-hero__frame-readout rb-hero__frame-readout--dim">
+                      RENDERCORE FLD...
+                    </span>
+                  </div>
                 </div>
               </div>
+
+              <div className="rb-hero__frame-vticks" aria-hidden="true">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <span key={i} className="rb-hero__frame-vtick" />
+                ))}
+              </div>
+            </div>
+
+            {/* OUTER BOTTOM BAR */}
+            <div className="rb-hero__frame-bottombar">
+              <span className="rb-hero__frame-readout rb-hero__frame-readout--dim rb-hero__frame-readout--blink">
+                RENDERING FLOW...
+              </span>
             </div>
           </div>
 
