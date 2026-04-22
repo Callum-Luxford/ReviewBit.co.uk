@@ -2454,8 +2454,38 @@
       min-height: 650px;
     }
 
+    .rb-hero__frame-stage {
+      padding: 1rem;
+      padding-right: 1.35rem;
+    }
+
+    .rb-hero__frame-inset {
+      inset: 0.55rem;
+      right: 0.95rem;
+    }
+
+    .rb-hero__core-stage {
+      grid-template-rows: 1fr minmax(30rem, 58%) 1fr;
+    }
+
     .rb-hero__core-zone--middle {
-      min-height: clamp(40rem, 42%, 21rem);
+      min-height: 15rem;
+    }
+
+    .rb-hero__core-orbit {
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rb-hero__core-orbit .hero-visual-wrap {
+      width: 100%;
+      margin-inline: auto;
+    }
+
+    .rb-hero__core-plane {
+      bottom: 13%;
     }
   }
 
