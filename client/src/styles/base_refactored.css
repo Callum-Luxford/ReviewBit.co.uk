@@ -2370,7 +2370,7 @@
       grid-template-columns: repeat(8, minmax(0, 1fr));
       grid-template-rows:
         12.5vw auto minmax(220px, 1fr) 12.5vw;
-      min-height: calc(100svh - var(--header-offset, 3rem));
+      min-height: calc(100dvh - var(--header-offset, 3rem) + 5.5rem);
     }
 
     .rb-hero__cell--nav-left {
@@ -2393,11 +2393,41 @@
     .rb-hero__frame {
       grid-column: 1 / 9;
       grid-row: 3;
-      min-height: 500px;
+      min-height: 650px;
+    }
+
+    .rb-hero__frame-stage {
+      padding: 1rem;
+      padding-right: 1.35rem;
+    }
+
+    .rb-hero__frame-inset {
+      inset: 0.55rem;
+      right: 0.95rem;
+    }
+
+    .rb-hero__core-stage {
+      grid-template-rows: 1fr minmax(30rem, 58%) 1fr;
     }
 
     .rb-hero__core-zone--middle {
-      min-height: clamp(25rem, 40%, 21rem);
+      min-height: 15rem;
+    }
+
+    .rb-hero__core-orbit {
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rb-hero__core-orbit .hero-visual-wrap {
+      width: 100%;
+      margin-inline: auto;
+    }
+
+    .rb-hero__core-plane {
+      bottom: 13%;
     }
 
     .rb-hero__cell--bot-left {
@@ -2408,10 +2438,6 @@
     .rb-hero__cell--bot-right {
       grid-column: 5 / 9;
       grid-row: 4;
-    }
-
-    .hero-visual-wrap {
-      width: min(200px, 56vw);
     }
   }
 
@@ -2431,7 +2457,16 @@
     }
 
     .rb-hero__frame {
-      min-height: 450px;
+      min-height: 650px;
+    }
+
+    .rb-hero__core-stage {
+      grid-template-rows: 1fr minmax(22rem, 58%) 1fr;
+    }
+
+    .rb-hero__core-orbit .hero-visual-wrap {
+      width: min(300px, 56vw);
+      margin-inline: auto;
     }
 
   }
@@ -2445,7 +2480,7 @@
   }
 
   /* ===== REAL PHONE SAFETY FIX (iPhone / small real devices) ===== */
-  @media (max-width: 430px) and (hover: none) and (pointer: coarse) {
+  /* @media (max-width: 430px) and (hover: none) and (pointer: coarse) {
     .rb-hero__grid-layout {
       min-height: calc(100dvh - var(--header-offset, 3rem) + 5.5rem);
     }
@@ -2487,7 +2522,7 @@
     .rb-hero__core-plane {
       bottom: 13%;
     }
-  }
+  } */
 
   /* Legacy no-ops */
   .rb-hero__decor,
