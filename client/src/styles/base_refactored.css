@@ -1657,7 +1657,7 @@
     content: none;
   }
 
-  .rb-hero__bg {
+  /* .rb-hero__bg {
     position: absolute;
     inset: 0;
     pointer-events: none;
@@ -1670,7 +1670,7 @@
       radial-gradient(ellipse 500px 500px at 85% 75%,
         rgba(var(--accent-secondary-rgb), 0.05) 0%,
         transparent 65%);
-  }
+  } */
 
   /* ─── Full-width layout wrapper ─────────────────────────── */
 
@@ -1945,29 +1945,23 @@
     z-index: 3;
   }
 
-  .rb-hero__core-panel-topbar {
-    position: absolute;
-    top: 0.7rem;
-    left: 0.95rem;
-    right: 1.1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 4;
-  }
-
   .rb-hero__core-panel-bottombar {
     position: absolute;
-    right: 1rem;
+    left: 0.95rem;
+    right: 1.4rem;
     bottom: 0.8rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
     z-index: 4;
+    pointer-events: none;
   }
 
   .rb-hero__core-stage {
     position: absolute;
     inset: 0;
     display: grid;
-    grid-template-rows: 1fr auto 1fr;
+    grid-template-rows: auto 1fr auto;
     overflow: hidden;
   }
 
@@ -1978,6 +1972,17 @@
 
   .rb-hero__core-zone--top {
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+  }
+
+  .rb-hero__core-zone-topbar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.7rem 1.4rem 0.7rem 0.95rem;
   }
 
   .rb-hero__core-zone--middle {
@@ -1988,6 +1993,24 @@
 
   .rb-hero__core-zone--bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  .rb-hero__core-zone-bottombar {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 0.75rem 1.4rem 0.75rem 0.95rem;
+  }
+
+  .rb-hero__core-zone-bottom-readout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: right;
   }
 
   .rb-hero__core-grid {
@@ -2187,7 +2210,7 @@
     .rb-hero__core-plane {
       bottom: 13%;
     }
-    
+
   }
 
   @media (max-width: 950px) and (max-height: 900px) and (orientation: landscape) {
@@ -2232,7 +2255,7 @@
     .rb-hero__core-plane {
       bottom: 12%;
     }
-    
+
   }
 
   @media (min-width: 900px) and (max-width: 1400px) and (max-height: 700px) {

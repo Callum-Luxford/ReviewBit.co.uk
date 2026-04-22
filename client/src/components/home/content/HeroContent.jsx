@@ -947,12 +947,6 @@ function HeroContent() {
 
               {/* INNER PANEL */}
               <div className="rb-hero__core-panel">
-                <div className="rb-hero__core-panel-topbar">
-                  <span className="rb-hero__frame-readout">
-                    COORD, FL.03 // PR 68
-                  </span>
-                </div>
-
                 {/* top-right callout */}
                 <div
                   className="rb-hero__core-callout rb-hero__core-callout--tr"
@@ -993,15 +987,16 @@ function HeroContent() {
                 </div>
 
                 <div className="rb-hero__core-stage">
-                  {/* top spacer zone */}
                   <div className="rb-hero__core-zone rb-hero__core-zone--top">
-                    <div className="rb-hero__core-zone-box rb-hero__core-zone-box--top" />
+                    <div className="rb-hero__core-zone-topbar">
+                      <span className="rb-hero__frame-readout">
+                        COORD. FL.03 // PR 68
+                      </span>
+                    </div>
                   </div>
 
-                  {/* middle globe zone */}
                   <div className="rb-hero__core-zone rb-hero__core-zone--middle">
                     <div className="rb-hero__core-grid" aria-hidden="true" />
-
                     <div className="rb-hero__core-plane" aria-hidden="true" />
 
                     <div className="rb-hero__core-orbit">
@@ -1009,24 +1004,21 @@ function HeroContent() {
                     </div>
                   </div>
 
-                  {/* bottom spacer zone */}
                   <div className="rb-hero__core-zone rb-hero__core-zone--bottom">
-                    <div className="rb-hero__core-zone-box rb-hero__core-zone-box--bottom" />
+                    <div className="rb-hero__core-zone-bottombar">
+                      <span className="rb-hero__frame-readout rb-hero__frame-readout--dim rb-hero__core-zone-bottom-readout">
+                        RENDERCORE FLD...
+                      </span>
+                    </div>
                   </div>
                 </div>
 
                 <div className="rb-hero__core-panel-bottombar">
-                  <span className="rb-hero__frame-readout rb-hero__frame-readout--dim">
-                    RENDERCORE FLD...
+                  <span className="rb-hero__frame-readout rb-hero__frame-readout--dim rb-hero__frame-readout--blink">
+                    RENDERING FLOW...
                   </span>
                 </div>
               </div>
-            </div>
-
-            <div className="rb-hero__frame-bottombar">
-              <span className="rb-hero__frame-readout rb-hero__frame-readout--blink">
-                RENDERING FLOW...
-              </span>
             </div>
           </div>
 
