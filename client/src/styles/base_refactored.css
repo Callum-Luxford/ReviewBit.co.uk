@@ -246,8 +246,8 @@
 @layer components {
   .section {
     @apply w-full py-20 md:py-20;
-    border-bottom: 1px solid var(--site-frame-line);
-    border-top: 1px solid var(--site-frame-line);
+    /* border-bottom: 1px solid var(--site-frame-line);
+    border-top: 1px solid var(--site-frame-line); */
   }
 
   .section-sm {
@@ -1608,6 +1608,163 @@
     z-index: 1;
   }
 
+  .section-grid--flow {
+    --section-grid-row-height: calc((100svh - var(--header-offset, 3rem)) / 6);
+
+    grid-template-rows:
+      var(--section-grid-row-height) auto var(--section-grid-row-height);
+
+    min-height: auto;
+  }
+
+  .section-grid--flow::before {
+    background-size:
+      calc(100% / var(--section-grid-cols, 8)) var(--section-grid-row-height);
+  }
+
+  /* =========================================
+   REUSABLE GRID BAND
+   One hero-matching row, 8 columns.
+========================================= */
+
+  /* =========================================
+   REUSABLE GRID BAND
+   Matches hero spacer-row sizing.
+========================================= */
+
+  .rb-grid-band {
+    --section-grid-cols: 8;
+
+    /* desktop hero row */
+    --rb-grid-band-height: calc((100svh - var(--header-offset, 3rem)) / 6);
+
+    position: relative;
+    width: 100%;
+    height: var(--rb-grid-band-height);
+    background: var(--theme-clr-1);
+    border-top: 1px solid var(--ui-line);
+    border-bottom: 1px solid var(--ui-line);
+    overflow: hidden;
+  }
+
+  .rb-grid-band--no-border {
+    border-top: 0;
+    border-bottom: 0;
+  }
+
+  .rb-grid-band::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+
+    background-image:
+      linear-gradient(90deg, rgba(255, 255, 255, 0.065) 1px, transparent 1px);
+
+    background-size: calc(100% / var(--section-grid-cols, 8)) 100%;
+    background-position: left top;
+
+    mask-image: linear-gradient(to right,
+        transparent 0,
+        transparent 1px,
+        #000 1px,
+        #000 calc(100% - 1px),
+        transparent calc(100% - 1px),
+        transparent 100%);
+
+    -webkit-mask-image: linear-gradient(to right,
+        transparent 0,
+        transparent 1px,
+        #000 1px,
+        #000 calc(100% - 1px),
+        transparent calc(100% - 1px),
+        transparent 100%);
+  }
+
+  /* match hero stacked spacer row */
+  @media (max-width: 1024px) {
+    .rb-grid-band {
+      --rb-grid-band-height: 3.5rem;
+    }
+  }
+
+  /* match hero phone spacer row */
+  @media (max-width: 640px) {
+    .rb-grid-band {
+      --rb-grid-band-height: 3.5rem;
+    }
+  }
+
+  .rb-grid-band--no-border {
+    border-top: 0;
+    border-bottom: 0;
+  }
+
+  .rb-grid-band--no-border-top {
+    border-top: 0;
+  }
+
+
+  /* =========================================
+     GRID CANVAS SYSTEM - FLOW SECTIONS
+     Columns + painted rows.
+     GridBand handles above/below section spacing.
+  ========================================= */
+
+  .grid-canvas {
+    --grid-canvas-cols: 8;
+    --grid-canvas-row: calc((100svh - var(--header-offset, 3rem)) / 6);
+
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--grid-canvas-cols), minmax(0, 1fr));
+    background: var(--theme-clr-1);
+    overflow: hidden;
+  }
+
+  .grid-canvas::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.065) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.065) 1px, transparent 1px);
+
+    background-size:
+      calc(100% / var(--grid-canvas-cols)) var(--grid-canvas-row);
+
+    background-position: left top;
+
+    /* prevents double-thick edge lines beside the site frame */
+    mask-image: linear-gradient(to right,
+        transparent 0,
+        transparent 1px,
+        #000 1px,
+        #000 calc(100% - 1px),
+        transparent calc(100% - 1px),
+        transparent 100%);
+    -webkit-mask-image: linear-gradient(to right,
+        transparent 0,
+        transparent 1px,
+        #000 1px,
+        #000 calc(100% - 1px),
+        transparent calc(100% - 1px),
+        transparent 100%);
+  }
+
+  .grid-canvas>* {
+    position: relative;
+    z-index: 1;
+  }
+
+  .grid-canvas--flow {
+    padding-block: 0;
+  }
+
   /* ======== HERO-CONTENT ======== */
   /* ======== HERO-CONTENT ======== */
   /* ======== HERO-CONTENT ======== */
@@ -1647,8 +1804,9 @@
     position: relative;
     isolation: isolate;
     background: var(--theme-clr-1);
-    overflow: hidden;
+    overflow: clip;
     min-height: 100svh;
+    border-bottom: 1px solid var(--ui-line);
   }
 
   /* kill old fake hero grid */
@@ -1690,27 +1848,37 @@
     --section-grid-cols: 8;
     --section-grid-rows: 6;
     --section-grid-min-height: calc(100svh - var(--header-offset, 3rem));
+
+    grid-template-rows: repeat(6, minmax(0, 1fr));
   }
 
   /* actual row placeholders */
   .rb-hero__cell--nav-left {
     grid-column: 1 / 5;
     grid-row: 1;
+    min-height: 0;
+    pointer-events: none;
   }
 
   .rb-hero__cell--nav-right {
     grid-column: 5 / 9;
     grid-row: 1;
+    min-height: 0;
+    pointer-events: none;
   }
 
   .rb-hero__cell--bot-left {
     grid-column: 1 / 5;
     grid-row: 6;
+    min-height: 0;
+    pointer-events: none;
   }
 
   .rb-hero__cell--bot-right {
     grid-column: 5 / 9;
     grid-row: 6;
+    min-height: 0;
+    pointer-events: none;
   }
 
   /* Panels placed directly on the real grid */
@@ -1754,6 +1922,12 @@
     background: #0e0e10;
     border: 1px solid rgba(255, 255, 255, 0.12);
     z-index: 2;
+  }
+
+  .rb-hero__left,
+  .rb-hero__frame {
+    max-height: 100%;
+    overflow: hidden;
   }
 
   /* ─── Left text content ─────────────────────────────────── */
@@ -2289,12 +2463,12 @@
     }
   }
 
-    /* ===== PORTRAIT TABLET / FOLD FIX ===== */
-    @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-      .rb-hero__core-orbit .hero-visual-wrap {
-        width: min(360px, 52vw);
-      }
+  /* ===== PORTRAIT TABLET / FOLD FIX ===== */
+  @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+    .rb-hero__core-orbit .hero-visual-wrap {
+      width: min(360px, 52vw);
     }
+  }
 
   /* Legacy no-ops */
   .rb-hero__decor,
@@ -2479,13 +2653,23 @@
 
   .rb-how {
     position: relative;
-    overflow: hidden;
-    border-top: 1px solid var(--site-frame-line);
+    background: var(--theme-clr-1);
   }
 
   .rb-how__inner {
     position: relative;
     z-index: 2;
+
+    grid-column: 2 / 8;
+
+    width: 100%;
+    min-width: 0;
+
+    background: var(--theme-clr-1);
+    border-left: 1px solid var(--ui-line);
+    border-right: 1px solid var(--ui-line);
+
+    padding: clamp(3rem, 6vw, 6rem);
   }
 
   .rb-how__heading {
@@ -2494,7 +2678,14 @@
     align-items: center;
   }
 
+  @media (max-width: 1024px) {
+    .rb-how__inner {
+      grid-column: 1 / -1;
+    }
+  }
+
   /* ========= TIMELINE ========= */
+
 
   .rb-how__timeline {
     position: relative;

@@ -6,31 +6,34 @@ import ProofStrip from "../components/home/content/ProofStrip";
 import Testimonials from "../components/home/content/Testimonials";
 import Pricing from "../components/home/content/Pricing";
 import Features from "../components/home/content/Features";
+import GridBand from "../components/layout/GridBand";
 
 function Home() {
   return (
     <section className="relative overflow-x-clip">
-      {/* HeroSection */}
       <HeroContent />
 
-      {/* How it Works */}
+      <GridBand className="rb-grid-band--no-border-top" />
+
       <HowItWorks />
 
-      {/* Features */}
+      <GridBand size="md" />
+
       <Features />
 
-      {/* Proof Strip */}
+      <GridBand size="md" />
+
       <ProofStrip />
 
-      {/* Testimonials */}
       {/* <Testimonials /> */}
 
-      {/* Pricing */}
+      <GridBand size="md" />
+
       <Pricing />
 
-      {/* constrained sections after hero */}
+      <GridBand size="lg" />
+
       <div className="max-w-[1400px] mx-auto w-full px-4">
-        {/* Start Today */}
         <StartToday />
       </div>
     </section>
